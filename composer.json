@@ -16,6 +16,7 @@
         "tymon/jwt-auth": "^2.1"
     },
     "require-dev": {
+        "heroku/heroku-buildpack-php" : "dev-master",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.25",
         "laravel/pint": "^1.0",
