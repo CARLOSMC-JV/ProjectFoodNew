@@ -7,6 +7,8 @@ export default defineConfig({
         laravel({
             input: 'resources/js/app.js',
             refresh: true,
+            output: 'dist', 
+            refresh: true,
         }),
         vue({
             template: {
