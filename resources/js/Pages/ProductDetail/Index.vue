@@ -1,5 +1,5 @@
 <script>
-    import MainNav3 from "@/ComponentsCustom/MainNav3.vue";
+    import MainNavCustom from "@/ComponentsCustom/MainNavCustom.vue";
     import { Head, useForm } from '@inertiajs/vue3';
     import Footer from "@/ComponentsCustom/Footer.vue";
     import CarouselSplideGallery from "@/ComponentsCustom/CarouselSplideGallery.vue";
@@ -11,7 +11,7 @@
             }
         },
         components:{
-            MainNav3,
+            MainNavCustom,
             Head,
             Footer,
             CarouselSplideGallery
@@ -27,11 +27,11 @@
 <template>
     <div>
         <Head :title="product.name" />
-        <MainNav3/>
+        <MainNavCustom/>
         <div id="product_detail">
             <div class="box-detail-product">
                 <p>
-                    <a :href="route('home')">Inicio</a> / <a :href="route('categoria.index', { categoria: product.category })">{{ product.category }}</a> / {{ product.subcategory ? product.subcategory.name : '' }} / {{ product.name }}
+                    <a :href="route('home')">Inicio</a> / / {{ product.subcategory ? product.subcategory.name : '' }} / {{ product.name }}
                 </p>
 
                 <div class="container-image">

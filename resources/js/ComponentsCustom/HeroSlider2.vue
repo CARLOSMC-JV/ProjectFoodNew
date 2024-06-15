@@ -26,16 +26,18 @@
     @slideChangeTransitionEnd="onSlideChangeTransitionEnd"
 
   >
-    <swiper-slide v-for="(slide_item, slide_item__index)  in slides" :key="slide_item__index"  :class="{ 'previous-slide': slide_item__index === previousSlide, 'active-slide': activeSlide === slide_item__index }">
+    <swiper-slide class="slider-desktop" v-for="(slide_item, slide_item__index)  in slides" :key="slide_item__index"  :class="{ 'previous-slide': slide_item__index === previousSlide, 'active-slide': activeSlide === slide_item__index }">
         <img :src="slide_item">
         <div class="slide-text" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgLogo"></div>
         <div class="slide-text-discount" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgDiscount"></div>
-        <!-- <div class="slide-text-info" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }">
-            <p class="text-1"><span class="red-text">1/2 KG</span> <span class="green-text">RAVIOLES</span></p>
-            <p class="black-text">DE QUESO Y ESPINACA</p>
-        </div> -->
-        <!-- <div class="slide-text-info-2" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><p class="text-variety">Contamos con una variedad de sabores</p></div>
-        <div class="slide-text-info-3" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><p class="text-now">Contamos con una variedad de sabores</p></div> -->
+      
+    </swiper-slide>
+
+    <swiper-slide class="slider-mobile" v-for="(slide_item, slide_item__index)  in slidesMobile" :key="slide_item__index"  :class="{ 'previous-slide': slide_item__index === previousSlide, 'active-slide': activeSlide === slide_item__index }">
+        <img :src="slide_item">
+        <div class="slide-text" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgLogo"></div>
+        <div class="slide-text-discount" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgDiscount"></div>
+      
     </swiper-slide>
 
   </swiper>
@@ -46,8 +48,8 @@
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import { Navigation, Pagination} from 'swiper/modules';
   import { EffectCreative } from 'swiper/modules';
-  import img7Slider from '../../img/slider/banner_food_d.png'
-  import img8Slider from '../../img/slider/banner_food_d.png'
+  import img7Slider from '../../img/slider/banner_food_desktop.webp'
+  import imgMobile from '../../img/slider/banner_food.png'
   import imgLogo from '../../img/logo/logo_food.png'
   import imgDiscount from '../../img/slider/discount.png'
 
@@ -70,8 +72,10 @@
     data(){
         return{
             slides: [
-                img7Slider,
-                img8Slider
+                img7Slider
+            ],
+            slidesMobile:[
+                imgMobile
             ],
             imgLogo,
             imgDiscount,
@@ -100,15 +104,6 @@
       return {
         modules: [Navigation, Pagination, EffectCreative],
       };
-    //   const onSlideChange = () => {
-    //     console.log('slide change');
-    //   };
-    //   return {
-    //     onSwiper,
-    //     onSlideChange,
-    //     modules: [Navigation, Pagination, EffectCreative],
-
-    //   };
     },
   };
 </script>
@@ -118,112 +113,133 @@
   font-family: "Open Sans", sans-serif;
 
 }
-    .swiper-creative{
-        .swiper-wrapper{
-            height: 360px;
-            .swiper-slide{
-                position: relative;
-                img{
-                    height: 360px;
-                    object-fit: cover;
-                    width: 100%;
-                    transition: transform 1s ease-in-out, opacity 1s ease-in-out; 
-                }
-                &.previous-slide img {
-                    opacity: 0.5; 
-                }
-                &.active-slide img {
-                    opacity: 1; 
-                }
-                .slide-text-discount{
-                    position: absolute;
-                    top: 20%;
-                    right: 41%;
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 24px;
-                    opacity: 0;
+.slider-desktop{
+  display:none;
+}
+.swiper-creative{
+    .swiper-wrapper{
+        height: 360px;
+        .swiper-slide{
+            position: relative;
+            img{
+                object-fit: cover;
+                width: 100%;
+                transition: transform 1s ease-in-out, opacity 1s ease-in-out; 
+            }
+            &.previous-slide img {
+                opacity: 0.5; 
+            }
+            &.active-slide img {
+                opacity: 1; 
+            }
+            .slide-text-discount{
+                position: absolute;
+                top: 20%;
+                right: 41%;
+                color: #fff;
+                font-weight: 700;
+                font-size: 24px;
+                opacity: 0;
 
-                    transform: translateY(20px);
-                    transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Ajusta la transición del texto */
-                    &.active {
-                        opacity: 1;
-                        transform: translateY(0);
+                transform: translateY(20px);
+                transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Ajusta la transición del texto */
+                &.active {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                &.next {
+                    opacity: 0;
+                    transform: translateY(40px);
+                    transition: none;
+                }
+                .img-logo{
+                    height: auto;
+                }
+            }
+            .slide-text-info{
+                position: absolute;
+                top: 35%;
+                right: 3%;
+                opacity: 0;
+
+                transform: translateY(20px);
+                transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Ajusta la transición del texto */
+                &.active {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                &.next {
+                    opacity: 0;
+                    transform: translateY(40px);
+                    transition: none;
+                }
+                .img-logo{
+                    height: auto;
+                }
+                .text-1{
+                    font-weight: 600;
+                    font-size: 3.5rem;
+                    text-align: center;
+                    .red-text{
+                        color:#961921;
                     }
-                    &.next {
-                        opacity: 0;
-                        transform: translateY(40px);
-                        transition: none;
-                    }
-                    .img-logo{
-                        height: auto;
+                    .green-text{
+                        color:#144220;
                     }
                 }
-                .slide-text-info{
-                    position: absolute;
-                    top: 35%;
-                    right: 3%;
-                    opacity: 0;
-
-                    transform: translateY(20px);
-                    transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Ajusta la transición del texto */
-                    &.active {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                    &.next {
-                        opacity: 0;
-                        transform: translateY(40px);
-                        transition: none;
-                    }
-                    .img-logo{
-                        height: auto;
-                    }
-                    .text-1{
-                        font-weight: 600;
-                        font-size: 3.5rem;
-                        text-align: center;
-                        .red-text{
-                            color:#961921;
-                        }
-                        .green-text{
-                            color:#144220;
-                        }
-                    }
-                    .black-text{
-                        font-weight: 500;
-                        font-size: 2.5rem;
-                        color: #000000;
-                        text-align: center;
-                        margin-top: 1.5rem;
-                    }
-                    
+                .black-text{
+                    font-weight: 500;
+                    font-size: 2.5rem;
+                    color: #000000;
+                    text-align: center;
+                    margin-top: 1.5rem;
                 }
-                .slide-text {
-                    position: absolute;
-                    top: 10%;
-                    right: 6%;
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 24px;
-                    opacity: 0;
+                
+            }
+            .slide-text {
+                position: absolute;
+                top: 10%;
+                right: 6%;
+                color: #fff;
+                font-weight: 700;
+                font-size: 24px;
+                opacity: 0;
 
-                    transform: translateY(20px);
-                    transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Ajusta la transición del texto */
-                    &.active {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                    &.next {
-                        opacity: 0;
-                        transform: translateY(40px);
-                        transition: none;
-                    }
-                    .img-logo{
-                        height: auto;
-                    }
+                transform: translateY(20px);
+                transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Ajusta la transición del texto */
+                &.active {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                &.next {
+                    opacity: 0;
+                    transform: translateY(40px);
+                    transition: none;
+                }
+                .img-logo{
+                    height: auto;
                 }
             }
         }
     }
+}
+
+@media (min-width: 768px) {
+  .slider-desktop{
+    display:flex;
+  }
+  .slider-mobile{
+    display: none;
+  }
+  .swiper-creative{
+    .swiper-wrapper{
+        height: 360px;
+        .swiper-slide{
+            img{
+                height: 360px;
+            }
+          }
+    }
+  }
+}
 </style>

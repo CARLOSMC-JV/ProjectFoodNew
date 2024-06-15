@@ -6,6 +6,22 @@ body{
 // @font-face {
 //     font-family: 'Poppins';
 // }
+@media only screen and (min-width: 600px){
+    .Vue-Toastification__container.top-right{
+    
+        top: 90% !important;
+    }
+
+}
+.Vue-Toastification__container{
+    .Vue-Toastification__toast{
+        .Vue-Toastification__icon{
+            path{
+                color: #ffffff;
+            }
+        }
+    }
+}
 .Vue-Toastification__toast-body{
     color: #ffffff;
 }
@@ -454,16 +470,45 @@ body{
                         flex-direction: column;
                         gap: 0.625rem;
                         text-align: center;
-                        width: 50%;
+                        width: 55%;
                         .box-data-general{
                             display: flex;
                             flex-direction: column;
-                            align-items: center;
+                            // align-items: center;
                             -webkit-box-flex: 1;
                             flex-grow: 1;
                             -webkit-box-pack: center;
                             margin-left: 0px;
-                            justify-content: center;
+                            justify-content: space-around;
+                            .box-price-mobile{
+                                visibility: visible;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-end;
+                                .title-price{
+                                    display: flex;
+                                    padding-left: 0.8rem;
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    line-height: 28px;
+                                }
+                                .button-buy{
+                                    padding: 0.5rem 0.8rem;
+                                    height: 1.6rem;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    border-radius: 1rem;
+                                    font-size: 0.875rem;
+                                    font-weight: 600;
+                                    border: 1px solid #a4a5a7;
+                                    &:hover{
+                                        color: #961921;
+                                        border: 1px solid #961921;
+                                    }
+    
+                                }
+                            }
                             .title-item{
                                 color: #144220;
                                 font-weight: 600;
@@ -475,11 +520,12 @@ body{
                         .box-button-general{
                             -webkit-box-align: center;
                             align-items: center;
-                            bottom: 0px;
+                            
                             display: flex;
                             flex-direction: column;
                             position: absolute;
-                            right: 8px;
+                            top: 15px;
+                            right: 0;
                             z-index: 4;
                             .box-button-more{
                                 .button-show{
@@ -637,8 +683,8 @@ body{
                             }
                         }
                         .data-product{
-                            width: initial;
-                            flex: 1 1 0%;
+                            // width: initial;
+                            // flex: 1 1 0%;
                             .title-price{
                                 display: none;
                                 font-size: 1rem;
@@ -647,12 +693,18 @@ body{
                             .box-data-general{
                                 justify-content: start;
                                 margin-left: 16px;
+                                .box-price-mobile{
+                                    display: none;
+                                }
                                 .title-item{
                                     font-size: 18px;
                                 }
                                 .title-price{
                                     display: block;
                                 }
+                            }
+                            .box-button-general{
+                                right: 15px;
                             }
                         }
                     }
@@ -720,18 +772,21 @@ body{
                             }
                         }
                         .data-product{
+                            width: initial;
+                            flex: 1 1 0%;
                             .box-button-general{
                                 bottom: 25%;
-                                /* top: 0px; */
                                 right: 8px;
                             }
                             .box-data-general{
+                                align-items: center;
                                 margin-left: 0rem;
                                 .title-price{
                                     display: none;
                                 }
                                 .title-item{
                                     width: 75%;
+                                    max-height: 48px;
                                 }
                             }
                         }

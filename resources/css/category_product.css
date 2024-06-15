@@ -2,6 +2,15 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+@media only screen and (min-width: 600px) {
+  .Vue-Toastification__container.top-right {
+    top: 90% !important;
+  }
+}
+.Vue-Toastification__container .Vue-Toastification__toast .Vue-Toastification__icon path {
+  color: #ffffff;
+}
+
 .Vue-Toastification__toast-body {
   color: #ffffff;
 }
@@ -398,17 +407,44 @@ body {
   flex-direction: column;
   gap: 0.625rem;
   text-align: center;
-  width: 50%;
+  width: 55%;
 }
 #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general {
   display: flex;
   flex-direction: column;
-  align-items: center;
   -webkit-box-flex: 1;
   flex-grow: 1;
   -webkit-box-pack: center;
   margin-left: 0px;
+  justify-content: space-around;
+}
+#category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .box-price-mobile {
+  visibility: visible;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+#category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .box-price-mobile .title-price {
+  display: flex;
+  padding-left: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 28px;
+}
+#category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .box-price-mobile .button-buy {
+  padding: 0.5rem 0.8rem;
+  height: 1.6rem;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #a4a5a7;
+}
+#category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .box-price-mobile .button-buy:hover {
+  color: #961921;
+  border: 1px solid #961921;
 }
 #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .title-item {
   color: #144220;
@@ -420,11 +456,11 @@ body {
 #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-button-general {
   -webkit-box-align: center;
   align-items: center;
-  bottom: 0px;
   display: flex;
   flex-direction: column;
   position: absolute;
-  right: 8px;
+  top: 15px;
+  right: 0;
   z-index: 4;
 }
 #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-button-general .box-button-more .button-show {
@@ -539,10 +575,6 @@ body {
     box-shadow: initial;
     border-radius: initial;
   }
-  #category_product .list-documents .box-documents .document-item .box-data-document .data-product {
-    width: initial;
-    flex: 1 1 0%;
-  }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .title-price {
     display: none;
     font-size: 1rem;
@@ -552,11 +584,17 @@ body {
     justify-content: start;
     margin-left: 16px;
   }
+  #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .box-price-mobile {
+    display: none;
+  }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .title-item {
     font-size: 18px;
   }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .title-price {
     display: block;
+  }
+  #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-button-general {
+    right: 15px;
   }
   #category_product .list-documents .box-documents .document-item .title-item {
     margin-bottom: 0.45rem;
@@ -610,12 +648,16 @@ body {
     height: 200px;
     width: initial;
   }
+  #category_product .list-documents .box-documents .document-item .box-data-document .data-product {
+    width: initial;
+    flex: 1 1 0%;
+  }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-button-general {
     bottom: 25%;
-    /* top: 0px; */
     right: 8px;
   }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general {
+    align-items: center;
     margin-left: 0rem;
   }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .title-price {
@@ -623,6 +665,7 @@ body {
   }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general .title-item {
     width: 75%;
+    max-height: 48px;
   }
 }
 @media (min-width: 1200px) {

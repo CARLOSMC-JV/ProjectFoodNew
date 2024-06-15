@@ -14,8 +14,8 @@
               <span class="text-sub">pedidos@lacasadelosravioles.pe</span>
               <span class="text-phone">(01) 435 4036</span>
               <div class="box-icons-network">
-                <img class="img-icon" :src="iconFB" alt="">
-                <img class="img-icon" :src="iconInstagram" alt="">
+                <img class="img-icon" @click="openPageFb()" :src="iconFB" alt="">
+                <img class="img-icon" @click="openPageInstagram()"  :src="iconInstagram" alt="">
                 <img class="img-icon" @click="openWhatsapp()" :src="iconWhatsapp" alt="">
                 <img class="img-icon" :src="iconYoutube" alt="">
               </div>
@@ -55,7 +55,7 @@
                 <span class="text-sub">pedidos@lacasadelosravioles.pe</span>
                 <span class="text-phone">(01) 435 4036</span>
                 <div class="box-icons-network">
-                  <img class="img-icon" :src="iconFB" alt="">
+                  <img class="img-icon" @click="openPageFb()" :src="iconFB" alt="">
                   <img class="img-icon" :src="iconInstagram" alt="">
                   <img class="img-icon" :src="iconWhatsapp" alt="">
                   <img class="img-icon" :src="iconYoutube" alt="">
@@ -100,6 +100,16 @@
         }
       },
       methods:{
+        openPageFb(){
+            const fabeURL = `https://www.facebook.com/LaCasaDeLosRavioles/?locale=es_LA`;
+
+            window.open(fabeURL, '_blank');
+        },
+        openPageInstagram(){
+            const instagramURL = `https://www.instagram.com/la.casa.de.los.ravioles/`;
+
+            window.open(instagramURL, '_blank');
+        },
         openWhatsapp() {
           const whatsappurl = `https://api.whatsapp.com/send?phone=51947378352`;
           window.open(whatsappurl, "_blank");

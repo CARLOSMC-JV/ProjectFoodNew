@@ -109,7 +109,8 @@
                     quantity: 1,
                     });
                     this.toast.success("Producto agregado correctamente");
-                    
+                    store.addToCart()
+                    this.$emit('cart-updated');
 
                 } catch (error) {
                     console.error(error);
@@ -159,7 +160,7 @@
             store.initializeCart(props.cart);
 
             return { toast,      
-                cart: store.cart, 
+                cart_store: store.cart, 
             };
         },
     }
@@ -168,7 +169,7 @@
 <template>
     <Head :title="class_category" />
 
-    <MainNavCustom :category-active="class_category" :cart="cart"/>
+    <MainNavCustom :category-active="class_category" :cart.sync="cart" @cart-updated="cartUpdated"/>
 
     <div id="category_product">
         <div class="section-product">
@@ -191,6 +192,7 @@
                                         <h2 class="title-desription">{{productByCategoryItem.description}}</h2> 
                                         <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
                                     </div>
+                                    
                                     <div class="box-button-general">
                                         <div class="box-button-more">
                                             <button class="button-show" @click.stop="addToCart(productByCategoryItem.id)"><img :src="iconMore"></button>

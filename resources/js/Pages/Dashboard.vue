@@ -80,10 +80,10 @@ export default {
     <Head title="LA CASA DE LOS RAVIOLES" />
     <div class="box-general">
 
-        <MainNavCustom :latestProducts="latestProducts" :cart="cart"/>
+        <MainNavCustom :latestProducts="latestProducts"/>
 
         <HeroSlider2/>
-        <ListProductsMain :latest-products="latestProducts" :cart="cart"/>
+        <ListProductsMain :latest-products="latestProducts"/>
         <!-- <PopularCategories :categories="categories"/> -->
         <FooterVue />
         <AsistanChef />

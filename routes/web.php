@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassCategoryController;
 use App\Http\Controllers\NavCategoryController;
 use App\Http\Controllers\ProductAdminController;
+use App\Http\Controllers\MainNavCustomController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ShowMoreProductController;
@@ -47,6 +48,7 @@ Route::get('/dashboard', function () {
 // });
 
     Route::get('/listcategories', [NavCategoryController::class, 'index']); // Asegúrate de ajustar la ruta y el controlador según tu configuración
+    Route::get('/fetchcart', [MainNavCustomController::class, 'index']);
     Route::get('/', [DashboardController::class, 'index'])->name('home');
 
     Route::middleware('auth')->group(function () {
@@ -71,8 +73,6 @@ Route::get('/dashboard', function () {
     // Route::get('{categoria2}/{id}', [ProductController::class, 'showDetail2'])->name('product.details2');
 
     Route::get('/{categoria}/showMoreProducts', [ProductController::class, 'showProductsByCategory'])->name('show_more_products.index');
-
-
 
     Route::get('{categoria2}/product/{id}', [ProductController::class, 'showDetailProduct'])->name('product.details');
 

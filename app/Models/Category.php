@@ -26,6 +26,6 @@ class Category extends Model
 
     //Relacion uno a muchos inversa
     public function ClassCategory(){
-        return $this->belongsTo(Classcategory::class);
+        return $this->belongsTo(ClassCategory::class);
     }
 }

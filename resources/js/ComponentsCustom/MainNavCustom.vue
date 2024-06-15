@@ -1,11 +1,11 @@
 <template>
     <div class="box-general">
-        <div class="box-overlay" :class="{'opened-cart' : showCartShop}"></div>
+        <div class="box-overlay" :class="{ 'opened-cart': showCartShop }"></div>
 
-        <div  class="box-contact">
+        <div class="box-contact">
             <div class="box-data-contact">
                 <div class="icon-text">
-                    <img class="icon-contact" :src="iconsEmail" alt="">
+                    <img class="icon-contact" @click="emailLink()" :src="iconsEmail" alt="">
                     <span class="text-contact">atencionalcliente@lacasadelosravioles.com.pe</span>
                 </div>
                 <div class="icon-text">
@@ -17,10 +17,10 @@
                 <div>
                     <span class="text-follow">Siguenos en:</span>
                 </div>
-                <div>
+                <div style="cursor: pointer;" @click="openPageFb()">
                     <img :src="iconFB">
                 </div>
-                <div>
+                <div style="cursor: pointer;" @click="openPageInstagram()">
                     <img :src="iconInstagram">
                 </div>
                 <!-- <div>
@@ -28,7 +28,8 @@
                 </div> -->
             </div>
         </div>
-        <div class="cartmini__area tp-all-font-roboto" :class="{'cartmini-opened' : showCartShop}" v-show="showCartShop" v-click-outside="closeCartOnClickOutside">
+        <div class="cartmini__area tp-all-font-roboto" :class="{ 'cartmini-opened': showCartShop }" v-show="showCartShop"
+            v-click-outside="closeCartOnClickOutside">
             <div class="cartmini__wrapper d-flex justify-content-between flex-column">
                 <div class="cartmini__top-wrapper">
                     <div class="cartmini__top p-relative">
@@ -36,20 +37,16 @@
                             <h4>Mi Carrito</h4>
                         </div>
                         <div class="box-quantity">
-                            <h2 v-if="Object.keys(cart).length>1">{{Object.keys(cart).length}} productos</h2>
-                            <h2 v-else>{{Object.keys(cart).length}} producto</h2>
+                            <h2 v-if="Object.keys(cart).length > 1">{{ Object.keys(cart).length }} productos</h2>
+                            <h2 v-else>{{ Object.keys(cart).length }} producto</h2>
                         </div>
-                        <!-- <div class="cartmini__close">
-                            <button type="button" class="cartmini__close-btn cartmini-close-btn" @click="closeCart()"><img src="../../img/icons/close-white-2.svg" alt=""></button>
-                        </div> -->
                     </div>
 
                     <div class="cartmini__widget">
                         <div class="cartmini__widget-item">
                             <div class="cartmini__thumb">
-                            <a href="product-details.html">
-                                <!-- <img src="assets/img/product/product-1.jpg" alt=""> -->
-                            </a>
+                                <a href="product-details.html">
+                                </a>
                             </div>
                             <div class="cartmini__content" v-for="(item, item__index) in cart" :key="item.id">
                                 <div class="box-image">
@@ -57,31 +54,35 @@
                                 </div>
                                 <div class="box-data-cart">
                                     <div class="box-name-delete">
-                                        <h5 class="cartmini__title"><a href="product-details.html">{{ item.name }}</a></h5>
-                                        <div><img :src="iconDelete"></div>
+                                        <h5 class="cartmini__title"><a href="product-details.html">{{ item.name }}</a>
+                                        </h5>
+                                        <div class="box-delete" @click="removeToCart(item.id)"><img :src="iconDelete">
+                                        </div>
                                     </div>
                                     <div class="box-description">
                                         <h5 class="cartmini__description">{{ item.name }}</h5>
 
                                     </div>
                                     <div>
-                                        <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>                                        
+                                        <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>
                                     </div>
                                     <div class="box-line">
                                         <hr>
                                     </div>
                                     <div class="box-total">
                                         <span class="text-total">Total producto:</span>
-                                        <span class="text-total-price">{{(getPriceByProduct(item.id)).toFixed(2)}}</span>
+                                        <span
+                                            class="text-total-price">{{ (getPriceByProduct(item.id)).toFixed(2) }}</span>
                                     </div>
                                     <div class="box-quantity-cart">
                                         <h5 class="cartmini__description">{{ item.quantity }}</h5>
 
                                     </div>
                                 </div>
-                                
+
                             </div>
-                            <a href="#" class="cartmini__del"><img @click="closeCart()" src="../../img/icons/close-white-2.svg" alt=""></a>
+                            <a href="#" class="cartmini__del"><img @click="closeCart()"
+                                    src="../../img/icons/close-white-2.svg" alt=""></a>
                             <!-- <a href="#" class="cartmini__del"><i class="fa-regular fa-xmark"></i></a> -->
                         </div>
                     </div>
@@ -94,9 +95,9 @@
                     </div>
                 </div>
                 <div class="cartmini__checkout">
-                    <div class="cartmini__checkout-title mb-30">
+                    <div class="cartmini__checkout-title mb-30" @click="processCart()">
                         <h4>Procesar compra:</h4>
-                        <span>S/ {{(calculateTotalCart).toFixed(2)}}</span>
+                        <span>S/ {{ (calculateTotalCart).toFixed(2) }}</span>
                     </div>
 
                 </div>
@@ -104,61 +105,158 @@
         </div>
         <header class="header">
             <transition name="transition__slide">
-                <div v-if="showMobileOverlay" class="mobile__menu-overlay" :class="{'show-mobile': showMobileOverlay}">
-                  
+                <div v-if="showMobileOverlay" class="mobile__menu-overlay" :class="{ 'show-mobile': showMobileOverlay }">
+                    <div class="box-menu-mobile-overlay" v-if="showContentMobile">
+                        <div class="offcanvas__wrapper">
+                            <div class="offcanvas__content">
+                                <div class="offcanvas__top mb-70 d-flex justify-content-between align-items-center">
+                                </div>
+                                <div class="box-cart-general">
+                                    <div>
+                                        <div class="contain-icon" @click="openCartMobile()">
+                                            <button type="button" class="box-cart">
+                                                <img :src="iconCart">
+                                            </button>
+                                        </div>
+                                        <div class="box-text">
+                                            <span>Carrito</span>
+                                        </div>
+                                    </div>
 
-                    <div :class="{'offcanvas__area offcanvas__radius': !showMobileOverlay}">
-            <div class="offcanvas__wrapper">
+                                    <div class="box-order-general">
+                                        <div class="contain-icon" @click="toggleShopCart()">
+                                            <button type="button" class="box-order">
+                                                <img :src="iconOrder">
+                                            </button>
+                                        </div>
+                                        <div class="box-text">
+                                            <span>Mis ordenes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="offcanvas__category pb-40">
+                                    <button class="tp-offcanvas-category-toggle" @click="toggleSubMenu()">
+                                        <div class="box-all-categories">
+                                            <i class="fa-solid fa-bars"></i>
+                                            <span class="text-all">Todas las categorías</span>
+                                        </div>
+                                        <div class="box-img">
+                                            <img src="../../img/icons/chevron-down-white.svg">
+                                        </div>
 
-                <div class="offcanvas__content">
-                <div class="offcanvas__top mb-70 d-flex justify-content-between align-items-center">
-  
-                </div>
-                <div class="offcanvas__category pb-40">
-                    <button class="tp-offcanvas-category-toggle" @click="toggleSubMenu()">
-                        <div class="box-all-categories">
-                            <i class="fa-solid fa-bars"></i>
-                            <span class="text-all">All Categories</span>
+                                    </button>
+                                    <transition name="slide">
+                                        <nav class="tp-category-mobile-menu" v-show="showSubMenuMobile">
+                                            <ul>
+                                                <li class="item-submenu"
+                                                    v-for="(category_item, category_item__index) in categorias"
+                                                    :key="category_item__index">
+                                                    <a :href="route('classcategory.index', { categoria: category_item.id })"
+                                                        class="sub-item-category">
+
+                                                        {{ category_item.name }}</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </transition>
+                                </div>
+                                <div class="offcanvas__contact align-items-center d-none">
+                                    <div class="offcanvas__contact-icon mr-20">
+                                        <span>
+                                            <!-- <img src="assets/img/icon/contact.png" alt=""> -->
+                                        </span>
+                                    </div>
+                                    <div class="offcanvas__contact-content">
+                                        <h3 class="offcanvas__contact-title">
+                                            <a href="tel:098-852-987">004524865</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="box-img">
-                            <img src="../../img/icons/chevron-down-white.svg">                           
+                    </div>
+                    <div v-else>
+                        <div class="cartmini__area tp-all-font-roboto" :class="{ 'cartmini-opened': showCartShopMobile }" v-show="showCartShopMobile"
+                            v-click-outside="closeCartOnClickOutside">
+                            <div class="cartmini__wrapper d-flex justify-content-between flex-column">
+                                <div class="cartmini__top-wrapper">
+                                <div class="cartmini__top p-relative">
+                                    <div class="cartmini__top-title">
+                                        <h4>Mi Carrito</h4>
+                                    </div>
+                                    <div class="box-quantity">
+                                        <h2 v-if="Object.keys(cart).length > 1">{{ Object.keys(cart).length }} productos</h2>
+                                        <h2 v-else>{{ Object.keys(cart).length }} producto</h2>
+                                    </div>
+                                </div>
+
+                                <div class="cartmini__widget">
+                                    <div class="cartmini__widget-item">
+                                        <div class="cartmini__thumb">
+                                            <a href="product-details.html">
+                                            </a>
+                                        </div>
+                                        <div class="cartmini__content" v-for="(item, item__index) in cart" :key="item.id">
+                                            <div class="box-image">
+                                                <img :src="item.image">
+                                            </div>
+                                            <div class="box-data-cart">
+                                                <div class="box-name-delete">
+                                                    <h5 class="cartmini__title"><a href="product-details.html">{{ item.name }}</a>
+                                                    </h5>
+                                                    <div class="box-delete" @click="removeToCart(item.id)"><img :src="iconDelete">
+                                                    </div>
+                                                </div>
+                                                <div class="box-description">
+                                                    <h5 class="cartmini__description">{{ item.name }}</h5>
+
+                                                </div>
+                                                <div>
+                                                    <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>
+                                                </div>
+                                                <div class="box-line">
+                                                    <hr>
+                                                </div>
+                                                <div class="box-total">
+                                                    <span class="text-total">Total producto:</span>
+                                                    <span
+                                                        class="text-total-price">{{ (getPriceByProduct(item.id)).toFixed(2) }}</span>
+                                                </div>
+                                                <div class="box-quantity-cart">
+                                                    <h5 class="cartmini__description">{{ item.quantity }}</h5>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <a href="#" class="cartmini__del"><img @click="closeCart()"
+                                                src="../../img/icons/close-white-2.svg" alt=""></a>
+                                        <!-- <a href="#" class="cartmini__del"><i class="fa-regular fa-xmark"></i></a> -->
+                                    </div>
+                                </div>
+                                <!-- for wp -->
+                                <!-- if no item in cart -->
+                                <div class="cartmini__empty text-center d-none">
+                                    <!-- <img src="assets/img/product/cartmini/empty-cart.png" alt=""> -->
+                                    <p>Your Cart is empty</p>
+                                    <a href="shop.html" class="tp-btn">Go to Shop</a>
+                                </div>
+                            </div>
+                            <div class="cartmini__checkout">
+                                <div class="cartmini__checkout-title mb-30" @click="processCart()">
+                                    <h4>Procesar compra:</h4>
+                                    <span>S/ {{ (calculateTotalCart).toFixed(2) }}</span>
+                                </div>
+
+                            </div>
+                            </div>
                         </div>
-
-                    </button>
-                    <transition name="slide">
-                        <nav class="tp-category-mobile-menu" v-show="showSubMenuMobile">
-                            <ul>
-                                <li class="item-submenu" v-for="(category_item, category_item__index) in categorias" :key="category_item__index">
-                                    <a :href="route('classcategory.index', { categoria: category_item.id })" class="sub-item-category">
-                                        
-                                        {{category_item.name}}</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </transition>
-                </div>
-                <div class="offcanvas__contact align-items-center d-none">
-                    <div class="offcanvas__contact-icon mr-20">
-                        <span>
-                            <!-- <img src="assets/img/icon/contact.png" alt=""> -->
-                        </span>
                     </div>
-                    <div class="offcanvas__contact-content">
-                        <h3 class="offcanvas__contact-title">
-                            <a href="tel:098-852-987">004524865</a>
-                        </h3>
-                    </div>
-                </div>
-
-                </div>
-                
-            </div>
-        </div>
                 </div>
             </transition>
-    
+
             <div class="header__mobile">
-                <div class="header-menu" @click="() => (showMobileOverlay = true)" v-if="!showMobileOverlay">
+                <div class="header-menu" @click="() => (showMobileOverlay = true) (showContentMobile = true)" v-if="!showMobileOverlay">
                     <img src="../../img/icons/menu-white.svg" alt="" />
                 </div>
 
@@ -173,87 +271,86 @@
                 </div>
 
             </div>
-            
-    
+
+
             <div class="header__desktop">
-    
+
                 <div class="header-tabs">
                     <div class="logo-search">
-                        <!-- <NavLink :href="route('home')">
+                        <NavLink :href="route('home')">
                             <img :src="iconlogoPageCasa" alt="">
-                        </NavLink> -->
+                        </NavLink>
                         <div class="search-ads">
                             <div class="control has-icons-left">
-                                <input autocomplete="off" class="input" type="text" placeholder="Buscar producto" style="height: 40px">
+                                <input autocomplete="off" class="input" type="text" placeholder="Buscar producto"
+                                    style="height: 40px">
                                 <img :src="iconSearch" class="icon-search">
                             </div>
                         </div>
                     </div>
                     <div class="box-shop">
                         <span>Tiendas</span>
-                        </div>
+                    </div>
                     <div class="box-cart">
                         <div class="contain-icon">
                             <img :src="iconOrder">
                         </div>
-                        <!-- <div class="contain-icon">
-                            <img :src="iconCart">
-                        </div> -->
+
                         <div class="contain-icon" @click="toggleShopCart()">
                             <button type="button" class="tp-header-action-btn cartmini-open-btn">
                                 <img :src="iconCart">
-        
-                                <span class="tp-header-action-badge">13</span>                                                                          
-                                </button>
+
+                                <span class="tp-header-action-badge">{{ Object.keys(cart).length }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-    
-            
+
+
         </header>
         <div class="box-menu">
             <div class="tp-header-bottom tp-header-bottom-border d-none d-lg-block">
-               <div class="container">
-                  <div class="tp-mega-menu-wrapper p-relative">
-                     <div class="row align-items-center row-custom">
-                        <div class="box-logo">
-                            
-                            <!-- <img :src="iconlogoPage" style="width: 50px;">
-                            <h2 class="text-logo">BICIZONA</h2> -->
-                           <div class="tp-header-category tp-category-menu tp-header-category-toggle">
-                            <div
-                                @mouseover="show_options_mega = true"
-                                @mouseleave="show_options_mega = false"
-                            >
-                              <button class="tp-category-menu-btn tp-category-menu-toggle"  @click="openMenu">
-                                <div class="box-title"> 
-                                    Todas las categorías 
+                <div class="container">
+                    <div class="tp-mega-menu-wrapper p-relative">
+                        <div class="row align-items-center row-custom">
+                            <div class="box-logo">
+
+                                <div class="tp-header-category tp-category-menu tp-header-category-toggle">
+                                    <div @mouseover="show_options_mega = true" @mouseleave="show_options_mega = false">
+                                        <button class="tp-category-menu-btn tp-category-menu-toggle" @click="openMenu">
+                                            <div class="box-title">
+                                                Todas las categorías
+                                            </div>
+                                            <div>
+                                                <img class="chev-down" :src="chevDownIcon">
+                                            </div>
+                                        </button>
+                                        <nav class="tp-category-menu-content" v-show="show_options_mega">
+                                            <ul class="menu-by-category">
+                                                <li v-for="(cate_item, cate_item__index) in categorias"
+                                                    :key="cate_item__index">
+                                                    <a href="shop.html" class="sub-item-category">
+                                                        {{ cate_item.name }}</a>
+                                                </li>
+
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
-                                <div>
-                                    <img class="chev-down" :src="chevDownIcon">                           
-                                </div>
-                              </button>
-                              <nav class="tp-category-menu-content" v-show="show_options_mega">
-                               <ul class="menu-by-category">
-                                   <li v-for="(cate_item, cate_item__index) in categorias" :key="cate_item__index">
-                                      <a href="shop.html" class="sub-item-category">
-                                         {{cate_item.name}}</a>
-                                   </li>
-                                   
-                                </ul>
-                              </nav>
                             </div>
-                           </div>
-                        </div>
-                        <div class="menu-box-top">
-                           <div class="main-menu menu-style-1">
-                              <nav class="tp-main-menu-content">
-                                <a class="name-category" v-for="(category_item, category_item__index) in categorias" :key="category_item__index" :class="{ 'category-active' : categoryActive === category_item.name}" :href="route('classcategory.index', { categoria: category_item.id })">{{category_item.name}}</a>
-                              </nav>
-                           </div>
-                        </div>
-                        <!-- <div class="col-xl-3 col-lg-3">
+                            <div class="menu-box-top">
+                                <div class="main-menu menu-style-1">
+                                    <nav class="tp-main-menu-content">
+                                        <a class="name-category"
+                                            v-for="(category_item, category_item__index) in categorias"
+                                            :key="category_item__index"
+                                            :class="{ 'category-active': categoryActive === category_item.name }"
+                                            :href="route('classcategory.index', { categoria: category_item.id })">{{ category_item.name }}</a>
+                                    </nav>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xl-3 col-lg-3">
                            <div class="tp-header-contact d-flex align-items-center justify-content-end">
                               <div class="tp-header-contact-icon">
                                  <span>
@@ -270,14 +367,14 @@
                               </div>
                            </div>
                         </div> -->
-                     </div>
-                  </div>
-               </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
 
-      
+
 
     </div>
 </template>
@@ -304,6 +401,7 @@ import chevronDownIcon from "../../img/icons/chevron-down.svg";
 import homeIcon from "../../img/icons/icon-home.svg";
 
 import { useStore } from '@/store';
+import { useToast } from 'vue-toastification';
 
 import logoIcon from "../../img/icons/logo.svg";
 import logoutIcon from "../../img/icons/logout.svg";
@@ -320,26 +418,23 @@ import iconCart from '../../img/cart-icon.png';
 import iconOrder from '../../img/order-icon.png';
 import iconInstagram from '../../img/instagram_icon.png';
 import iconDelete from '../../img/delete-icon.png';
+import { mapState } from 'pinia'
+import { computed } from 'vue';
 
 // import AbButtonV2 from "@/shared/components/form/button/AbButtonV2.vue";
 
 export default {
     name: "Header",
-    components: {CarouselSplide, NavLink, HeroSlider2, ListProductsMain, PopularCategories, FooterVue},
+    components: { CarouselSplide, NavLink, HeroSlider2, ListProductsMain, PopularCategories, FooterVue },
     props: {
         latestProducts: {
             type: Array,
             required: true,
         },
-        categoryActive:{
+        categoryActive: {
             type: String,
             required: false,
-        },
-        cart: {
-            type: Object,
-            required: false,
-            default: () => [],        
-        },
+        }
     },
     data() {
         return {
@@ -359,6 +454,7 @@ export default {
             showUserOptions: false,
             showRecoverPasswordModal: false,
             showMobileOverlay: false,
+            showContentMobile: true,
             recoverPasswordButton: "",
             chevDownIcon,
             recoverEmail: "",
@@ -372,60 +468,60 @@ export default {
             homeIcon,
             logoutIcon,
             userIcon,
-            showSubMenuMobile:false,
-            categorias:[],
+            showSubMenuMobile: true,
+            categorias: [],
             showCartShop: false,
-            cartArray:[]
+            showCartShopMobile: false
         };
     },
     computed: {
         // user() {
         //     return this.$auth.user;
         // },
-        calculateTotalCart(){
-            if(this.cartArray){
-                if (this.cartArray.length === 0) {
-                 return 0; 
+        ...mapState(useStore, ['cart']),
+        emailLink() {
+            window.location.href = `mailto:${this.emailAddress}`;
+        },
+        calculateTotalCart() {
+            if (this.cart) {
+                if (this.cart.length === 0) {
+                    return 0;
                 }
-    
-                const total = this.cartArray.reduce((accumulator, currentItem) => {
-                    return accumulator + currentItem.priceByProduct; 
+
+                const total = this.cart.reduce((accumulator, currentItem) => {
+                    return accumulator + currentItem.priceByProduct;
                 }, 0);
-    
-                return total; 
+
+                return total;
             }
         }
     },
     setup(props) {
         const store = useStore();
-        // console.log(this.cart)
-        // store.initializeCart(props.cart);
-        // console.log(props.cart)
-        // console.log(store.cart)
+        const toast = useToast();
 
         store.setLatestProducts(props.latestProducts);
+        const cart = computed(() => Object.values(store.cart));
+
         return {
             latestProducts: store.latestProducts,
-            // cart: store.cart,
+            cart,
+            toast,
+            setCarts: store.initializeCart
         };
     },
     head() {
-    return {
-      title: 'Título de tu página' // Aquí estableces el título de tu página
-    }
-  },
+        return {
+            title: 'Título de tu página' // Aquí estableces el título de tu página
+        }
+    },
     mounted() {
         window.addEventListener("resize", this.handleResize);
-        
+
     },
     created() {
         this.handleResize();
         this.fetchCategorias();
-
-        const cartArray = Object.values(this.cart);
-        console.log(cartArray);
-
-        this.cartArray = cartArray;
 
     },
     destroyed() {
@@ -435,43 +531,98 @@ export default {
         ClickOutside: VueClickOutside.directive,
     },
     methods: {
-        getPriceByProduct(id_product){
-            let productFilter=this.cartArray.filter(e=>e.id===id_product)
-            let priceByProduct = productFilter[0].price*productFilter[0].quantity
-            productFilter[0].priceByProduct = priceByProduct;
+        openCartMobile() {
+            this.showContentMobile = false
+            this.showCartShopMobile = true
+        },
+        openPageFb() {
+            const fabeURL = `https://www.facebook.com/LaCasaDeLosRavioles/?locale=es_LA`;
 
-            return priceByProduct
+            window.open(fabeURL, '_blank');
         },
-        closeCartOnClickOutside(){
-            this.showCartShop=false
+        openPageInstagram() {
+            const instagramURL = `https://www.instagram.com/la.casa.de.los.ravioles/`;
+
+            window.open(instagramURL, '_blank');
         },
-        toggleShopCart(){
+        generateWhatsAppMessage() {
+            let message = `\u{1F6D2} Esta es tu compra:\n\n`;
+            this.cart.forEach((item, index) => {
+                message += `${index + 1}. \uD83D\uDD22 ${item.name} - Cantidad: ${item.quantity} - Precio: S/ ${item.price.toFixed(2)}\n`;
+            });
+            message += `\n\u{1F4B0} Total: S/ ${this.calculateTotalCart.toFixed(2)}`;
+            return message;
+        },
+        processCart() {
+            const phoneNumber = '51997315973';
+            const message = encodeURIComponent(this.generateWhatsAppMessage());
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+
+            window.open(whatsappURL, '_blank');
+        },
+        async removeToCart(productId) {
+            try {
+                axios.post(route('cart.remove', { product_id: productId }))
+                    .then(res => {
+                        this.setCarts(res.data.cart)
+                    })
+                this.toast.warning("Producto eliminado correctamente");
+
+            } catch (error) {
+                console.error(error);
+                this.toast.error('Hubo un problema al agregar el producto');
+
+            }
+        },
+        fetchCategorias() {
+            axios.get('/listcategories')
+                .then((response) => {
+
+                    this.categorias = response.data.classCategories;
+                    console.log(this.categorias)
+                })
+                .catch((error) => {
+                    console.error('Error al obtener categorías:', error);
+                });
+        },
+        cartUpdated() {
+            console.log("entre al nav")
+            this.fetchCart();
+
+        },
+
+        getPriceByProduct(id_product) {
+            if (this.cart) {
+                let productFilter = this.cart.filter(e => e.id === id_product);
+                if (productFilter.length > 0) {
+                    let priceByProduct = productFilter[0].price * productFilter[0].quantity;
+                    productFilter[0].priceByProduct = priceByProduct;
+
+                    return priceByProduct;
+                }
+            }
+            return null;
+        },
+        closeCartOnClickOutside() {
+            this.showCartShop = false
+        },
+        toggleShopCart() {
             this.showCartShop = !this.showCartShop
         },
-        closeCart(){
+        closeCart() {
             this.showCartShop = false
         },
         openWhatsapp() {
             const whatsappurl = `https://api.whatsapp.com/send?phone=51947378352`;
             window.open(whatsappurl, "_blank");
         },
-        fetchCategorias() {
-            axios.get('/listcategories') 
-                .then((response) => {
 
-                    this.categorias = response.data.classCategories; 
-                    console.log(this.categorias)
-                })
-                .catch((error) => {
-                console.error('Error al obtener categorías:', error);
-                });
-        },
-        toggleSubMenu(){
+        toggleSubMenu() {
             this.showSubMenuMobile = !this.showSubMenuMobile
         },
-        openMenu(){
+        openMenu() {
             console.log("entro a open menu")
-            this.show_options_mega =!this.show_options_mega
+            this.show_options_mega = !this.show_options_mega
         },
         handleResize() {
             if (typeof window !== 'undefined') {
@@ -496,78 +647,92 @@ export default {
     },
 };
 </script>
-<style lang="css">
-
-</style>
+<style lang="css"></style>
 <style lang="scss" scoped>
-
 @import "resources/styles/variables";
 @import "resources/styles/breakpoints";
 @import "resources/styles/mixins";
 @import "resources/styles/animations";
-*{
-    font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
 
-  font-style: normal;
+* {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+
+    font-style: normal;
 
 }
-html, body {
+
+html,
+body {
     margin: 0;
     padding: 0;
 }
 
-.box-general{
+.box-general {
     position: sticky;
     z-index: 100;
     top: 0;
     left: 0;
     width: 100%;
-    .cartmini__content{
+
+    .cartmini__content {
         display: flex;
         gap: 0.5rem;
         padding-bottom: 0.5rem;
         align-items: center;
         border-bottom: 1px solid #d5d7d8;
         padding: 0rem 1rem 0.5rem 1rem;
-        .box-image{
-            img{
+
+        .box-image {
+            img {
                 width: 128px;
                 height: 120px;
                 object-fit: cover;
             }
         }
-        .box-data-cart{
+
+        .box-data-cart {
             width: 70%;
             position: relative;
-            .box-name-delete{
+
+            .box-name-delete {
                 display: flex;
                 justify-content: space-between;
-                img{
+
+                .box-delete {
+                    cursor: pointer;
+                }
+
+                img {
                     width: 24px;
                 }
             }
-            .box-line{
-                hr{
+
+            .box-line {
+                hr {
                     width: 100%;
                     border-top: 1px solid rgb(228, 228, 231);
                     margin: 1rem 0rem;
                 }
             }
-            .box-total{
+
+            .box-total {
                 display: flex;
                 justify-content: space-between;
-                .text-total{
+
+                .text-total {
                     color: #010F1C;
                     font-size: 0.875rem;
                 }
-                .text-total-price{
+
+                .text-total-price {
                     color: #010F1C;
                     font-size: 1rem;
                     font-weight: 600;
                 }
             }
-            .box-quantity-cart{
+
+            .box-quantity-cart {
                 border-radius: 50%;
                 background-color: #961921;
                 width: 40px;
@@ -579,22 +744,25 @@ html, body {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                h5{
-                    color:#ffffff;
+
+                h5 {
+                    color: #ffffff;
 
                 }
             }
-            .box-description{
-                .cartmini__description{
+
+            .box-description {
+                .cartmini__description {
                     font-size: 0.75rem;
                 }
             }
         }
     }
-    .box-overlay{
+
+    .box-overlay {
         overflow-y: scroll;
-        
-        &.opened-cart{
+
+        &.opened-cart {
             background-color: #010F1C;
             height: 100%;
             width: 100%;
@@ -607,34 +775,41 @@ html, body {
             overflow-y: hidden;
         }
     }
-    .box-contact{
+
+    .box-contact {
         padding: 0.5rem 1rem;
         height: 2rem;
         background: #144220;
         display: none;
         align-items: center;
         justify-content: space-between;
-        .box-data-network{
+
+        .box-data-network {
             display: flex;
             gap: 0.5rem;
-            .text-follow{
+
+            .text-follow {
                 color: #ffffff;
                 font-size: 0.875rem;
             }
         }
-        .box-data-contact{
+
+        .box-data-contact {
             display: flex;
             gap: 1rem;
-            .icon-text{
+
+            .icon-text {
                 display: flex;
                 align-items: center;
                 gap: 0.3rem;
             }
-            .icon-contact{
+
+            .icon-contact {
                 width: 20px;
                 cursor: pointer;
             }
-            .text-contact{
+
+            .text-contact {
                 color: #ffffff;
                 font-weight: 400;
                 font-size: 0.875rem;
@@ -643,18 +818,22 @@ html, body {
     }
 
 }
-.box-menu{
+
+.box-menu {
     height: 40px;
-    display:none;
+    display: none;
     background: #e1e1e1;
-    .tp-header-bottom-border{
+
+    .tp-header-bottom-border {
         // margin: 1rem 1.5rem;
     }
-    .tp-header-bottom{
-        .container{
-            margin:0rem;
+
+    .tp-header-bottom {
+        .container {
+            margin: 0rem;
             max-width: none;
-            .tp-header-category{
+
+            .tp-header-category {
                 .tp-category-menu-btn nav ul li::after {
                     position: absolute;
                     content: "";
@@ -671,149 +850,170 @@ html, body {
                     visibility: hidden;
                     opacity: 0;
                 }
-                .tp-category-menu-content{
+
+                .tp-category-menu-content {
                     background: rgb(255, 255, 255);
                     padding: 0rem;
                     position: absolute;
                     z-index: 100;
                     width: 233px;
-                    ul{
-                       li{
-                        
-                        .mega-menu{
-                            li{
-                                a.mega-menu-title{
-                                    color: #55585B;
-                                    font-weight: 700;
-                                }
-                                ul{
-                                    li{
-                                        a{
-                                            color:#979a9c !important;
-                                            font-weight: 400;
-                                        }
+
+                    ul {
+                        li {
+
+                            .mega-menu {
+                                li {
+                                    a.mega-menu-title {
+                                        color: #55585B;
+                                        font-weight: 700;
                                     }
 
+                                    ul {
+                                        li {
+                                            a {
+                                                color: #979a9c !important;
+                                                font-weight: 400;
+                                            }
+                                        }
+
+                                    }
                                 }
                             }
                         }
-                       }
                     }
                 }
             }
-            .box-logo{
+
+            .box-logo {
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
                 width: 16%;
-                .tp-header-category{
+
+                .tp-header-category {
                     border-right: 3px solid #979a9c;
                 }
             }
-            .menu-box-top{
+
+            .menu-box-top {
                 margin-left: 1rem;
             }
-            .tp-mega-menu-wrapper{
-                .text-logo{
-                    color: #30F3A1; 
+
+            .tp-mega-menu-wrapper {
+                .text-logo {
+                    color: #30F3A1;
                     font-weight: 500;
                     font-family: 'Helvetica Neue', sans-serif;
                     font-size: 24px;
                 }
-                .main-menu > nav > ul > li.has-dropdown > a::after{
+
+                .main-menu>nav>ul>li.has-dropdown>a::after {
                     content: none;
 
                 }
-                .row-custom{
+
+                .row-custom {
                     height: 40px;
                     width: 100%;
                     margin-left: initial;
                 }
-                .main-menu{
-                    .tp-main-menu-content{
+
+                .main-menu {
+                    .tp-main-menu-content {
                         display: flex;
                         gap: 1.5rem;
-                      
-                        .has-dropdown{
-                            .mega-menu-style-custom{
+
+                        .has-dropdown {
+                            .mega-menu-style-custom {
                                 width: 700px;
                                 display: flex;
                                 gap: 2rem;
                             }
 
                         }
-      
-                        a{
+
+                        a {
                             color: #515253;
                             font-weight: 500;
-                            &.category-active{                                        
-                                color: #961921;                                        
-                            }
-                        }
-                        a{
-                            &:hover{
+
+                            &.category-active {
                                 color: #961921;
                             }
                         }
-                        
-                        .icon-chevron{
+
+                        a {
+                            &:hover {
+                                color: #961921;
+                            }
+                        }
+
+                        .icon-chevron {
                             width: 10px;
                         }
-                        
-                        
-                        
-                        li{
-                            a{
-                                &:hover{
+
+
+
+                        li {
+                            a {
+                                &:hover {
                                     color: #f34e29;
                                 }
                             }
                         }
-                        .has-custom-menu{
+
+                        .has-custom-menu {
                             display: flex;
                             gap: 0.5rem;
                             height: 40px;
                             margin-bottom: 0rem;
                             align-items: center;
-                            .icon-chevron{
+
+                            .icon-chevron {
                                 width: 10px;
                             }
                         }
                     }
                 }
-                .tp-header-category{
-                    .tp-category-menu-btn{
+
+                .tp-header-category {
+                    .tp-category-menu-btn {
                         padding: 1rem;
                         height: 40px;
                         display: flex;
                         align-items: center;
                         gap: 0.5rem;
                         justify-content: space-between;
-                        .chev-down{
+
+                        .chev-down {
                             width: 15px;
                         }
-                        .box-title{
+
+                        .box-title {
                             display: flex;
                             gap: 0.5rem;
                             align-items: center;
-                            color:#515253;
+                            color: #515253;
                             font-weight: 500;
-                            &:hover{
+
+                            &:hover {
                                 color: #961921;
                             }
                         }
-                        svg{
-                            path{
+
+                        svg {
+                            path {
                                 fill: #ffffff;
                             }
                         }
                     }
-                    .tp-category-menu-btn::after{
+
+                    .tp-category-menu-btn::after {
                         display: none;
                     }
-                    .tp-category-menu-content{
 
-                        .menu-by-category{
+                    .tp-category-menu-content {
+
+                        .menu-by-category {
                             position: absolute;
                             top: 100%;
                             left: 0;
@@ -821,19 +1021,20 @@ html, body {
                             background: #FFFFFF;
                             box-shadow: 0px 1px 3px rgba(1, 15, 28, 0.1);
                             z-index: 9;
+
                             li:hover {
                                 color: #961921;
                                 font-weight: 600;
                             }
-                                
-                            
-                            li{
+
+
+                            li {
                                 list-style: none;
                                 padding: 0 30px;
                                 position: relative;
                                 margin-bottom: 0rem;
 
-                                .sub-item-category{
+                                .sub-item-category {
                                     font-size: 15px;
                                     color: #55585B;
                                     width: 100%;
@@ -843,66 +1044,75 @@ html, body {
                                     font-weight: 500;
                                     position: relative;
                                     display: flex;
+
                                     &:hover {
                                         color: #961921;
                                         font-weight: 500;
                                     }
-                                    span{
-                                        img{
+
+                                    span {
+                                        img {
                                             transform: translateY(-2px);
                                         }
                                     }
                                 }
                             }
-                            .box-chevron{
-                                .img-chevron{
-                                transform: translateY(0px);
+
+                            .box-chevron {
+                                .img-chevron {
+                                    transform: translateY(0px);
 
                                 }
                             }
-                            .sub-item-category{
-                                display:flex;
+
+                            .sub-item-category {
+                                display: flex;
                                 align-items: center;
-                                gap:0.5rem;
+                                gap: 0.5rem;
                             }
-                            .sub-item-category-menu{
-                                display:flex;
+
+                            .sub-item-category-menu {
+                                display: flex;
                                 align-items: center;
-                                gap:0.3rem;
+                                gap: 0.3rem;
                                 justify-content: space-between;
-                                &:hover{
-                                    .box-icon-text{
-                                        .text-category{
-                                        color: #961921;
-                                        font-weight: 500;
+
+                                &:hover {
+                                    .box-icon-text {
+                                        .text-category {
+                                            color: #961921;
+                                            font-weight: 500;
 
                                         }
                                     }
                                 }
-                                .box-icon-text{
-                                    display:flex;
+
+                                .box-icon-text {
+                                    display: flex;
                                     align-items: center;
                                     gap: 0.3rem;
 
-                                    .text-category{
+                                    .text-category {
                                         color: #55585B;
                                         font-weight: 500;
                                         font-size: 15px;
                                     }
-                                    
+
                                 }
                             }
                         }
-                        ul{
-                            
-                            li{
-                                &:hover{
-                                    a{
+
+                        ul {
+
+                            li {
+                                &:hover {
+                                    a {
                                         color: #c7303a;
                                     }
                                 }
-                                a{
-                                    &:hover{
+
+                                a {
+                                    &:hover {
                                         color: #c7303a;
                                     }
                                 }
@@ -914,6 +1124,7 @@ html, body {
         }
     }
 }
+
 header.header {
     background: #961921;
     height: 3.5rem;
@@ -922,27 +1133,32 @@ header.header {
     // top: 0;
     width: 100%;
     z-index: 99;
-    .transition__slide-enter-active, .transition__slide-leave-active {
-            transition: all 0.35s ease;
 
-            // opacity: 0;
-            transform: translateX(-100%);
+    .transition__slide-enter-active,
+    .transition__slide-leave-active {
+        transition: all 0.35s ease;
 
-        }
-        .transition__slide-enter, .transition__slide-leave-to{
-            opacity: 100;
-            transition: transform 0.35s ease-in-out 0s;
-            // transform: translateX(-100%);
-            overflow: hidden;
-        }
-        // .transition__slide-enter-to, .transition__slide-leave {
-        //     opacity: 100;
-        //     transition: all 0.25s ease;
-        //     transform: translateX(-100%);
-        //     overflow: hidden;
-        // }
-    
-    > .mobile__menu-overlay {
+        // opacity: 0;
+        transform: translateX(-100%);
+
+    }
+
+    .transition__slide-enter,
+    .transition__slide-leave-to {
+        opacity: 100;
+        transition: transform 0.35s ease-in-out 0s;
+        // transform: translateX(-100%);
+        overflow: hidden;
+    }
+
+    // .transition__slide-enter-to, .transition__slide-leave {
+    //     opacity: 100;
+    //     transition: all 0.25s ease;
+    //     transform: translateX(-100%);
+    //     overflow: hidden;
+    // }
+
+    >.mobile__menu-overlay {
         padding: 1rem;
         background: rgb(255, 255, 255);
         display: flex;
@@ -956,50 +1172,96 @@ header.header {
         width: 100vw;
         z-index: 26;
 
-        // .transition__slide-enter-active, .transition__slide-leave-active {
-        //     transition: all 0.5s ease;
-        //     opacity: 0;
-        // }
-        // .transition__slide-enter, .transition__slide-leave-to{
-        //     opacity: 0;
-        //     transform: translateX(-30px);
-
-        //     max-height: 0;
-
-        // }
-        // .transition__slide-enter-to, .transition__slide-leave {
-        //     opacity: 100;
-        //     transition: all 0.25s ease;
-        //     transform: translateX(0);
-        //     overflow: hidden;
-        // }
-        .offcanvas__wrapper{
+        .box-menu-mobile-overlay{
+            &.hidden-menu{
+                display: none;
+            }
+        }
+        .offcanvas__wrapper {
             height: 100vh;
-            .offcanvas__content{
+
+            .box-cart-general {
+                display: flex;
+                justify-content: space-around;
+
+                .box-text {
+                    color: #010F1C;
+                    font-size: 0.875rem;
+                }
+
+                .box-order-general {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .contain-icon {
+                    .box-cart {
+                        background: #b92b35;
+                        padding: 0.35rem;
+                        border-radius: 0.5rem;
+                        width: 48px;
+                        height: 48px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 20px;
+                        }
+                    }
+
+                    .box-order {
+                        background: #144220;
+                        padding: 0.35rem;
+                        border-radius: 0.5rem;
+                        width: 48px;
+                        height: 48px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 20px;
+                        }
+                    }
+
+                }
+            }
+
+            .offcanvas__content {
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
             }
-            .offcanvas__category{
-                .slide-enter-active, .slide-leave-active {
+
+            .offcanvas__category {
+
+                .slide-enter-active,
+                .slide-leave-active {
                     transition: all 0.5s ease;
                     opacity: 0;
 
                 }
-                .slide-enter, .slide-leave-to{
+
+                .slide-enter,
+                .slide-leave-to {
                     transform: translateY(-30px);
                     opacity: 0;
                     max-height: 0;
 
                 }
-                .slide-enter-to, .slide-leave {
+
+                .slide-enter-to,
+                .slide-leave {
                     // max-height: 500px; /* Ajusta este valor según el contenido */
                     //   transform: translateY(10px);
                     opacity: 100;
                     transition: all 1s ease;
-                    
+
                     overflow: hidden;
                 }
+
                 .tp-offcanvas-category-toggle {
                     font-size: 16px;
                     color: var(--tp-common-white);
@@ -1010,29 +1272,35 @@ header.header {
                     padding: 10px 20px;
                 }
 
-                .tp-offcanvas-category-toggle svg, .tp-offcanvas-category-toggle i {
+                .tp-offcanvas-category-toggle svg,
+                .tp-offcanvas-category-toggle i {
                     margin-right: 14px;
                     font-size: 16px;
                 }
-                .tp-offcanvas-category-toggle{
+
+                .tp-offcanvas-category-toggle {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    .box-all-categories{
-                        .text-all{
+
+                    .box-all-categories {
+                        .text-all {
                             color: #ffffff;
                         }
-                        .fa-solid{
+
+                        .fa-solid {
                             color: #ffffff;
 
                         }
-                        ::before{
+
+                        ::before {
                             display: none;
                         }
                     }
                 }
-                .tp-category-mobile-menu{                    
-                    .item-submenu{
+
+                .tp-category-mobile-menu {
+                    .item-submenu {
                         list-style: none;
                         position: relative;
                         width: 100%;
@@ -1040,7 +1308,8 @@ header.header {
                         padding-left: 20px;
                         padding-right: 20px;
                         color: rgb(39, 39, 42);
-                        .sub-item-category{
+
+                        .sub-item-category {
                             display: flex;
                             align-items: center;
                             gap: 0.5rem;
@@ -1050,8 +1319,9 @@ header.header {
                             padding: 10px 0;
                             padding-right: 20px;
                             border-bottom: 1px solid rgba(1, 15, 28, 0.1);
-                            span{
-                                .img-icon{
+
+                            span {
+                                .img-icon {
                                     transform: translateY(-1px);
                                 }
                             }
@@ -1061,7 +1331,7 @@ header.header {
             }
         }
 
-        > .close-button {
+        >.close-button {
             position: absolute;
             right: 0;
             margin-right: 1rem;
@@ -1071,7 +1341,7 @@ header.header {
             }
         }
 
-        > .overlay-logo {
+        >.overlay-logo {
             text-align: center;
             flex: 1;
             padding: 1rem 0;
@@ -1087,7 +1357,7 @@ header.header {
             flex-direction: column;
             // margin-bottom: 2rem;
 
-            > a.overlay-option {
+            >a.overlay-option {
                 color: $text-dark-color-3;
                 transition: all 0.2s;
                 cursor: pointer;
@@ -1111,7 +1381,7 @@ header.header {
         }
     }
 
-    > .header__mobile {
+    >.header__mobile {
         // display: flex;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -1120,29 +1390,35 @@ header.header {
         position: sticky;
         top: 0;
         z-index: 20;
-        .search{
+
+        .search {
             display: flex;
             justify-content: flex-end;
             padding: 0.5rem 1rem;
 
         }
-        .header-menu-logo{
+
+        .header-menu-logo {
             display: flex;
             justify-content: center;
         }
-        > .header-menu {
+
+        >.header-menu {
             cursor: pointer;
             padding: 0.5rem 1rem;
+
             img {
                 width: 1.5rem;
                 min-width: 1.5rem;
             }
         }
-        > hr {
+
+        >hr {
             border-right: 1px solid #dedfe4;
             height: 100%;
         }
-        > .header-logo {
+
+        >.header-logo {
             text-align: center;
             flex: 1;
 
@@ -1158,8 +1434,10 @@ header.header {
             }
         }
     }
-    > .header__desktop {
+
+    >.header__desktop {
         display: none;
+
         //* Styles for the logo
         .header-logo {
             width: 13em;
@@ -1168,6 +1446,7 @@ header.header {
             cursor: pointer;
 
             @include flex-mixin(center, normal, row);
+
             img {
                 width: 100%;
             }
@@ -1175,7 +1454,7 @@ header.header {
 
         // * Styles for options
         .header-tabs {
-            > a.header-tab {
+            >a.header-tab {
                 color: #ffffff;
                 font-size: 1rem;
                 transition: all 0.2s;
@@ -1235,6 +1514,7 @@ header.header {
 
             .user-options-dropdown {
                 z-index: 10;
+
                 * {
                     font-family: PoppinsRegular, Arial, Helvetica, sans-serif;
                 }
@@ -1256,8 +1536,10 @@ header.header {
                     display: flex;
                     cursor: pointer;
                     background-color: white;
-                    -webkit-transition: background-color 0.3s; /* For Safari 3.0 to 6.0 */
-                    transition: background-color 0.3s; /* For modern browsers */
+                    -webkit-transition: background-color 0.3s;
+                    /* For Safari 3.0 to 6.0 */
+                    transition: background-color 0.3s;
+                    /* For modern browsers */
 
                     &:hover {
                         background-color: #f2f3f9;
@@ -1301,115 +1583,137 @@ header.header {
         }
     }
 }
+
 @include medium {
-    .box-general{
-        .box-contact{
+    .box-general {
+        .box-contact {
             display: flex;
         }
     }
 }
+
 @media (min-width: 992px) {
-    .box-menu{
+    .box-menu {
         display: block;
     }
 }
+
 @include large {
-    .box-general{
-        .box-contact{
+    .box-general {
+        .box-contact {
             display: flex;
         }
-        .header{
+
+        .header {
             height: 5rem;
 
-            .header__mobile{
+            .header__mobile {
                 height: 5rem;
             }
         }
     }
 }
+
 @include large {
     header.header {
         display: flex;
         padding: 0rem 2rem;
 
-        > .header__mobile {
+        >.header__mobile {
             display: none;
         }
-        > .header__desktop {
+
+        >.header__desktop {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            .header-tabs{
+
+            .header-tabs {
                 display: grid;
                 grid-template-columns: 80% 10% 10%;
                 width: 100%;
                 align-items: center;
                 gap: 1rem;
-                .box-shop{
+
+                .box-shop {
                     display: flex;
                     justify-content: center;
                     gap: 1rem;
-                    span{
+
+                    span {
                         font-size: 1rem;
-                        color:#ffffff;
+                        color: #ffffff;
                         font-weight: 500;
                     }
                 }
-                .box-cart{
+
+                .box-cart {
                     display: flex;
                     gap: 0.5rem;
-                    .contain-icon{
+
+                    .contain-icon {
                         cursor: pointer;
                         background: rgba(255, 255, 255, 0.2);
                         padding: 0.5rem;
                         border-radius: 0.35rem;
-                        .tp-header-action-btn{
+
+                        .tp-header-action-btn {
                             display: flex;
                             align-items: center;
                             gap: 0.4rem;
-                            .tp-header-action-badge{
+
+                            .tp-header-action-badge {
                                 color: #ffffff;
                                 font-weight: 500;
                             }
                         }
-                        &:hover{
+
+                        &:hover {
                             background: rgba(255, 255, 255, 0.1);
                         }
-                        img{
+
+                        img {
                             width: 25px;
                             height: 25px;
-    
+
                         }
                     }
                 }
-                .logo-search{
+
+                .logo-search {
                     display: flex;
                     align-items: center;
                     gap: 1rem;
-                    .search-ads{
+
+                    .search-ads {
                         width: 80%;
-                        .has-icons-left{
+
+                        .has-icons-left {
                             position: relative;
-                            .icon-search{
+
+                            .icon-search {
                                 width: 20px;
                                 height: 20px;
                                 position: absolute;
                                 bottom: 20%;
                                 right: 10px;
                             }
-                            .input{
+
+                            .input {
                                 width: 100%;
                                 border-radius: 0.6rem;
                                 border: transparent;
                             }
-                            .icon{
+
+                            .icon {
                                 position: absolute;
                                 right: 10px;
                                 top: 8px;
                             }
                         }
-                        .control{
+
+                        .control {
                             border-radius: 0.3rem;
                         }
                     }
@@ -1417,6 +1721,7 @@ header.header {
             }
         }
     }
+
     .ab-modal {
         .ab-modal-card {
             max-height: 80%;

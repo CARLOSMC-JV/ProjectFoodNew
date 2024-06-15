@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Redirect;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -29,8 +30,14 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
+        // return response()->json(['message' => 'Product add cart', 'cart' => $cart], 200);
 
-        return back()->with('success', 'Product added to cart');
+        // return Redirect::back()->with([
+        //     'data' => 'Something you want to pass to front-end',
+        // ]); 
+        return response()->json(['cart' => $cart]);
+
+        
     }
 
     public function viewCart()
