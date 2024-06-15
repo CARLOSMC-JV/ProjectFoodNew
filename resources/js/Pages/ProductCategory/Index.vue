@@ -12,6 +12,7 @@
     import iconMore from '../../../img/more-icon.png';
     import  {useToast}  from 'vue-toastification';
     import { useStore } from '@/store';
+    import axios from 'axios';
 
     export default {
         data() {
@@ -104,13 +105,13 @@
         methods: {
             async addToCart(productId) {
                 try {
-                    const response = await this.$inertia.post('/cart/add', {
-                    product_id: productId,
-                    quantity: 1,
-                    });
+ 
+                    axios.post(route('cart.add', {product_id: productId, quantity: 1}))
+                    .then(res => {
+                        this.setCarts(res.data.cart)
+                    }) 
                     this.toast.success("Producto agregado correctamente");
-                    store.addToCart()
-                    this.$emit('cart-updated');
+                    
 
                 } catch (error) {
                     console.error(error);
@@ -161,6 +162,8 @@
 
             return { toast,      
                 cart_store: store.cart, 
+                onAddCart: store.addToCart,
+                setCarts: store.initializeCart
             };
         },
     }
