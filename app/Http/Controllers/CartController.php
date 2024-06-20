@@ -17,6 +17,8 @@ class CartController extends Controller
 
         $product = Product::find($request->product_id);
         $cart = session()->get('cart', []);
+        $image = $product->images->first();
+        
         if (isset($cart[$product->id])) {
             $cart[$product->id]['quantity'] += $request->quantity;
         } else {
@@ -25,18 +27,13 @@ class CartController extends Controller
                 "name" => $product->name,
                 "quantity" => $request->quantity,
                 "price" => $product->price,
-                "image" => $product->image
+                "image" => $image ? $image->image_path : null,
             ];
         }
 
         session()->put('cart', $cart);
-        // return response()->json(['message' => 'Product add cart', 'cart' => $cart], 200);
 
-        // return Redirect::back()->with([
-        //     'data' => 'Something you want to pass to front-end',
-        // ]); 
         return response()->json(['cart' => $cart]);
-
         
     }
 
