@@ -15,7 +15,11 @@
         methods: {
             openNetworkSocial(){
                 this.showNetworkSocial=true
-            }
+            },
+            openWhatsapp() {
+                const whatsappurl = `https://api.whatsapp.com/send?phone=51947378352`;
+                window.open(whatsappurl, "_blank");
+            },
         },
         setup() {
             const isActive = ref(false);
@@ -41,7 +45,7 @@
             
             <div :class="['animated-text', { active: isActive }]">
 
-                <img :src="iconWhatsapp">
+                <img class="img-what" :src="iconWhatsapp" @click="openWhatsapp()">
             </div>
         </div>
 
@@ -55,6 +59,9 @@
             display: flex;
             bottom: 8%;
             right: 2%;
+            .img-what{
+                cursor: pointer;
+            }
         }
 
     }
