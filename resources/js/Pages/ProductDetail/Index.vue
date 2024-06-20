@@ -31,7 +31,7 @@
         <div id="product_detail">
             <div class="box-detail-product">
                 <p>
-                    <a :href="route('home')">Inicio</a> / / {{ product.subcategory ? product.subcategory.name : '' }} / {{ product.name }}
+                    <a :href="route('home')">Inicio</a> / {{ product.class_category.name }} {{ product.subcategory ? product.subcategory.name : '' }} / {{ product.name }}
                 </p>
 
                 <div class="container-image">
@@ -40,7 +40,7 @@
                         <CarouselSplideGallery :product="product"></CarouselSplideGallery>
                     </div>
                     <div class="data-right">
-                        <p class="text-product-small">{{ product.category }} - {{ product.subcategory ? product.subcategory.name : '' }}</p>
+                        <p class="text-product-small">{{ product.class_category.name }}</p>
                         <p class="text-product">{{ product.name }}</p>
                         <p class="text-price">S/. {{ product.price }}</p>
                         <p class="text-product-small">{{ product.name }}</p>

@@ -3,13 +3,18 @@ import { defineStore } from 'pinia';
 export const useStore = defineStore('main', {
   state: () => ({
     latestProducts: [],
+    allProducts: [],
     categories: [],
     cart: [],
+    isLoading: true
   }),
   actions: {
     // Productos y categorías
     setLatestProducts(products) {
       this.latestProducts = products;
+    },
+    setAllProducts(products) {
+      this.allProducts = products;
     },
     setCategories(categories) {
       this.categories = categories;
@@ -31,6 +36,10 @@ export const useStore = defineStore('main', {
     },
     removeFromCart(productId) {
       this.cart = this.cart.filter(item => item.id !== productId);
+    },
+
+     setLoading(loading) {
+      this.isLoading = loading;
     },
   }
 })

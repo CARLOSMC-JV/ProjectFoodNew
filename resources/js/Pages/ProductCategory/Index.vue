@@ -2,6 +2,7 @@
 
 <script>
     import MainNavCustom from "@/ComponentsCustom/MainNavCustom.vue";
+    import axios from 'axios';
     import BaseSelectGeneric from "@/ComponentsCustom/BaseSelectGeneric";
     import { Head, useForm } from '@inertiajs/vue3';
     import SelectInput from '@/Components/SelectInput.vue'
@@ -11,8 +12,8 @@
     import PrimaryButton from "@/Components/PrimaryButton.vue";
     import iconMore from '../../../img/more-icon.png';
     import  {useToast}  from 'vue-toastification';
-    import { useStore } from '@/store';
-    import axios from 'axios';
+    import { useStore } from '../../store';
+    import { onMounted, computed } from 'vue';
 
     export default {
         data() {
@@ -47,19 +48,14 @@
             products: {type: Object},
             category: {type: String},
             class_category: {type: String},
-            cart: {
-                type: Object,
-                required: true,
-                default: () => [],      
-            },
+            cart:{type: Object},
+            all_products:{type: Object}
         },
         created(){
             console.log(this.products);
             console.log(this.category_list);
             console.log(this.class_category);
-
             this.number_pages = Math.ceil(this.products.length / this.perPage);
-
         },
         computed:{
             formatPrice: function(value) {
@@ -157,11 +153,26 @@
         setup(props) {
             const toast = useToast();
             const store = useStore();
+            const cart = computed(() => Object.values(store.cart));
+            if(props.cart){
+                store.initializeCart(props.cart)
+            }
 
-            store.initializeCart(props.cart);
+            // onMounted(async () => {
+            //     try {
+            //         await axios.get('/cart')
+            //         .then((response) => {
+            //             console.log(response);
+            //             store.initializeCart(response.data.cart);
+            //         })
+            //     } catch (error) {
+            //         console.error(error);
+            //         toast.error('Hubo un problema al cargar el carrito');
+            //     }
+            // });
 
             return { toast,      
-                cart_store: store.cart, 
+                cart: props.cart, 
                 onAddCart: store.addToCart,
                 setCarts: store.initializeCart
             };
@@ -172,7 +183,7 @@
 <template>
     <Head :title="class_category" />
 
-    <MainNavCustom :category-active="class_category" :cart.sync="cart" @cart-updated="cartUpdated"/>
+    <MainNavCustom :category-active="class_category"/>
 
     <div id="category_product">
         <div class="section-product">

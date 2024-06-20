@@ -5,10 +5,22 @@
     import iconMore from '../../img/more-icon.png';
     import  {useToast}  from 'vue-toastification';
     import axios from 'axios';
+    import { computed } from 'vue';
+    import imgCapelleti from '../../img/categories_food/capelletti.webp';
+    import imgGnocchi from '../../img/categories_food/gnocchi.webp';
+    import imgLasagna from '../../img/categories_food/lasagna.webp';
+    import imgPastaFresca from '../../img/categories_food/pasta_fresca.webp';
+    import imgPastasSecas from '../../img/categories_food/pastas_secas.webp';
+    import imgPizzas from '../../img/categories_food/pizzas.webp';
+    import imgRavioles from '../../img/categories_food/ravioles.webp';
+    import imgSalsas from '../../img/categories_food/salsas.webp';
+    import imgVinosLicores from '../../img/categories_food/vinos_licores.webp';
+    import CarouselSplideCategories from '@/ComponentsCustom/CarouselSplideCategories.vue';
 
     export default {
         components:{
-            CarouselProducts
+            CarouselProducts,
+            CarouselSplideCategories
         },
         data() {
             return {
@@ -66,10 +78,40 @@
             // store.initializeCart(props.cart);
 
             store.setLatestProducts(props.latestProducts);
-            store.setCategories(props.categories);
+            console.log(store.categories)
+            const categories = computed(() => {
+                return store.categories.map(category => {
+                    // const categoryName = category.name.toLowerCase();
+
+                    switch (category.name) {
+                        case 'Capelletti':
+                            category.image = imgCapelleti;
+                            break;
+                        case 'Gnocchi y malfatti':
+                            category.image = imgGnocchi;
+                            break;
+                        case 'Lasagnas':
+                            category.image = imgLasagna;
+                            break;
+                        case 'Ravioles':
+                            category.image = imgRavioles;
+                            break;
+                        case 'Salsas':
+                            category.image = imgSalsas;
+                            break;
+                        case 'Pasta seca al huevo':
+                            category.image = imgPastasSecas;
+                            break;
+                        default:
+                            category.image = null; // O una imagen por defecto
+                    }
+                    return category;
+                });
+            });
+
             return {
                 latestProducts: store.latestProducts,
-                categories: store.categories,
+                categories,
                 toast,
                 cart_store: store.cart,
                 onAddCart: store.addToCart,
@@ -117,6 +159,22 @@
                                 </div>
                             </div>
         
+                        </div>
+                        <div class="box-categories">
+                            <h2 class="title-category" :style="{margin: `1.5rem 0rem 1rem 0rem`, padding:`0rem`}">Categorias</h2>
+                            <div class="list-categories">
+                                <div class="item-category" 
+                                v-for="(item_category, item_category__index) in categories" :key="item_category__index"
+                                :style="{ backgroundImage: `url(${item_category.image})` }">
+                                    <a :href="route('classcategory.index', { categoria: item_category.id })" class="item-link">
+                                        <span class="text-name-category">{{item_category.name}}</span>
+                                    </a>
+                                </div>                                
+                            </div>
+
+                            <div class="list-categories-mobile">
+                                <CarouselSplideCategories :categories_list="categories"></CarouselSplideCategories>
+                            </div>
                         </div>
                     </div>
                 </div>

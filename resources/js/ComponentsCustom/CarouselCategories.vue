@@ -26,9 +26,8 @@ export default {
             img05,
             img06,
             settings: {
-                itemsToShow: 1,
+                itemsToShow: 4,
                 snapAlign: 'center',
-                loop: true,
             },
             breakpoints: {
                 // 700px and up
@@ -72,15 +71,14 @@ export default {
                 <div class="carousel__item"><img class="img-product" :src="slide_item"></div>
             </Slide> -->
             <Slide v-for="category in categories_list" :key="category.id">
-                <a class="carousel__item__category" :href="route('categoria.index', { categoria: category.id })">
+                <a class="carousel__item__category">
                     <!-- <img class="img-product" :src="category.name"> -->
-                    <h3 class="title-category">{{ category.name }}</h3>
+                    <img class="img-product" :src="category.image"> 
                 </a>
             </Slide>
             <template #addons>
                 <Navigation />
 
-                <Pagination v-model="currentPage"/>
             </template>
 
         </Carousel>

@@ -28,81 +28,79 @@
                 </div> -->
             </div>
         </div>
-        <div class="cartmini__area tp-all-font-roboto" :class="{ 'cartmini-opened': showCartShop }" v-show="showCartShop"
-            v-click-outside="closeCartOnClickOutside">
-            <div class="cartmini__wrapper d-flex justify-content-between flex-column">
-                <div class="cartmini__top-wrapper">
-                    <div class="cartmini__top p-relative">
-                        <div class="cartmini__top-title">
-                            <h4>Mi Carrito</h4>
-                        </div>
-                        <div class="box-quantity">
-                            <h2 v-if="Object.keys(cart).length > 1">{{ Object.keys(cart).length }} productos</h2>
-                            <h2 v-else>{{ Object.keys(cart).length }} producto</h2>
-                        </div>
-                    </div>
-
-                    <div class="cartmini__widget">
-                        <div class="cartmini__widget-item">
-                            <div class="cartmini__thumb">
-                                <a href="product-details.html">
-                                </a>
+        <transition name="slide-fade">
+            <div class="cartmini__area tp-all-font-roboto" :class="{ 'cartmini-opened': showCartShop }" v-show="showCartShop"
+                v-click-outside="closeCartOnClickOutside">
+                <div class="cartmini__wrapper d-flex justify-content-between flex-column">
+                    <div class="cartmini__top-wrapper">
+                        <div class="cartmini__top p-relative">
+                            <div class="cartmini__top-title">
+                                <h4>Mi Carrito</h4>
                             </div>
-                            <div class="cartmini__content" v-for="(item, item__index) in cart" :key="item.id">
-                                <div class="box-image">
-                                    <img :src="item.image">
+                            <div class="box-quantity">
+                                <h2 v-if="Object.keys(cart).length > 1">{{ Object.keys(cart).length }} productos</h2>
+                                <h2 v-else>{{ Object.keys(cart).length }} producto</h2>
+                            </div>
+                        </div>
+
+                        <div class="cartmini__widget">
+                            <div class="cartmini__widget-item">
+                                <div class="cartmini__thumb">
+                                    <a href="product-details.html">
+                                    </a>
                                 </div>
-                                <div class="box-data-cart">
-                                    <div class="box-name-delete">
-                                        <h5 class="cartmini__title"><a href="product-details.html">{{ item.name }}</a>
-                                        </h5>
-                                        <div class="box-delete" @click="removeToCart(item.id)"><img :src="iconDelete">
+                                <div class="cartmini__content" v-for="(item, item__index) in cart" :key="item.id">
+                                    <div class="box-image">
+                                        <img :src="item.image">
+                                    </div>
+                                    <div class="box-data-cart">
+                                        <div class="box-name-delete">
+                                            <h5 class="cartmini__title"><a href="product-details.html">{{ item.name }}</a>
+                                            </h5>
+                                            <div class="box-delete" @click="removeToCart(item.id)"><img :src="iconDelete">
+                                            </div>
+                                        </div>
+                                        <div class="box-description">
+                                            <h5 class="cartmini__description">{{ item.name }}</h5>
+
+                                        </div>
+                                        <div>
+                                            <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>
+                                        </div>
+                                        <div class="box-line">
+                                            <hr>
+                                        </div>
+                                        <div class="box-total">
+                                            <span class="text-total">Total producto:</span>
+                                            <span
+                                                class="text-total-price">{{ (getPriceByProduct(item.id)).toFixed(2) }}</span>
+                                        </div>
+                                        <div class="box-quantity-cart">
+                                            <h5 class="cartmini__description">{{ item.quantity }}</h5>
+
                                         </div>
                                     </div>
-                                    <div class="box-description">
-                                        <h5 class="cartmini__description">{{ item.name }}</h5>
 
-                                    </div>
-                                    <div>
-                                        <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>
-                                    </div>
-                                    <div class="box-line">
-                                        <hr>
-                                    </div>
-                                    <div class="box-total">
-                                        <span class="text-total">Total producto:</span>
-                                        <span
-                                            class="text-total-price">{{ (getPriceByProduct(item.id)).toFixed(2) }}</span>
-                                    </div>
-                                    <div class="box-quantity-cart">
-                                        <h5 class="cartmini__description">{{ item.quantity }}</h5>
-
-                                    </div>
                                 </div>
-
+                                <a href="#" class="cartmini__del"><img @click="closeCart()"
+                                        src="../../img/icons/close-white-2.svg" alt=""></a>
                             </div>
-                            <a href="#" class="cartmini__del"><img @click="closeCart()"
-                                    src="../../img/icons/close-white-2.svg" alt=""></a>
-                            <!-- <a href="#" class="cartmini__del"><i class="fa-regular fa-xmark"></i></a> -->
+                        </div>
+                        <div class="cartmini__empty text-center d-none">
+                            <p>Your Cart is empty</p>
+                            <a href="shop.html" class="tp-btn">Go to Shop</a>
                         </div>
                     </div>
-                    <!-- for wp -->
-                    <!-- if no item in cart -->
-                    <div class="cartmini__empty text-center d-none">
-                        <!-- <img src="assets/img/product/cartmini/empty-cart.png" alt=""> -->
-                        <p>Your Cart is empty</p>
-                        <a href="shop.html" class="tp-btn">Go to Shop</a>
-                    </div>
-                </div>
-                <div class="cartmini__checkout">
-                    <div class="cartmini__checkout-title mb-30" @click="processCart()">
-                        <h4>Procesar compra:</h4>
-                        <span>S/ {{ (calculateTotalCart).toFixed(2) }}</span>
-                    </div>
+                    <div class="cartmini__checkout">
+                        <div class="cartmini__checkout-title mb-30" @click="processCart()">
+                            <h4>Procesar compra:</h4>
+                            <span>S/ {{ (calculateTotalCart).toFixed(2) }}</span>
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
+        </transition>
         <header class="header">
             <transition name="transition__slide">
                 <div v-if="showMobileOverlay" class="mobile__menu-overlay" :class="{ 'show-mobile': showMobileOverlay }">
@@ -277,22 +275,34 @@
 
                 <div class="header-tabs">
                     <div class="logo-search">
-                        <NavLink :href="route('home')">
+                        <a class="link-logo" @click="goToHome()">
                             <img :src="iconlogoPageCasa" alt="">
-                        </NavLink>
+                        </a>
                         <div class="search-ads">
                             <div class="control has-icons-left">
                                 <input autocomplete="off" class="input" type="text" placeholder="Buscar producto"
-                                    style="height: 40px">
+                                    style="height: 40px" @input="searchProducts">
                                 <img :src="iconSearch" class="icon-search">
+                            </div>
+                            <div class="autocomplete-suggestions" v-if="suggestions.length">
+                                <div v-if="isLoading" class="loading-spinner">
+                                    <img src="../../img/icons/loading.gif" alt="Cargando...">
+                                </div>
+                                <div v-else >
+                                    <ul class="list-suggestions">
+                                        <li v-for="suggestion in suggestions" @click="selectSuggestion(suggestion)">
+                                            {{ suggestion.name }}
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="box-shop">
+                    <div class="box-shop" @click="redirectToShop()">
                         <span>Tiendas</span>
                     </div>
                     <div class="box-cart">
-                        <div class="contain-icon">
+                        <div class="contain-icon" style="display: none;">
                             <img :src="iconOrder">
                         </div>
 
@@ -346,7 +356,7 @@
                                             v-for="(category_item, category_item__index) in categorias"
                                             :key="category_item__index"
                                             :class="{ 'category-active': categoryActive === category_item.name }"
-                                            :href="route('classcategory.index', { categoria: category_item.id })">{{ category_item.name }}</a>
+                                            @click.prevent="navigateToCategory(category_item.id)">{{ category_item.name }}</a>
                                     </nav>
                                 </div>
                             </div>
@@ -419,7 +429,7 @@ import iconOrder from '../../img/order-icon.png';
 import iconInstagram from '../../img/instagram_icon.png';
 import iconDelete from '../../img/delete-icon.png';
 import { mapState } from 'pinia'
-import { computed } from 'vue';
+import { onMounted, computed } from 'vue';
 
 // import AbButtonV2 from "@/shared/components/form/button/AbButtonV2.vue";
 
@@ -429,7 +439,7 @@ export default {
     props: {
         latestProducts: {
             type: Array,
-            required: true,
+            required: false,
         },
         categoryActive: {
             type: String,
@@ -459,7 +469,7 @@ export default {
             chevDownIcon,
             recoverEmail: "",
             recoverEmailSent: false,
-
+            isLoading: false,
             // * ICONS
             bellIcon,
             checkIcon,
@@ -471,17 +481,16 @@ export default {
             showSubMenuMobile: true,
             categorias: [],
             showCartShop: false,
-            showCartShopMobile: false
+            showCartShopMobile: false,
+            suggestions: []
+
         };
     },
     computed: {
         // user() {
         //     return this.$auth.user;
         // },
-        ...mapState(useStore, ['cart']),
-        emailLink() {
-            window.location.href = `mailto:${this.emailAddress}`;
-        },
+        // ...mapState(useStore, ['cart']),
         calculateTotalCart() {
             if (this.cart) {
                 if (this.cart.length === 0) {
@@ -502,10 +511,12 @@ export default {
 
         store.setLatestProducts(props.latestProducts);
         const cart = computed(() => Object.values(store.cart));
+        const allProducts = computed(() => Object.values(store.allProducts));
 
         return {
             latestProducts: store.latestProducts,
             cart,
+            allProducts,
             toast,
             setCarts: store.initializeCart
         };
@@ -531,6 +542,44 @@ export default {
         ClickOutside: VueClickOutside.directive,
     },
     methods: {
+        goToHome(){
+            this.$inertia.visit(route('home'));
+        },
+        navigateToCategory(categoryId) {
+            this.$inertia.visit(route('classcategory.index', { categoria: categoryId }));
+        },
+        redirectToShop(){
+            if (this.$page.url !== '/shop') {
+                this.$inertia.visit('/shop');
+            }
+        },
+        redirectToProductDetails(category, product) {
+            console.log(category)
+            this.$inertia.visit(route('product.details', { categoria2: category, id: product.id }));
+        },
+        selectSuggestion(suggestion) {
+            this.redirectToProductDetails(suggestion.class_categories_id, suggestion)
+        },
+        searchProducts(event) {
+            this.isLoading = true; 
+            const query = event.target.value.toLowerCase();
+            setTimeout(() => { 
+                if (query.length >= 1) { 
+                    this.suggestions = this.allProducts.filter(product => 
+                        product.name.toLowerCase().includes(query)
+                    );
+                    this.isLoading = false;
+
+                } else {
+                    this.suggestions = [];
+                    this.isLoading = false;
+
+                }
+            }, 300);
+        },
+        emailLink() {
+            window.location.href = `mailto:${this.emailAddress}`;
+        },
         openCartMobile() {
             this.showContentMobile = false
             this.showCartShopMobile = true
@@ -584,11 +633,6 @@ export default {
                 .catch((error) => {
                     console.error('Error al obtener categorías:', error);
                 });
-        },
-        cartUpdated() {
-            console.log("entre al nav")
-            this.fetchCart();
-
         },
 
         getPriceByProduct(id_product) {
@@ -674,6 +718,18 @@ body {
     top: 0;
     left: 0;
     width: 100%;
+
+    .slide-fade-enter-active, .slide-fade-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-fade-enter-from, .slide-fade-leave-to /* .slide-fade-leave-active in <2.1.8 */ {
+  transform: translateX(100%);
+}
+
+.slide-fade-enter-to, .slide-fade-leave-from /* .slide-fade-enter in <2.1.8 */ {
+  transform: translateX(0);
+}
 
     .cartmini__content {
         display: flex;
@@ -935,7 +991,7 @@ body {
                         a {
                             color: #515253;
                             font-weight: 500;
-
+                            cursor: pointer;
                             &.category-active {
                                 color: #961921;
                             }
@@ -1640,8 +1696,8 @@ header.header {
                     display: flex;
                     justify-content: center;
                     gap: 1rem;
-
                     span {
+                        cursor: pointer;
                         font-size: 1rem;
                         color: #ffffff;
                         font-weight: 500;
@@ -1685,10 +1741,38 @@ header.header {
                     display: flex;
                     align-items: center;
                     gap: 1rem;
-
+                    .link-logo{
+                        cursor: pointer;
+                    }
                     .search-ads {
                         width: 80%;
-
+                        position: relative;
+                        .autocomplete-suggestions{
+                            position: absolute;
+                            overflow-y: scroll;
+                            height: 320px;
+                            background: #ffffff;
+                            padding: 0.8rem;
+                            border-radius: 0.5rem;
+                            margin-top: 0.15rem;
+                            width: 100%;
+                            .loading-spinner{
+                                img{
+                                    width: 50px;
+                                }
+                            }
+                            .list-suggestions{
+                                li{
+                                    padding: 0.5rem;
+                                    border-radius: 0.5rem;
+                                    cursor: pointer;
+                                    &:hover{
+                                        background: #961921;
+                                        color: #ffffff;
+                                    }
+                                }
+                            }
+                        }
                         .has-icons-left {
                             position: relative;
 

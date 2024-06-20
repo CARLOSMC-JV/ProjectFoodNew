@@ -1,14 +1,23 @@
-// routes.js
-import ProductDetails from '../Pages/ProductDetail/Index.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+
+import Shop from '@/Pages/Shops/ShopList.vue';
+import DashBoard from '@/Pages/Dashboard.vue';
 
 const routes = [
   {
-    path: '/product/:id',
-    name: 'product.details',
-    component: ProductDetails,
-    props: true,
+    path: '/',
+    name: 'Dashboard',
+    component: DashBoard,
   },
-  // Otras rutas...
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: Shop,
+  },
 ];
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
 
-export default routes;
+export default router;

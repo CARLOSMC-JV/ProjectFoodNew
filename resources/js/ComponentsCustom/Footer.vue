@@ -27,7 +27,7 @@
               <h2 class="text-about">Acerca de</h2>
             </div>
             <div class="subtitle">
-              <span class="text-sub">Tiendas</span>
+              <span class="text-sub" @click="redirectToShop()">Tiendas</span>
               <span class="text-sub">Términos y condiciones</span>
               <span class="text-sub">Política de privacidad</span>
             </div>
@@ -72,7 +72,7 @@
                 <h2 class="text-about-2">Acerca de</h2>
               </div>
               <div class="subtitle-2">
-                <span class="text-sub">Tiendas</span>
+                <span class="text-sub" @click="redirectToShop()">Tiendas</span>
                 <span class="text-sub">Términos y condiciones</span>
                 <span class="text-sub">Política de privacidad</span>
               </div>
@@ -100,6 +100,11 @@
         }
       },
       methods:{
+        redirectToShop(){
+            if (this.$page.url !== '/shop') {
+                this.$inertia.visit('/shop');
+            }
+        },
         openPageFb(){
             const fabeURL = `https://www.facebook.com/LaCasaDeLosRavioles/?locale=es_LA`;
 
@@ -145,6 +150,7 @@
           color: #ffffff;
           font-weight: 400;
           font-size: 0.75rem;
+          cursor: pointer;
         }
         .text-phone{
           color: #ffffff;
@@ -218,6 +224,7 @@
           flex-direction: column;
           gap: 0.5rem;
           .text-sub{
+            cursor: pointer;
             color: #ffffff;
             font-weight: 400;
             font-size: 0.875rem;

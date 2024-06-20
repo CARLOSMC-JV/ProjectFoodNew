@@ -118,7 +118,6 @@
 }
 .swiper-creative{
     .swiper-wrapper{
-        height: 360px;
         .swiper-slide{
             position: relative;
             img{
@@ -233,10 +232,8 @@
   }
   .swiper-creative{
     .swiper-wrapper{
-        height: 360px;
         .swiper-slide{
             img{
-                height: 360px;
             }
           }
     }

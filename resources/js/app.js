@@ -1,4 +1,3 @@
-// import './bootstrap';
 import '../css/theme.min.css';
 import '../css/simplebar.min.css';
 import '../css/nouislider.min.css';
@@ -15,15 +14,9 @@ import '../css/cart_shop.css';
 import 'swiper/css';
 import { useToast } from '../js/toast/toast.js';
 
-// import 'bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
-// import '../../resources/fonts/createx-icons.ttf';
-
 import { createPinia } from 'pinia';
 import VueSplide from '@splidejs/vue-splide';
-// import { createRouter, createWebHistory } from 'vue-router';
-// import routes from '@/routes/routes.js';
+
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -47,20 +40,12 @@ library.add(faCoffee);
 library.add(faUser);
 library.add(faBars);
 library.add(faTimes);
-// const router = createRouter({
-//     history: createWebHistory(),
-//     routes,
-//   });
+
 
 createInertiaApp({
     title: (title) => `${title} `,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-
-        // return createApp({ render: () => h(App, props) })
-        //     .use(plugin)
-        //     .use(ZiggyVue, Ziggy)
-        //     .mount(el);
 
         const app = createApp({ render: () => h(App, props )});
         app.use(plugin);
@@ -73,7 +58,6 @@ createInertiaApp({
         app.use( VueSplide );
         app.use( Swiper );
         app.use( SwiperSlide );
-        // app.use(router);
         app.directive('toggle-navbar', {
             mounted(el) {
                 el.addEventListener('click', () => {
@@ -90,20 +74,15 @@ createInertiaApp({
             }
         });
         app.directive('click-outside', {
-            // Enlazamos el elemento con la función
             beforeMount(el, binding) {
               el.clickOutsideEvent = function (event) {
-                // Verifica si el evento de clic ocurrió fuera del elemento y su descendencia
                 if (!(el === event.target || el.contains(event.target))) {
-                  // Ejecuta la función vinculada cuando se hace clic fuera del elemento
                   binding.value();
                 }
               };
-              // Agrega un escuchador de eventos al documento
               document.addEventListener('click', el.clickOutsideEvent);
             },
             unmounted(el) {
-              // Limpia el escuchador de eventos cuando el componente se desmonta
               document.removeEventListener('click', el.clickOutsideEvent);
             },
           });

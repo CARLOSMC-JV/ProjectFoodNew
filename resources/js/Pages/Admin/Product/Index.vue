@@ -25,11 +25,9 @@ import { nextTick, ref } from 'vue';
             return {
                 form: useForm({
                     class_category_id:'',
-                    category_id:'',
-                    subcategory_id:'',
                     name:'',
                     price:'',
-                    // quantity:'',
+                    quantity:'',
                     images: [],
                     description:''
                 }),
@@ -82,26 +80,6 @@ import { nextTick, ref } from 'vue';
             scrollToTop() {
                 window.scrollTo(0,0);
             },
-            filterCategories() {
-                const selectedClassCategory = this.form.class_category_id;
-                if(this.form.subcategory_id){
-                    this.form.subcategory_id=""
-                }
-                this.filteredCat = this.categories.filter((category) => {
-                    return category.class_category_id == selectedClassCategory;
-                });
-
-            },
-
-            filterSubcategories() {
-                // Filtra las subcategorías en función de la categoría seleccionada
-                const selectedCategory = this.form.category_id;
-                this.filteredSubCat = this.subcategories.filter((subcategory) => {
-                    return subcategory.category_id == selectedCategory;
-                });
-                // Restablece la subcategoría seleccionada
-                this.form.subcategory_id = null;
-            },
             handleImageUpload(event) {
                 const files = event.target.files;
                 this.form.images = files;
@@ -109,8 +87,8 @@ import { nextTick, ref } from 'vue';
             pageClick(){
                 this.form.get(route("products.destroy", id))
             },
-            openModal(op, name, description, subcategory, category, class_category, price, product_id){
-
+            openModal(op, name, description, class_category, price, quantity, product_id){
+                console.log(class_category)
                 this.modal=true;
                 // this.nextTick(()=> this.nameInput.value.focus());
                 this.operation=op;
@@ -121,13 +99,10 @@ import { nextTick, ref } from 'vue';
                     this.title="Editar";
                     this.form.name=name
                     this.form.description=description
-                    this.form.subcategory_id=subcategory
-                    this.form.category_id=category
                     this.form.class_category_id=class_category
 
-                    // this.form.category_id=category
                     this.form.price=price
-                    // this.form.quantity=quantity
+                    this.form.quantity=quantity
                 }
             },
             closeModal(){
@@ -135,9 +110,7 @@ import { nextTick, ref } from 'vue';
                 this.form.reset()
                 this.form.name=""
                 this.form.description=""
-                this.form.category_id=""
                 this.form.class_category_id=""
-                this.form.subcategory_id=""
             },
             save(){
                 try {
@@ -148,8 +121,6 @@ import { nextTick, ref } from 'vue';
                     formData.append('name', this.form.name);
                     formData.append('price', this.form.price);
                     formData.append('description', this.form.description);
-                    formData.append('category_id', this.form.category_id);
-                    formData.append('subcategory_id', this.form.subcategory_id);
                     formData.append('class_category_id', this.form.class_category_id);
 
                     for (let i = 0; i < this.form.images.length; i++) {
@@ -279,10 +250,8 @@ import { nextTick, ref } from 'vue';
                             <th class="px-2 py-2">Producto</th>
                             <!-- <th class="px-2 py-2">Imagen</th> -->
                             <th class="px-2 py-2">Precio</th>
-                            <!-- <th class="px-2 py-2">Cantidad</th> -->
-                            <th class="px-2 py-2">Categoria Sup.</th>
+                            <th class="px-2 py-2">Cantidad</th>
                             <th class="px-2 py-2">Categoria</th>
-                            <th class="px-2 py-2">SubCategoria</th>
                             <th class="px-2 py-2" colspan="2">Opciones</th>
                             <th class="px-2 py-2"></th>
                         </tr>
@@ -296,12 +265,10 @@ import { nextTick, ref } from 'vue';
                             <td class="border border-gray-400 px-2 py-2" style="font-size: 0.875rem;">{{ prod.name }}</td>
                             <!-- <td class="border img-box border-gray-400 px-2 py-2"><img :src="prod.image" /></td> -->
                             <td class="border border-gray-400 px-2 py-2">{{ prod.price.toFixed(2) }}</td>
-                            <!-- <td class="border border-gray-400 px-2 py-2">{{ prod.quantity }}</td> -->
+                            <td class="border border-gray-400 px-2 py-2">{{ prod.quantity }}</td>
                             <td class="border border-gray-400 px-2 py-2" style="font-size: 0.875rem;">{{ prod.class_category }}</td>
-                            <td class="border border-gray-400 px-2 py-2" style="font-size: 0.875rem;">{{ prod.category }}</td>
-                            <td class="border border-gray-400 px-2 py-2" style="font-size: 0.875rem;">{{ prod.subcategory }}</td>
                             <td class="border border-gray-400 px-2 py-2">
-                                <WarningButton @click="openModal(2, prod.name, prod.description, prod.subcategory_id, prod.category_id, prod.class_category_id, prod.price, prod.id)">
+                                <WarningButton @click="openModal(2, prod.name, prod.description, prod.class_categories_id, prod.price, prod.quantity, prod.id)">
                                     <i class="fa-solid fa-edit text-white"></i>
                                 </WarningButton>
                             </td>
@@ -364,20 +331,20 @@ import { nextTick, ref } from 'vue';
                 <div class="p-3">
                     <InputLabel for="price" value="Precio: "></InputLabel>
 
-                    <TextInput id="price" ref="priceInput" v-model="form.price" type="number" class="mt-1 block w-3/4"
-                    placeholder="Precio"></TextInput>
+                    <input id="price" ref="priceInput" v-model="form.price" type="number" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-3/4 mt-1 block w-3/4"
+                    placeholder="Precio">
 
                     <InputError :message="form.errors.price" class="mt-2"></InputError>
                 </div>
 
-                <!-- <div class="p-3">
+                <div class="p-3">
                     <InputLabel for="quantity" value="Cantidad: "></InputLabel>
 
-                    <TextInput id="quantity" ref="quantityInput" v-model="form.quantity" type="number" class="mt-1 block w-3/4"
-                    placeholder="Cantidad"></TextInput>
+                    <input id="quantity" v-model="form.quantity" type="number" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-3/4 mt-1 block w-3/4"
+                    placeholder="Cantidad">
 
                     <InputError :message="form.errors.quantity" class="mt-2"></InputError>
-                </div> -->
+                </div>
 
                 <div class="p-3" v-if="operation===1">
                     <InputLabel for="image" value="Imagen:"></InputLabel>
@@ -388,28 +355,10 @@ import { nextTick, ref } from 'vue';
                 <div class="p-3">
                     <InputLabel for="class_category_id" value="Categoria Superior: "></InputLabel>
 
-                    <SelectInput :options="class_categories" id="class_category_id" v-model="form.class_category_id" @change="filterCategories" class="mt-1 block w-3/4"
+                    <SelectInput :options="class_categories" id="class_category_id" v-model="form.class_category_id" class="mt-1 block w-3/4"
                     placeholder="Categoria Superior" ></SelectInput>
 
                     <InputError :message="form.errors.class_category_id" class="mt-2"></InputError>
-                </div>
-
-                <div class="p-3">
-                    <InputLabel for="category_id" value="Categoria: "></InputLabel>
-
-                    <SelectInput :options="operation==1 ? filteredCat : categories" id="category_id" v-model="form.category_id" @change="filterSubcategories" class="mt-1 block w-3/4"
-                    placeholder="Categoria" ></SelectInput>
-
-                    <InputError :message="form.errors.category_id" class="mt-2"></InputError>
-                </div>
-
-                <div class="p-3">
-                    <InputLabel for="subcategory_id" value="Subcategoria: "></InputLabel>
-
-                    <SelectInput :options="operation==1 ? filteredSubCat : subcategories" id="subcategory_id" v-model="form.subcategory_id" class="mt-1 block w-3/4"
-                    placeholder="Subcategoria"></SelectInput>
-
-                    <!-- <InputError :message="form.errors.subcategory_id" class="mt-2"></InputError> -->
                 </div>
 
                 <div class="p-3">

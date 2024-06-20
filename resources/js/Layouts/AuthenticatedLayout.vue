@@ -27,61 +27,19 @@ const showingNavigationDropdown = ref(false);
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                            </div> -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('class_categories.index')" :active="route().current('graphic')">
-                                    Categorias superiores
-                                </NavLink>
-                            </div>
-
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('categories.index')" :active="route().current('graphic')">
                                     Categorias
                                 </NavLink>
                             </div>
 
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('subcategories.index')" :active="route().current('employees.index')">
-                                    Subcategorias
-                                </NavLink>
-                            </div>
-
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('products.index')" :active="route().current('employees.index')">
+                                <NavLink :href="route('products.index')">
                                     Productos
                                 </NavLink>
                             </div>
 
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('departments.index')" :active="route().current('departments.index')">
-                                    Departments
-                                </NavLink>
-                            </div>
-
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('employees.index')" :active="route().current('employees.index')">
-                                    Employees
-                                </NavLink>
-                            </div> -->
-                            
-
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('graphic')" :active="route().current('graphic')">
-                                    Graphic
-                                </NavLink>
-                            </div> 
- 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('graphic')" :active="route().current('graphic')">
-                                    Reports
-                                </NavLink>
-                            </div> -->
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -161,21 +119,7 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-
-                        <ResponsiveNavLink :href="route('departments.index')" :active="route().current('departments.index')">
-                            Departments
-                        </ResponsiveNavLink>
-
-                        <ResponsiveNavLink :href="route('employees.index')" :active="route().current('employees.index')">
-                            Employees
-                        </ResponsiveNavLink>
-
-                        <ResponsiveNavLink :href="route('graphic')" :active="route().current('graphic')">
-                            Graphic
-                        </ResponsiveNavLink>
+                      
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -197,14 +141,6 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </nav>
 
-            <!-- Page Heading -->
-            <!-- <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header> -->
-
-            <!-- Page Content -->
             <main>
                 <slot />
             </main>

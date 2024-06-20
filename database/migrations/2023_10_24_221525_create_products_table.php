@@ -22,17 +22,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('class_categories_id');
             $table->foreign('class_categories_id')->references('id')->on('class_categories');
-            $table->string('image');
-            
-
-            $table->unsignedBigInteger('subcategory_id')->nullable();
-            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('set null');
-
-            $table->unsignedBigInteger('category_id')->nullable(); 
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null'); 
-
-            // $table->unsignedBigInteger('brand_id');
-            // $table->foreign('brand_id')->references('id')->on('brands');
 
             $table->integer('quantity');
 

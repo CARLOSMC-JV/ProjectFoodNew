@@ -30,7 +30,7 @@ class ProductController extends Controller
 
         $products = Product::whereIn('subcategory_id', $subcategoriaIds)
         ->orWhereNull('subcategory_id')
-        ->with('images') // Cargar las imágenes relacionadas
+        ->with('images') 
         ->get();
 
         
@@ -44,7 +44,6 @@ class ProductController extends Controller
     }
     public function listByClassCategory(Request $request, $categoria)
     {
-        // dd($categoria);
         $classCategory = ClassCategory::find($categoria);
         if (!$classCategory) {
             abort(404);
@@ -53,9 +52,12 @@ class ProductController extends Controller
         $products = Product::where('class_categories_id', $categoria)
             ->with('images') 
             ->get();
+        $all_products = Product::all();
+
         $cart = session()->get('cart', []);
         return inertia('ProductCategory/Index', [
             'products' => $products,
+            'all_products' => $all_products,
             'cart' => $cart,
             'class_category' => $classCategory->name
         ]);
@@ -72,10 +74,8 @@ class ProductController extends Controller
             abort(404);
         }
 
-        // Encuentra todas las subcategorías relacionadas con la categoría.
         $subcategorias = Subcategory::where('category_id', $category->id)->get();
 
-        // Recopila los IDs de las subcategorías relacionadas.
         $subcategoriaIds = $subcategorias->pluck('id');
 
        
@@ -84,7 +84,7 @@ class ProductController extends Controller
                   ->orWhereNull('subcategory_id');
         })
         ->where('category_id', $category->id)
-        ->with('images') // Cargar las imágenes relacionadas
+        ->with('images') 
         ->get();
 
         return inertia('ProductCategory/Index', [
@@ -97,7 +97,6 @@ class ProductController extends Controller
 
     public function showDetail($category_param, $id)
     {
-        // Lógica para obtener los detalles del producto con el ID proporcionado
         $product = Product::with(['subcategory', 'images'])->findOrFail($id);
 
         $subcategory = $product->subcategory;
@@ -130,7 +129,6 @@ class ProductController extends Controller
 
     public function showDetailProduct($category_param, $id)
     {
-        // dd($category_param);
         $category = ClassCategory::where('id', $category_param)->first();
 
         if (!$category) {
@@ -154,24 +152,17 @@ class ProductController extends Controller
 
     public function showProductsByCategory(Request $request, $categoria)
     {
-        // Encuentra la categoría que coincide con el nombre en la URL.
         $category = Category::where('name', $categoria)->first();
-        // dd($category);
 
         if (!$category) {
-            // dd($category);
 
-            // Manejar el caso en el que la categoría no se encuentra.
             abort(404);
         }
         
-        // Encuentra todas las subcategorías relacionadas con la categoría.
         $subcategorias = Subcategory::where('category_id', $category->id)->get();
 
-        // Recopila los IDs de las subcategorías relacionadas.
         $subcategoriaIds = $subcategorias->pluck('id');
 
-        // Encuentra los productos relacionados con las subcategorías encontradas.
         $products = Product::whereIn('subcategory_id', $subcategoriaIds)
         ->orWhere(function ($query) use ($subcategoriaIds) {
             if ($subcategoriaIds->isEmpty()) {
@@ -179,8 +170,6 @@ class ProductController extends Controller
             }
         })
         ->with('images')->get();
-
-        // dd($products);
 
 
         return inertia('showProductsByCategory/Index', [
@@ -190,6 +179,13 @@ class ProductController extends Controller
             'category' => $category->name,
             'category_list'=>$subcategorias
         ]);
+    }
+
+    public function getAllProducts()
+    {
+        $products = Product::all();
+        return response()->json(['products' => $products]);
+
     }
 
 }

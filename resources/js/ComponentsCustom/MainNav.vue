@@ -67,13 +67,13 @@
                 }
             },
             fetchCategorias() {
-                axios.get('/listcategories') // La ruta debe coincidir con la que creaste en tu archivo de rutas
+                axios.get('/listcategories') 
                     .then((response) => {
                         console.log(response);
                         response.data.classCategories.forEach((categoria) => {
-                            categoria.showMenu = false; // Inicialmente, ningún menú está visible
+                            categoria.showMenu = false; 
                         });
-                        this.categorias = response.data.classCategories; // Asigna las categorías obtenidas a la propiedad categorias
+                        this.categorias = response.data.classCategories; 
                     })
                     .catch((error) => {
                     console.error('Error al obtener categorías:', error);

@@ -40,31 +40,39 @@ class CartController extends Controller
         
     }
 
-    public function viewCart()
+    // public function viewCart()
+    // {
+    //     $cart = session()->get('cart', []);
+    //     return Inertia::render('ProductCategory/Index', [
+    //         'cart' => $cart,
+    //         // Asegúrate de pasar también otros props necesarios
+    //         'products' => Product::all(),
+    //         'category' => 'some_category',
+    //         'class_category' => 'some_class_category',
+    //     ]);
+    // }
+    public function getCartItems()
     {
         $cart = session()->get('cart', []);
-        return Inertia::render('ProductCategory/Index', [
-            'cart' => $cart,
-            // Asegúrate de pasar también otros props necesarios
-            'products' => Product::all(),
-            'category' => 'some_category',
-            'class_category' => 'some_class_category',
-        ]);
+        return response()->json(['cart' => $cart]);
     }
-
     public function removeFromCart(Request $request)
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
         ]);
-
+    
         $cart = session()->get('cart', []);
-
+    
         if (isset($cart[$request->product_id])) {
-            unset($cart[$request->product_id]);
+            if ($cart[$request->product_id]['quantity'] > 1) {
+                $cart[$request->product_id]['quantity'] -= 1;
+            } else {
+                unset($cart[$request->product_id]);
+            }
             session()->put('cart', $cart);
         }
-
+    
         return response()->json(['message' => 'Product removed from cart', 'cart' => $cart], 200);
     }
 
