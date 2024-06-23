@@ -132,6 +132,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="box-tiendas">
+                                    <svg viewBox="0 0 24 24" fill="#27272A" width="24" height="24" class="sc-e283704c-0 iMxoOo"><path d="M21.96 15.328l-2.032-7.03a.998.998 0 00-1.232-.7l-15.96 4.598a1 1 0 00-.7 1.232l2.033 7.03a1 1 0 001.233.7l15.992-4.598a1 1 0 00.667-1.232zM8.933 4.733l5.631 2.698 1.933-.566L8.4 3l-4.364 7.43L5.9 9.897l3.032-5.164z"></path></svg>
+                                    <span style="color: rgb(39, 39, 42);" @click="redirectToShop()">Tiendas</span>
+                                </div>
                                 <div class="offcanvas__category pb-40">
                                     <button class="tp-offcanvas-category-toggle" @click="toggleSubMenu()">
                                         <div class="box-all-categories">
@@ -1328,7 +1332,13 @@ header.header {
                 flex-direction: column;
                 gap: 0.5rem;
             }
-
+            .box-tiendas{
+                display: flex;
+                gap: 0.5rem;
+                padding: 10px 0;
+                border-top: 1px solid rgba(1, 15, 28, 0.1);
+                border-bottom: 1px solid rgba(1, 15, 28, 0.1);
+            }
             .offcanvas__category {
 
                 .slide-enter-active,

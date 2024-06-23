@@ -9,7 +9,7 @@
       >
 
           <SplideSlide v-for="(category_item, category_item__index) in categories_list" :key="category_item__index">
-            <div class="image-container" :href="route('classcategory.index', { categoria: category_item.id })">
+            <div class="image-container" @click.prevent="navigateToCategory(category_item.id)">
                 <!-- {{ category_item.name }} -->
                 <img class="image-category" :src="category_item.image">
             </div>
@@ -80,7 +80,10 @@
         } else {
           this.selectedIndex = 0;
         }
-      }
+      },
+      navigateToCategory(categoryId) {
+            this.$inertia.visit(route('classcategory.index', { categoria: categoryId }));
+        },
     },
   
     props:{
