@@ -20,7 +20,7 @@
             return {
                 currentPage: 1,
                 totalProductsForCategory: 0,
-                perPage: 12,
+                perPage: 15,
                 filter_category:{
                     search_category:0
                 },
