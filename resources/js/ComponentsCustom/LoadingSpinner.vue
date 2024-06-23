@@ -255,14 +255,20 @@
 }
 .tp-preloader-title {
 color: #961921;
-  font-size: 20px;
   font-weight: 500;
   line-height: 1;
   margin-bottom: 0px;
+  font-size: 1.5rem;
+
 }
-@media (max-width: 575px) {
+/* @media (max-width: 575px) {
   .tp-preloader-title {
     font-size: 70px;
+  }
+} */
+@media (min-width: 768px) {
+  .tp-preloader-title {
+    font-size: 30px;
   }
 }
 .tp-preloader-subtitle {
