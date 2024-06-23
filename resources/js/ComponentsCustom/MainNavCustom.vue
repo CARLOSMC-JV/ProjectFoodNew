@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="box-order-general">
+                                    <div class="box-order-general" style="display: none;">
                                         <div class="contain-icon" @click="toggleShopCart()">
                                             <button type="button" class="box-order">
                                                 <img :src="iconOrder">
@@ -150,7 +150,7 @@
                                                     v-for="(category_item, category_item__index) in categorias"
                                                     :key="category_item__index">
                                                     <a :href="route('classcategory.index', { categoria: category_item.id })"
-                                                        class="sub-item-category">
+                                                        class="sub-item-category" :class="{ 'category-active': categoryActive === category_item.name }">
 
                                                         {{ category_item.name }}</a>
                                                 </li>
@@ -253,22 +253,44 @@
                 </div>
             </transition>
 
-            <div class="header__mobile">
-                <div class="header-menu" @click="() => (showMobileOverlay = true) (showContentMobile = true)" v-if="!showMobileOverlay">
-                    <img src="../../img/icons/menu-white.svg" alt="" />
+            <transition name="transition__mobile">
+                <div class="header__mobile" v-if="!showOpenSearchMobile">
+                    <div class="header-menu" @click="showOverlay()" v-if="!showMobileOverlay">
+                        <img src="../../img/icons/menu-white.svg" alt="" />
+                    </div>
+    
+                    <div class="header-menu" @click="() => (showMobileOverlay = false)" v-else>
+                        <img src="../../img/icons/close-white-2.svg" alt="" />
+                    </div>
+                    <div class="header-menu-logo" @click="goToHome()">
+                        <img :src="iconlogoPageCasa" alt="" />
+                    </div>
+                    <div class="search">
+                        <img :src="iconSearch" class="icon-search" @click="openSearchMobile()">
+                    </div>
+    
                 </div>
+                <div v-else class="box-input-mobile">
+                    <div class="control has-icons-left">
+                        <input autocomplete="off" class="input" type="text" placeholder="Buscar producto"
+                            style="height: 40px" @input="searchProducts">
+                        <img :src="iconCloseBlack" class="icon-search" @click="closeSearchMobile()">
+                    </div>
+                    <div class="autocomplete-suggestions" v-if="suggestions.length">
+                        <div v-if="isLoading" class="loading-spinner">
+                            <img src="../../img/icons/loading.gif" alt="Cargando...">
+                        </div>
+                        <div v-else >
+                            <ul class="list-suggestions">
+                                <li v-for="suggestion in suggestions" @click="selectSuggestion(suggestion)">
+                                    {{ suggestion.name }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </transition>
 
-                <div class="header-menu" @click="() => (showMobileOverlay = false)" v-else>
-                    <img src="../../img/icons/close-white-2.svg" alt="" />
-                </div>
-                <div class="header-menu-logo">
-                    <img :src="iconlogoPageCasa" alt="" />
-                </div>
-                <div class="search">
-                    <img :src="iconSearch" class="icon-search">
-                </div>
-
-            </div>
 
 
             <div class="header__desktop">
@@ -298,8 +320,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-shop" @click="redirectToShop()">
-                        <span>Tiendas</span>
+                    <div class="box-shop">
+                        <span @click="redirectToShop()">Tiendas</span>
                     </div>
                     <div class="box-cart">
                         <div class="contain-icon" style="display: none;">
@@ -428,6 +450,7 @@ import iconCart from '../../img/cart-icon.png';
 import iconOrder from '../../img/order-icon.png';
 import iconInstagram from '../../img/instagram_icon.png';
 import iconDelete from '../../img/delete-icon.png';
+import iconCloseBlack from '../../img/icons/close-icon-black.png';
 import { mapState } from 'pinia'
 import { onMounted, computed } from 'vue';
 
@@ -456,6 +479,7 @@ export default {
             iconOrder,
             iconInstagram,
             iconDelete,
+            iconCloseBlack,
             iconsEmail,
             iconsWhatsapp,
             iconsPhone,
@@ -464,6 +488,7 @@ export default {
             showUserOptions: false,
             showRecoverPasswordModal: false,
             showMobileOverlay: false,
+            showOpenSearchMobile: false,
             showContentMobile: true,
             recoverPasswordButton: "",
             chevDownIcon,
@@ -542,6 +567,17 @@ export default {
         ClickOutside: VueClickOutside.directive,
     },
     methods: {
+        openSearchMobile(){
+            this.showOpenSearchMobile = true
+        },
+        closeSearchMobile(){
+            this.showOpenSearchMobile = false
+            this.suggestions=[]
+        },
+        showOverlay() {
+            this.showMobileOverlay = true;
+            this.showContentMobile = true;
+        },
         goToHome(){
             this.$inertia.visit(route('home'));
         },
@@ -681,13 +717,13 @@ export default {
         reloadPage() {
             location.reload();
         },
-        overlayGoNext(route) {
-            this.showMobileOverlay = false;
-            this.$router.push({
-                name: route.name,
-                query: route.query ? route.query : null,
-            });
-        },
+        // overlayGoNext(route) {
+        //     this.showMobileOverlay = false;
+        //     this.$router.push({
+        //         name: route.name,
+        //         query: route.query ? route.query : null,
+        //     });
+        // },
     },
 };
 </script>
@@ -1101,6 +1137,7 @@ body {
                                     position: relative;
                                     display: flex;
 
+
                                     &:hover {
                                         color: #961921;
                                         font-weight: 500;
@@ -1125,6 +1162,7 @@ body {
                                 display: flex;
                                 align-items: center;
                                 gap: 0.5rem;
+                                
                             }
 
                             .sub-item-category-menu {
@@ -1375,7 +1413,10 @@ header.header {
                             padding: 10px 0;
                             padding-right: 20px;
                             border-bottom: 1px solid rgba(1, 15, 28, 0.1);
-
+                            &.category-active{
+                                color: #961921;
+                                font-weight: 600;
+                            }
                             span {
                                 .img-icon {
                                     transform: translateY(-1px);
@@ -1436,7 +1477,69 @@ header.header {
             }
         }
     }
+    .transition__mobile-enter-active,
+        .transition__mobile-leave-active {
+            opacity: 100;
+            
+            transition: all 0.25s ease;
+            transform: translateX(-100%);
+        }
 
+        .transition__mobile-enter,
+        .transition__mobile-leave-to {
+            opacity: 100;
+            transition: transform 0.25s ease-in-out 0s;
+            overflow: hidden;
+        }
+    .box-input-mobile{
+        transition: transform 0.25s ease-in-out 0s;
+        z-index: 26;
+        width: 100vw;
+
+        .autocomplete-suggestions{
+            position: absolute;
+            overflow-y: scroll;
+            background: #ffffff;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin-top: 0.15rem;
+            width: 100%;
+            height: 220px;
+            border-bottom: 1px solid #979a9c;
+            .loading-spinner{
+                img{
+                    width: 50px;
+                }
+            }
+            .list-suggestions{
+                li{
+                    padding: 0.5rem;
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+                    &:hover{
+                        background: #961921;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+        .has-icons-left{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            gap: 0.5rem;
+            input{
+                height: 56px !important;
+                width: 100%;
+            }
+            .icon-search{
+                height: 30px;
+                position: absolute;
+                right: 10px;
+            }
+        }
+    }
     >.header__mobile {
         // display: flex;
         display: grid;

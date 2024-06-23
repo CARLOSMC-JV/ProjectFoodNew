@@ -7,10 +7,6 @@
       class="main-product"
       :isNavigation="true"
     >
-      <!-- <SplideSlide v-for="slide in slides" :key="slide.alt">
-        <img :src="slide.image" :alt="slide.alt">
-      </SplideSlide> -->
-
       <template v-if="product.images.length>0">
         <SplideSlide v-for="(product_item, product__index) in product.images" :key="product__index">
           <div class="image-container" @click.passive="openGallery(product__index)">
@@ -22,8 +18,6 @@
             :click-zoom="false"
             />
           </div>
-
-          <!-- <img :src="product_item.image_path" @click="openGallery(product__index)"> -->
           
         </SplideSlide>
       </template>
@@ -39,8 +33,6 @@
             />
           </div>
             
-          <!-- <img :src="product.image" @click="openGallery(0)"> -->
-
         </SplideSlide>
       </template>
 
@@ -52,9 +44,6 @@
       ref="thumbs"
       class="thumbnails"
     >
-      <!-- <SplideSlide v-for="slide in slides" :key="slide.alt" class="thumbnail">
-        <img :src="slide.thumbnail" :alt="slide.alt">
-      </SplideSlide> -->
 
       <template v-if="product.images.length>0">
         <SplideSlide v-for="(product_item, product__index) in product.images" :key="product__index">
@@ -69,18 +58,13 @@
       </template>
     </Splide>
 
-    <!-- <ul class="thumbnails" ref="thumbs">
-      <li v-for="(slide, index) in slides" :options="thumbsOptions" :key="index" class="thumbnail" @click="goToSlide(index)">
-        <img :src="slide.thumbnail" :alt="slide.alt" />
-      </li>
-    </ul> -->
     <div v-if="showGallery" class="gallery-modal" @click="closeGallery">
       <div class="gallery-content" @click.stop>
-        <img :src="galleryImages[selectedIndex].src" :alt="galleryImages[selectedIndex].alt">
-        <button class="gallery-button-left" @click="prevImage">Anterior</button>
-        <button class="gallery-button-rigth" @click="nextImage">Siguiente</button>
+        <img class="img-product" :src="galleryImages[selectedIndex].src" :alt="galleryImages[selectedIndex].alt">
+        <button class="gallery-button-left" @click="prevImage"><img :src="iconChevronLeft"></button>
+        <button class="gallery-button-rigth" @click="nextImage"><img :src="iconChevronRigth"></button>
       </div>
-      <button class="gallery-close" @click="closeGallery">Cerrar</button>
+      <button class="gallery-close" @click="closeGallery"><img :src="iconCloseRed"></button>
 
     </div>
   </div>
@@ -91,17 +75,16 @@ import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import { defineComponent, onMounted, ref } from 'vue';
 import { VueImageZoomer } from 'vue-image-zoomer'
 import VuePictureSwipe from 'vue3-picture-swipe';
-
+import iconChevronLeft from '../../img/icons/chevron-left.png';
+import iconChevronRigth from '../../img/icons/chevron-rigth.png';
+import iconCloseRed from '../../img/icons/close-icon-red.svg';
 import '@splidejs/vue-splide/css';
 import 'vue-image-zoomer/dist/style.css';
 
-
-// import { generateSlides } from '../utils';
 import img1 from '../../img/categories/01.jpg'
 import img2 from '../../img/categories/02.jpg'
 import img3 from '../../img/categories/03.jpg'
 import img4 from '../../img/categories/04.jpg'
-// import lupa from '../../img/icons/lupa.png'
 
 
 export default defineComponent( {
@@ -120,6 +103,9 @@ export default defineComponent( {
       galleryImages: [],
       isMagnifierVisible: false,
       magnifierIndex: 0,
+      iconChevronLeft,
+      iconChevronRigth,
+      iconCloseRed
     };
   },
   methods: {
@@ -155,7 +141,7 @@ export default defineComponent( {
     console.log(this.product)
     this.galleryImages = this.product.images.map(image => ({
       src: image.image_path,
-      alt: image.alt, // Puedes proporcionar una descripción alternativa si lo deseas
+      alt: image.alt, 
     }));
   },
 
@@ -167,7 +153,6 @@ export default defineComponent( {
         { image: img2, thumbnail: img2, alt: 'Product 2' },
         { image: img3, thumbnail: img3, alt: 'Product 3' },
         { image: img4, thumbnail: img4, alt: 'Product 4' },
-        // Add more products as needed
     ]
 
      
@@ -218,7 +203,6 @@ export default defineComponent( {
 </script>
 
 <style>
-/* Add your custom styles here */
 .thumbnails {
   display: flex;
   margin: 1rem auto 0;
@@ -251,10 +235,12 @@ export default defineComponent( {
   justify-content: center;
   padding: 1.5rem 0rem;
   z-index: 1000;
+  align-items: center;
 }
 
 .gallery-content {
   display: flex;
+  justify-content: center;
   align-items: center;
   position: relative;
   max-width: 90%;
@@ -268,32 +254,22 @@ export default defineComponent( {
 
 .gallery-button-left {
   position: absolute;
-
+  width: 25px;
   left: 10px;
-  top: 50%;
+  top: 48%;
 }
 
 .gallery-button-rigth {
   position: absolute;
-
+  width: 25px;
   right: 10px;
-  top: 50%;
+  top: 48%;
 }
-/* .gallery-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #fff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 16px;
-} */
 .gallery-modal .gallery-close {
   position: absolute;
-  top: 10px;
+  top: 60px;
   right: 10px;
-  background: #fff;
+  background: transparent;
   border: none;
   padding: 10px;
   cursor: pointer;
@@ -304,14 +280,21 @@ export default defineComponent( {
   position: relative;
   display: inline-block;
 }
-
-@media (min-width: 768px) {
-  .gallery-content{
-    display: initial;
+.image-container .vh--message{
+  display: none;
+}
+.gallery-modal .gallery-close img{
+    width: 30px;
   }
 
-  .gallery-content img{
+@media (min-width: 768px) {
+  .gallery-modal .gallery-close {
+    top: 20px;
+  }
+  
+  .gallery-content .img-product{
     height: 100%;
+    width: 65%;
   }
 }
 </style>

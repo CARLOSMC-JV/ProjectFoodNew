@@ -1,5 +1,5 @@
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 @media only screen and (min-width: 600px) {
@@ -103,7 +103,7 @@ body {
   background-color: #368788;
 }
 #category_product .section-product .category-product-list .splide {
-  padding: 1rem;
+  padding: 0rem 0.25rem;
 }
 #category_product .section-product .category-product-list .splide .splide__slide {
   padding-right: 20px;

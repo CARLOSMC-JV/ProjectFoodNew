@@ -99,6 +99,21 @@
             },
         },
         methods: {
+            openGetInfoByWhatsapp(product) {
+                const phoneNumber = '51997315973'; 
+                const message = encodeURIComponent(this.generateWhatsAppMessage(product));
+                const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+
+                window.open(whatsappURL, '_blank');
+            },
+            generateWhatsAppMessage(product) {
+                console.log(product)
+                let message = `\u{1F6D2} Esta es tu compra:\n\n`;
+                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${product.price.toFixed(2)}\n`;
+                 
+                message += `\n\u{1F4B0} Total: S/ ${product.price.toFixed(2)}`;
+                return message;
+            },
             async addToCart(productId) {
                 try {
  
@@ -158,19 +173,6 @@
                 store.initializeCart(props.cart)
             }
 
-            // onMounted(async () => {
-            //     try {
-            //         await axios.get('/cart')
-            //         .then((response) => {
-            //             console.log(response);
-            //             store.initializeCart(response.data.cart);
-            //         })
-            //     } catch (error) {
-            //         console.error(error);
-            //         toast.error('Hubo un problema al cargar el carrito');
-            //     }
-            // });
-
             return { toast,      
                 cart: props.cart, 
                 onAddCart: store.addToCart,
@@ -204,7 +206,10 @@
                                     <div class="box-data-general">
                                         <h2 class="title-item" @click="redirectToProductDetails(productByCategoryItem.class_categories_id, productByCategoryItem)">{{productByCategoryItem.name}}</h2>
                                         <h2 class="title-desription">{{productByCategoryItem.description}}</h2> 
-                                        <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
+                                        <div class="box-price-mobile">
+                                            <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
+                                            <button class="button-buy" @click.stop="openGetInfoByWhatsapp(productByCategoryItem)">Comprar</button>
+                                        </div>
                                     </div>
                                     
                                     <div class="box-button-general">
@@ -223,16 +228,12 @@
                     </div>
                     <nav class="pt-1 ml-auto" aria-label="Pagination">
                         <ul class="pagination mb-0">
-                            <li class="page-item d-sm-none">
-                                <span class="page-link page-link-static">1 / 5</span>
-                            </li>
-
                             <div class="contain-number">
                                 <button class="button-left"  @click="prevPage" :disabled="currentPage===1" :class="[currentPage===1 ? 'disabled-button': '']">
                                     <i class="fa-solid fa-angle-left" style="color: #17696a;"></i>
                                 </button>
 
-                                <li class="page-item d-none d-sm-block number-page" style="cursor: pointer;" aria-current="page"  @click="goToPageNumber(page)" v-for="page in totalPages" :key="page" :class="{ 'active-div': page === currentPage }">
+                                <li class="page-item d-sm-block number-page" style="cursor: pointer;" aria-current="page"  @click="goToPageNumber(page)" v-for="page in totalPages" :key="page" :class="{ 'active-div': page === currentPage }">
                                     <span class="page-link">{{page}}
                                     </span>
                                 </li>

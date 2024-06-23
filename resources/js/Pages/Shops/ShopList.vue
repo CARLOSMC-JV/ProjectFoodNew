@@ -161,7 +161,13 @@
 
 <style lang="scss">
     .box-shop{
-        padding: 2rem 5rem;
+        padding: 1rem;
+        .box-title{
+            .title-shop{
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+        }
         .data-maps{
             display: flex;
             margin-top: 1.5rem;
@@ -170,15 +176,17 @@
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
-                width: 50%;
+                width: 100%;
                 .box-general-date{
                     display: flex;
+                    flex-direction: column;
                     gap: 1rem;
                     .info-date{
                         display: flex;
                         flex-direction: column;
                         justify-content: center;
-                        width: 30%;
+                        width: 100%;
+                        align-items: center;
                         .data-red{
                             color:#961921;
                         }
@@ -189,7 +197,7 @@
                     .box-address{
                         padding: 1.5rem;
                         background: #e1e1e1;
-                        width: 70%;
+                        width: 100%;
                         cursor: pointer;
                         h2{
                             font-weight: 600;      
@@ -212,6 +220,8 @@
                             display: flex;
                             gap: 1.5rem;
                             margin-top: 1rem;
+                            flex-direction: column;
+                            align-items: center;
                             .box-general-tele{
                                 display: flex;
                                 flex-direction: column;
@@ -267,11 +277,48 @@
                 }
             }
             .section-maps{
+                display: none;
                 width: 45%;
                 iframe{
                     height: 1100px;
                 }
             }
         }
+    }
+
+    @media (min-width: 768px) {
+        .box-shop{
+            padding: 2rem 5rem;
+            .box-title{
+                
+                .title-shop{
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+            }
+            .data-maps{
+                .section-maps{
+                    display: flex;
+                }
+                .section-date-time{
+                    width: 50%;
+                    .box-general-date{
+                        flex-direction: row;
+                        .box-address{
+                            width: 70%;
+                            .send-hour{
+                                flex-direction: row;
+                                align-items: initial;
+                            }
+                        }
+                        .info-date{
+                            width: 30%;
+                            align-items: initial;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 </style>

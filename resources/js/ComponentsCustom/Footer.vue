@@ -56,8 +56,8 @@
                 <span class="text-phone">(01) 435 4036</span>
                 <div class="box-icons-network">
                   <img class="img-icon" @click="openPageFb()" :src="iconFB" alt="">
-                  <img class="img-icon" :src="iconInstagram" alt="">
-                  <img class="img-icon" :src="iconWhatsapp" alt="">
+                  <img class="img-icon" @click="openPageInstagram()" :src="iconInstagram" alt="">
+                  <img class="img-icon" @click="openWhatsapp()" :src="iconWhatsapp" alt="">
                   <img class="img-icon" :src="iconYoutube" alt="">
                 </div>
               </div>

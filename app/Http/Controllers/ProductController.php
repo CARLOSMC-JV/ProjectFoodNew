@@ -106,9 +106,11 @@ class ProductController extends Controller
         $product->category = $category->name;
 
         $product->subcategory = $subcategory->name;
+        $cart = session()->get('cart', []);
 
         return inertia('ProductDetail/Index', [
-            'product' => $product
+            'product' => $product,
+            'cart' => $cart
         ]);
 
     }
