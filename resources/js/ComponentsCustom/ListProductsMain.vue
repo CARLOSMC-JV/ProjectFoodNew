@@ -84,7 +84,7 @@
                     // const categoryName = category.name.toLowerCase();
 
                     switch (category.name) {
-                        case 'Capelletti':
+                        case 'Cappelletti':
                             category.image = imgCapelleti;
                             break;
                         case 'Gnocchi y malfatti':
@@ -93,7 +93,7 @@
                         case 'Lasagnas':
                             category.image = imgLasagna;
                             break;
-                        case 'Ravioles':
+                        case 'Ravioli':
                             category.image = imgRavioles;
                             break;
                         case 'Salsas':
@@ -102,6 +102,16 @@
                         case 'Pasta seca al huevo':
                             category.image = imgPastasSecas;
                             break;
+                        case 'Vinos y Licores':
+                            category.image = imgVinosLicores;
+                        break;
+                        case 'Agnolotti':
+                            category.image = imgPastaFresca;
+                        break;
+                        case 'Tortelloni':
+                            category.image = imgLasagna;
+                        break;
+                        
                         default:
                             category.image = null; // O una imagen por defecto
                     }
