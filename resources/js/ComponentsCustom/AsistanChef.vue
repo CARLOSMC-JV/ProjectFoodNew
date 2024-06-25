@@ -1,5 +1,5 @@
 <script>  
-    import iconChef from '../../img/chef_icon.png';
+    import iconChef from '../../img/icons/new_icon_chef.webp';
     import { ref } from 'vue';
     import iconWhatsapp from '../../img/icons/icon-whatsapp.svg';
 

@@ -9,6 +9,10 @@
                     <span class="text-contact">atencionalcliente@lacasadelosravioles.com.pe</span>
                 </div>
                 <div class="icon-text">
+                    <img class="icon-contact" @click="openWhatsapp2()" :src="iconsWhatsapp" alt="">
+                    <span class="text-contact">992 855 313</span>
+                </div>
+                <div class="icon-text">
                     <img class="icon-contact" @click="openWhatsapp()" :src="iconsWhatsapp" alt="">
                     <span class="text-contact">947 378 352</span>
                 </div>
@@ -378,31 +382,17 @@
                             <div class="menu-box-top">
                                 <div class="main-menu menu-style-1">
                                     <nav class="tp-main-menu-content">
-                                        <a class="name-category"
+                                        <!-- <a class="name-category"
                                             v-for="(category_item, category_item__index) in categorias"
                                             :key="category_item__index"
                                             :class="{ 'category-active': categoryActive === category_item.name }"
-                                            @click.prevent="navigateToCategory(category_item.id)">{{ category_item.name }}</a>
+                                            @click.prevent="navigateToCategory(category_item.id)">{{ category_item.name }}</a> -->
+                                        
+                                            <CarouselSplideHeader :categorias="categorias"></CarouselSplideHeader>
                                     </nav>
                                 </div>
                             </div>
-                            <!-- <div class="col-xl-3 col-lg-3">
-                           <div class="tp-header-contact d-flex align-items-center justify-content-end">
-                              <div class="tp-header-contact-icon">
-                                 <span>
-                                    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                       <path fill-rule="evenodd" clip-rule="evenodd" d="M1.96977 3.24859C2.26945 2.75144 3.92158 0.946726 5.09889 1.00121C5.45111 1.03137 5.76246 1.24346 6.01544 1.49057H6.01641C6.59631 2.05874 8.26011 4.203 8.35352 4.65442C8.58411 5.76158 7.26378 6.39979 7.66756 7.5157C8.69698 10.0345 10.4707 11.8081 12.9908 12.8365C14.1058 13.2412 14.7441 11.9219 15.8513 12.1515C16.3028 12.2459 18.4482 13.9086 19.0155 14.4894V14.4894C19.2616 14.7414 19.4757 15.0537 19.5049 15.4059C19.5487 16.6463 17.6319 18.3207 17.2583 18.5347C16.3767 19.1661 15.2267 19.1544 13.8246 18.5026C9.91224 16.8749 3.65985 10.7408 2.00188 6.68096C1.3675 5.2868 1.32469 4.12906 1.96977 3.24859Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                       <path d="M12.936 1.23685C16.4432 1.62622 19.2124 4.39253 19.6065 7.89874" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                       <path d="M12.936 4.59337C14.6129 4.92021 15.9231 6.23042 16.2499 7.90726" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>                                    
-                                 </span>
-                              </div>
-                              <div class="tp-header-contact-content">
-                                 <h5>Hotline:</h5>
-                                 <p><a href="tel:402-763-282-46">+(402) 763 282 46</a></p>
-                              </div>
-                           </div>
-                        </div> -->
+                            
                         </div>
                     </div>
                 </div>
@@ -428,6 +418,7 @@ import NavLink from '@/Components/NavLink.vue';
 import axios from 'axios';
 
 import CarouselSplide from '@/ComponentsCustom/CarouselSplide.vue';
+import CarouselSplideHeader from '@/ComponentsCustom/CarouselSplideHeader.vue';
 import chevDownIcon from '../../img/chev-down-new.png';
 
 // *  Images
@@ -462,7 +453,7 @@ import { onMounted, computed } from 'vue';
 
 export default {
     name: "Header",
-    components: { CarouselSplide, NavLink, HeroSlider2, ListProductsMain, PopularCategories, FooterVue },
+    components: { CarouselSplide, NavLink, HeroSlider2, ListProductsMain, PopularCategories, FooterVue, CarouselSplideHeader },
     props: {
         latestProducts: {
             type: Array,
@@ -643,7 +634,7 @@ export default {
             return message;
         },
         processCart() {
-            const phoneNumber = '51997315973';
+            const phoneNumber = '51992855313';
             const message = encodeURIComponent(this.generateWhatsAppMessage());
             const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
 
@@ -666,8 +657,22 @@ export default {
         fetchCategorias() {
             axios.get('/listcategories')
                 .then((response) => {
+                    const ordenDeseado = [
+                        'Ravioli',
+                        'Cappelletti',
+                        'Tortelloni',
+                        'Agnolotti',
+                        'Gnocchi y malfatti',
+                        'Pasta seca al huevo',
+                        'Lasagnas',
+                        'Salsas',
+                        'Vinos y Licores'
+                    ];
 
                     this.categorias = response.data.classCategories;
+                    this.categorias.sort((a, b) => {
+                        return ordenDeseado.indexOf(a.name) - ordenDeseado.indexOf(b.name);
+                    });
                     console.log(this.categorias)
                 })
                 .catch((error) => {
@@ -698,6 +703,10 @@ export default {
         },
         openWhatsapp() {
             const whatsappurl = `https://api.whatsapp.com/send?phone=51947378352`;
+            window.open(whatsappurl, "_blank");
+        },
+        openWhatsapp2() {
+            const whatsappurl = `https://api.whatsapp.com/send?phone=51992855313`;
             window.open(whatsappurl, "_blank");
         },
 
@@ -992,7 +1001,7 @@ body {
             }
 
             .menu-box-top {
-                margin-left: 1rem;
+                margin-left: 1.5rem;
             }
 
             .tp-mega-menu-wrapper {

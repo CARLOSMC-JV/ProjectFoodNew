@@ -104,7 +104,7 @@
 
                 console.log(product)
                 console.log(customMessage)
-                let whatsappurl = `https://api.whatsapp.com/send?phone=51997315973&text=${customMessage}`
+                let whatsappurl = `https://api.whatsapp.com/send?phone=51992855313&text=${customMessage}`
                 window.open(
                     whatsappurl,
                     '_blank' 

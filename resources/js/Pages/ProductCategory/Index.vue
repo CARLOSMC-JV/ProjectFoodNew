@@ -100,7 +100,7 @@
         },
         methods: {
             openGetInfoByWhatsapp(product) {
-                const phoneNumber = '51997315973'; 
+                const phoneNumber = '51992855313'; 
                 const message = encodeURIComponent(this.generateWhatsAppMessage(product));
                 const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
 
