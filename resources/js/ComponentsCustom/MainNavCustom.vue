@@ -388,7 +388,7 @@
                                             :class="{ 'category-active': categoryActive === category_item.name }"
                                             @click.prevent="navigateToCategory(category_item.id)">{{ category_item.name }}</a> -->
                                         
-                                            <CarouselSplideHeader :categorias="categorias"></CarouselSplideHeader>
+                                            <CarouselSplideHeader :categorias="categorias" :categoryActive="categoryActive"></CarouselSplideHeader>
                                     </nav>
                                 </div>
                             </div>

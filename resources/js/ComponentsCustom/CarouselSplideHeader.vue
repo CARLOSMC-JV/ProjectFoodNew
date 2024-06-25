@@ -16,6 +16,10 @@ export default {
             type: Array,
             required: true,
         },
+        categoryActive: {
+            type: String,
+            required: false,
+        }
     },
     data(){
         return{
@@ -84,7 +88,7 @@ export default {
         <Splide :options="splideOptions" aria-label="My Favorite Images">
             <SplideSlide v-for="(category_item, category_item__index) in categorias" :key="category_item.id">
 
-                <a class="name-category"
+                <a class="name-category" :class="{ 'category-active': categoryActive === category_item.name }"
                     @click.prevent="navigateToCategory(category_item.id)">{{ category_item.name }}</a>
             </SplideSlide>
         </Splide>
@@ -147,6 +151,9 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        &.category-active {
+            color: #961921;
+        }
         &:hover {
             color: #961921;
         }
@@ -170,6 +177,7 @@ export default {
         }
     }
     .splide__arrow--next{
+        width: 20px;
         transform: translate(160%, -50%);
         svg{
             fill: #961921;
