@@ -57,6 +57,9 @@ export default {
         SplideSlide,
     },
     methods:{
+        navigateToCategory(categoryId) {
+            this.$inertia.visit(route('classcategory.index', { categoria: categoryId }));
+        },
         openGetInfoByWhatsapp(product, event){
                 let urlOfProduct="https://bikeperushop.pe/product/bottom-bracket-sram-dub-bsa-68-73mm-a-granel/"
                 let customMessage=`Hola+Bicizona+estoy+interesado+en+este+producto *+${product.name}+*%0AURL: %20${urlOfProduct}`
