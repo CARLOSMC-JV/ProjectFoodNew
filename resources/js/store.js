@@ -22,8 +22,6 @@ export const useStore = defineStore('main', {
     
     // Carrito
     initializeCart(cartItems) {
-      console.log(cartItems)
-      // store.$patch(state=>state.cart=cartItems) 
       this.cart = cartItems;
     },
     addToCart(product) {

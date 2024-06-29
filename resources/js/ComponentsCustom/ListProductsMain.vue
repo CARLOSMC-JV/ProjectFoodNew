@@ -36,6 +36,10 @@
         created(){
         },
         methods:{
+            formatPrice(price) {
+                let num = Number(price);
+                return !isNaN(num) ? num.toFixed(2) : '0.00';
+            },
             generateWhatsAppMessage(product) {
                 console.log(product)
                 let message = `\u{1F6D2} Esta es tu compra:\n\n`;
@@ -153,7 +157,7 @@
                                         <h2 class="title-item" @click="redirectToProductDetails(productByCategoryItem.class_categories_id, productByCategoryItem)">{{productByCategoryItem.name}}</h2>
                                         <h2 class="title-desription">{{productByCategoryItem.description}}</h2> 
                                         <div class="box-price-mobile">
-                                            <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
+                                            <h2 class="title-price">S/. {{formatPrice(productByCategoryItem.price)}}</h2>
                                             <button class="button-buy" @click.stop="openGetInfoByWhatsapp(productByCategoryItem)">Comprar</button>
                                         </div>
                                     </div>
@@ -164,7 +168,7 @@
                                     </div>
                                 </div>
                                 <div class="box-price">
-                                    <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
+                                    <h2 class="title-price">S/. {{formatPrice(productByCategoryItem.price)}}</h2>
                                     <button class="button-buy" @click.stop="openGetInfoByWhatsapp(productByCategoryItem)">Comprar</button>
                                 </div>
                             </div>

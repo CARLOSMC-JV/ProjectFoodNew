@@ -41,10 +41,13 @@
             },
             generateWhatsAppMessage(product) {
                 console.log(product)
+                let price = Number(product.price);
+
                 let message = `\u{1F6D2} Esta es tu compra:\n\n`;
-                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${product.price.toFixed(2)}\n`;
-                 
-                message += `\n\u{1F4B0} Total: S/ ${product.price.toFixed(2)}`;
+                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${!isNaN(price) ? price.toFixed(2) : '0.00'}\n`;
+
+                let total = Number(product.price) * Number(product.quantity);
+                message += `\n\u{1F4B0} Total: S/ ${!isNaN(total) ? total.toFixed(2) : '0.00'}`;
                 return message;
             },
             async addToCart(productId) {

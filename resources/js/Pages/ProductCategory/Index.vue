@@ -58,12 +58,6 @@
             this.number_pages = Math.ceil(this.products.length / this.perPage);
         },
         computed:{
-            formatPrice: function(value) {
-                console.log(typeof value)
-                // const number = parseFloat(value);
-                return value.toFixed(2);
-
-            },
             totalPages() {
                 return Math.ceil(this.totalProductsForCategory / this.perPage);
             },
@@ -99,6 +93,10 @@
             },
         },
         methods: {
+            formatPrice(price) {
+                let num = Number(price);
+                return !isNaN(num) ? num.toFixed(2) : '0.00';
+            },
             openGetInfoByWhatsapp(product) {
                 const phoneNumber = '51992855313'; 
                 const message = encodeURIComponent(this.generateWhatsAppMessage(product));
@@ -109,9 +107,9 @@
             generateWhatsAppMessage(product) {
                 console.log(product)
                 let message = `\u{1F6D2} Esta es tu compra:\n\n`;
-                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${product.price.toFixed(2)}\n`;
+                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${formatPrice(product.price)}\n`;
                  
-                message += `\n\u{1F4B0} Total: S/ ${product.price.toFixed(2)}`;
+                message += `\n\u{1F4B0} Total: S/ ${formatPrice(product.price)}`;
                 return message;
             },
             async addToCart(productId) {
@@ -207,7 +205,7 @@
                                         <h2 class="title-item" @click="redirectToProductDetails(productByCategoryItem.class_categories_id, productByCategoryItem)">{{productByCategoryItem.name}}</h2>
                                         <h2 class="title-desription">{{productByCategoryItem.description}}</h2> 
                                         <div class="box-price-mobile">
-                                            <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
+                                            <h2 class="title-price">S/. {{formatPrice(productByCategoryItem.price)}}</h2>
                                             <button class="button-buy" @click.stop="openGetInfoByWhatsapp(productByCategoryItem)">Comprar</button>
                                         </div>
                                     </div>
@@ -219,7 +217,7 @@
                                     </div>
                                 </div>
                                 <div class="box-price">
-                                    <h2 class="title-price">S/. {{(productByCategoryItem.price).toFixed(2)}}</h2>
+                                    <h2 class="title-price">S/. {{formatPrice(productByCategoryItem.price)}}</h2>
                                     <button class="button-buy" @click.stop="openGetInfoByWhatsapp(productByCategoryItem)">Comprar</button>
                                 </div>
                             </div>

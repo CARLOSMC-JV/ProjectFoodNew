@@ -112,9 +112,9 @@ export default {
         const store = useStore();
         
         store.initializeCart(props.cart);
-        console.log(store.cart);
 
         store.setLatestProducts(props.latestProducts);
+        console.log("latestProducts ",props.latestProducts)
         store.setAllProducts(props.allProducts);
         store.setCategories(props.categories);
 

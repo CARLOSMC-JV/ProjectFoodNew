@@ -53,7 +53,6 @@ export default {
         }
     },
     created(){
-        console.log("estos ",this.products)
     },
     components: {
         carousel,

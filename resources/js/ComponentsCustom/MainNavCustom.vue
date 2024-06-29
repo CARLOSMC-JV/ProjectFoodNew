@@ -69,7 +69,7 @@
 
                                         </div>
                                         <div>
-                                            <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>
+                                            <span class="cartmini__price">S/. {{ formatPrice(item.price) }}</span>
                                         </div>
                                         <div class="box-line">
                                             <hr>
@@ -77,7 +77,7 @@
                                         <div class="box-total">
                                             <span class="text-total">Total producto:</span>
                                             <span
-                                                class="text-total-price">{{ (getPriceByProduct(item.id)).toFixed(2) }}</span>
+                                                class="text-total-price">{{ formatPrice(getPriceByProduct(item.id)) }}</span>
                                         </div>
                                         <div class="box-quantity-cart">
                                             <h5 class="cartmini__description">{{ item.quantity }}</h5>
@@ -98,7 +98,7 @@
                     <div class="cartmini__checkout">
                         <div class="cartmini__checkout-title mb-30" @click="processCart()">
                             <h4>Procesar compra:</h4>
-                            <span>S/ {{ (calculateTotalCart).toFixed(2) }}</span>
+                            <span>S/ {{ formatPrice(calculateTotalCart()) }}</span>
                         </div>
 
                     </div>
@@ -218,7 +218,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <span class="cartmini__price">S/. {{ (item.price).toFixed(2) }}</span>
+                                                    <span class="cartmini__price">S/. {{ formatPrice((item.price)) }}</span>
                                                 </div>
                                                 <div class="box-line">
                                                     <hr>
@@ -226,7 +226,7 @@
                                                 <div class="box-total">
                                                     <span class="text-total">Total producto:</span>
                                                     <span
-                                                        class="text-total-price">{{ (getPriceByProduct(item.id)).toFixed(2) }}</span>
+                                                        class="text-total-price">{{ formatPrice(getPriceByProduct(item.id)) }}</span>
                                                 </div>
                                                 <div class="box-quantity-cart">
                                                     <h5 class="cartmini__description">{{ item.quantity }}</h5>
@@ -251,7 +251,7 @@
                             <div class="cartmini__checkout">
                                 <div class="cartmini__checkout-title mb-30" @click="processCart()">
                                     <h4>Procesar compra:</h4>
-                                    <span>S/ {{ (calculateTotalCart).toFixed(2) }}</span>
+                                    <span>S/ {{ formatPrice(calculateTotalCart()) }}</span>
                                 </div>
 
                             </div>
@@ -507,23 +507,7 @@ export default {
         };
     },
     computed: {
-        // user() {
-        //     return this.$auth.user;
-        // },
-        // ...mapState(useStore, ['cart']),
-        calculateTotalCart() {
-            if (this.cart) {
-                if (this.cart.length === 0) {
-                    return 0;
-                }
-
-                const total = this.cart.reduce((accumulator, currentItem) => {
-                    return accumulator + currentItem.priceByProduct;
-                }, 0);
-
-                return total;
-            }
-        }
+        
     },
     setup(props) {
         const store = useStore();
@@ -562,6 +546,19 @@ export default {
         ClickOutside: VueClickOutside.directive,
     },
     methods: {
+        calculateTotalCart() {
+            if (this.cart && this.cart.length > 0) {
+                const total = this.cart.reduce((accumulator, currentItem) => {
+                return accumulator + currentItem.priceByProduct;
+                }, 0);
+                return total;
+            }
+            return 0;
+        },
+        formatPrice(price) {
+            let num = Number(price);
+            return !isNaN(num) ? num.toFixed(2) : '0.00';
+        },
         openSearchMobile(){
             this.showOpenSearchMobile = true
         },
