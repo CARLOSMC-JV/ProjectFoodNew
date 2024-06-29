@@ -82,7 +82,7 @@ export default {
 </script>
 
 <template>
-    <div style="width: 100%;">
+    <div style="width: 100%;" class="carousel-splide-header">
 
         <Splide :options="splideOptions" aria-label="My Favorite Images">
             <SplideSlide v-for="(category_item, category_item__index) in categorias" :key="category_item.id">
@@ -132,64 +132,66 @@ export default {
         }
     }
 }
-.splide {
+.carousel-splide-header{
+    .splide {
     padding: 0rem;
-}
-.splide__list{
-    align-items: center;
-    gap: 1.5rem;
-}
-.splide__slide {
-    display: flex;
-    justify-content: center;
-    .name-category{
-        color: #515253;
-        font-weight: 500;
-        cursor: pointer;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        &.category-active {
-            color: #961921;
-        }
-        &:hover {
-            color: #961921;
+    }
+    .splide__list{
+        gap: 1.5rem;
+    }
+    .splide__slide {
+        display: flex;
+        justify-content: center;
+        .name-category{
+            color: #515253;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &.category-active {
+                color: #961921;
+            }
+            &:hover {
+                color: #961921;
+            }
         }
     }
-}
-.splide__arrows {
-    .splide__arrow:hover:not(:disabled) svg{
-        fill: #e46971;
+    .splide__arrows {
+        .splide__arrow:hover:not(:disabled) svg{
+            fill: #e46971;
 
-    }
-    .splide__arrow--prev {
-        transform: translate(-90%, -50%);
-        svg{
-            fill: #961921;
-            width: 1rem;
-            left: 0;
-            position: absolute;
-            :hover{
-                fill: #e46971;
+        }
+        .splide__arrow--prev {
+            transform: translate(-90%, -50%);
+            svg{
+                fill: #961921;
+                width: 1rem;
+                left: 0;
+                position: absolute;
+                :hover{
+                    fill: #e46971;
+                }
+            }
+        }
+        .splide__arrow--next{
+            width: 20px;
+            transform: translate(160%, -50%);
+            svg{
+                fill: #961921;
+                width: 1rem;
+                left: 0;
+                position: absolute;
+                :hover{
+                    fill: #e46971;
+                }
             }
         }
     }
-    .splide__arrow--next{
-        width: 20px;
-        transform: translate(160%, -50%);
-        svg{
-            fill: #961921;
-            width: 1rem;
-            left: 0;
-            position: absolute;
-            :hover{
-                fill: #e46971;
-            }
-        }
+    .splide__pagination {
+        display: none;
     }
 }
-.splide__pagination {
-    display: none;
-}
+
 </style>

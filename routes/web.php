@@ -54,7 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('admin/products', ProductAdminController::class);
 
 });
+
 #route access shops
+Route::get('/cart/view', [CartController::class, 'getCartItems'])->name('cart.view');
+
 Route::get('/shop', function () {
     return Inertia::render('Shops/ShopList'); 
 });
@@ -72,7 +75,6 @@ Route::get('{categoria}', [ProductController::class, 'listByClassCategory'])->na
 
 #route cart shop
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart', [CartController::class, 'getCartItems'])->name('cart.view');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 

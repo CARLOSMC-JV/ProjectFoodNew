@@ -627,7 +627,7 @@ export default {
             this.cart.forEach((item, index) => {
                 message += `${index + 1}. \uD83D\uDD22 ${item.name} - Cantidad: ${item.quantity} - Precio: S/ ${item.price.toFixed(2)}\n`;
             });
-            message += `\n\u{1F4B0} Total: S/ ${this.calculateTotalCart.toFixed(2)}`;
+            message += `\n\u{1F4B0} Total: S/ ${this.formatPrice((this.calculateTotalCart()))}`;
             return message;
         },
         processCart() {
@@ -1513,6 +1513,7 @@ header.header {
         width: 100vw;
 
         .autocomplete-suggestions{
+            z-index: 20;
             position: absolute;
             overflow-y: scroll;
             background: #ffffff;
@@ -1867,6 +1868,7 @@ header.header {
                         width: 80%;
                         position: relative;
                         .autocomplete-suggestions{
+                            z-index: 20;
                             position: absolute;
                             overflow-y: scroll;
                             height: 320px;

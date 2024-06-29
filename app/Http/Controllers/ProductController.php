@@ -107,6 +107,7 @@ class ProductController extends Controller
 
         $product->subcategory = $subcategory->name;
         $cart = session()->get('cart', []);
+        \Log::info('Carrito en showDetail:', $cart);
 
         return inertia('ProductDetail/Index', [
             'product' => $product,

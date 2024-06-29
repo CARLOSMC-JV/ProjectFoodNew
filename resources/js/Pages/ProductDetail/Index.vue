@@ -8,7 +8,7 @@
     import chevronDownRed from '@/../img/icons/chevron-down-red.svg';
     import  {useToast}  from 'vue-toastification';
     import { useStore } from '../../store';
-    import { computed } from 'vue';
+    import { computed, onMounted  } from 'vue';
 
 
     export default {
@@ -30,6 +30,7 @@
             cart:{type: Object}
         },
         created(){
+            console.log(this.cart)
         },
         methods:{
             openGetInfoByWhatsapp(product) {
@@ -66,6 +67,7 @@
 
                 }
             },
+           
         },
         setup(props) {
             const toast = useToast();
@@ -73,15 +75,32 @@
             console.log(store)
             const cart = computed(() => Object.values(store.cart));
             console.log(props.cart)
+            console.log(cart.value)
 
-            if(props.cart){
-                store.initializeCart(props.cart)
-            }
+            const getCart = async () => {
+                try {
+                    axios.get(route('cart.view'))
+                    .then(res => {
+                        store.initializeCart(res.data.cart);
+                    }) 
+                    toast.success("Carrito obtenido correctamente");
+                } catch (error) {
+                    console.error(error);
+                    toast.error('Hubo un problema al obtener el carrito');
+                }
+            };
+
+            onMounted(() => {
+                if (cart.value.length === 0) {
+                    getCart();
+                }
+            });
 
             return { toast,      
-                cart: props.cart, 
+                cart: cart, 
                 onAddCart: store.addToCart,
-                setCarts: store.initializeCart
+                setCarts: store.initializeCart,
+                getCart
             };
         },
     }
