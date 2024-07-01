@@ -622,20 +622,18 @@ export default {
 
             window.open(instagramURL, '_blank');
         },
-        generateWhatsAppMessage() {
-            let message = `\u{1F6D2} Esta es tu compra:\n\n`;
-            this.cart.forEach((item, index) => {
-                message += `${index + 1}. \uD83D\uDD22 ${item.name} - Cantidad: ${item.quantity} - Precio: S/ ${item.price.toFixed(2)}\n`;
-            });
-            message += `\n\u{1F4B0} Total: S/ ${this.formatPrice((this.calculateTotalCart()))}`;
-            return message;
-        },
         processCart() {
-            const phoneNumber = '51992855313';
-            const message = encodeURIComponent(this.generateWhatsAppMessage());
-            const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+            let message = "";
+            this.cart.forEach((item, index) => {
+                message += `✅ ${index + 1}. ${item.name} - Cantidad: ${item.quantity} - Precio: S/ ${this.formatPrice(item.price)}%0A`;
+            });
+            let total = `\n\u{1F4B0} Total: S/ ${this.formatPrice((this.calculateTotalCart()))}`;
 
-            window.open(whatsappURL, '_blank');
+            let whatsappurl = "https://api.whatsapp.com/send?phone=51992855313" + "&text=Esta es mi compra 🛒 %0A" + message +"%0A"+total;
+            window.open(
+                whatsappurl,
+                '_blank'
+            );
         },
         async removeToCart(productId) {
             try {

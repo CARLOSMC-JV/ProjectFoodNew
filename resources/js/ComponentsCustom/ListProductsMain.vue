@@ -40,20 +40,17 @@
                 let num = Number(price);
                 return !isNaN(num) ? num.toFixed(2) : '0.00';
             },
-            generateWhatsAppMessage(product) {
-                console.log(product)
-                let message = `\u{1F6D2} Esta es tu compra:\n\n`;
-                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${product.price.toFixed(2)}\n`;
-                 
-                message += `\n\u{1F4B0} Total: S/ ${product.price.toFixed(2)}`;
-                return message;
-            },
-            openGetInfoByWhatsapp(product) {
-                const phoneNumber = '51992855313'; 
-                const message = encodeURIComponent(this.generateWhatsAppMessage(product));
-                const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
 
-                window.open(whatsappURL, '_blank');
+            openGetInfoByWhatsapp(product) {
+                let message = "";
+                message += `✅ ${product.name} - Cantidad: 1 - Precio: S/ ${this.formatPrice(product.price)}\n`;
+                let total = `\n\u{1F4B0} Total: S/ ${this.formatPrice(product.price)}`;
+
+                let whatsappurl = "https://api.whatsapp.com/send?phone=51992855313" + "&text=Esta es mi compra 🛒 %0A" + message +"%0A"+total;
+                window.open(
+                    whatsappurl,
+                    '_blank'
+                );
             },
             async addToCart(productId) {
                 try {

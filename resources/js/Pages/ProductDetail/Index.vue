@@ -33,23 +33,20 @@
             console.log(this.cart)
         },
         methods:{
-            openGetInfoByWhatsapp(product) {
-                const phoneNumber = '51992855313'; 
-                const message = encodeURIComponent(this.generateWhatsAppMessage(product));
-                const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
-
-                window.open(whatsappURL, '_blank');
+            formatPrice(price) {
+                let num = Number(price);
+                return !isNaN(num) ? num.toFixed(2) : '0.00';
             },
-            generateWhatsAppMessage(product) {
-                console.log(product)
-                let price = Number(product.price);
+            openGetInfoByWhatsapp(product) {
+                let message = "";
+                message += `✅ ${product.name} - Cantidad: 1 - Precio: S/ ${this.formatPrice(product.price)}\n`;
+                let total = `\n\u{1F4B0} Total: S/ ${this.formatPrice(product.price)}`;
 
-                let message = `\u{1F6D2} Esta es tu compra:\n\n`;
-                message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${!isNaN(price) ? price.toFixed(2) : '0.00'}\n`;
-
-                let total = Number(product.price) * Number(product.quantity);
-                message += `\n\u{1F4B0} Total: S/ ${!isNaN(total) ? total.toFixed(2) : '0.00'}`;
-                return message;
+                let whatsappurl = "https://api.whatsapp.com/send?phone=51992855313" + "&text=Esta es mi compra 🛒 %0A" + message +"%0A"+total;
+                window.open(
+                    whatsappurl,
+                    '_blank'
+                );
             },
             async addToCart(productId) {
                 try {
@@ -83,10 +80,8 @@
                     .then(res => {
                         store.initializeCart(res.data.cart);
                     }) 
-                    toast.success("Carrito obtenido correctamente");
                 } catch (error) {
                     console.error(error);
-                    toast.error('Hubo un problema al obtener el carrito');
                 }
             };
 

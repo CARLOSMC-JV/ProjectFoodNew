@@ -106,7 +106,7 @@
             },
             generateWhatsAppMessage(product) {
                 console.log(product)
-                let message = `\u{1F6D2} Esta es tu compra:\n\n`;
+                let message = `\u{1F6D2} Esta es mi compra:\n\n`;
                 message += `\uD83D\uDD22 ${product.name} - Cantidad: ${product.quantity} - Precio: S/ ${formatPrice(product.price)}\n`;
                  
                 message += `\n\u{1F4B0} Total: S/ ${formatPrice(product.price)}`;
