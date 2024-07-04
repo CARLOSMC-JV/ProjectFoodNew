@@ -15,6 +15,7 @@ import SelectInput from '@/Components/SelectInput.vue'
 import WarningButton from '@/Components/WarningButton.vue'
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import Modal from '@/Components/Modal.vue'
+import iconCloseRed from '../../../../img/icons/close-icon-red.svg';
 
 import { nextTick, ref } from 'vue';
 
@@ -23,13 +24,15 @@ import { nextTick, ref } from 'vue';
     export default {
         data() {
             return {
+                iconCloseRed,
                 form: useForm({
                     class_category_id:'',
                     name:'',
                     price:'',
                     quantity:'',
                     images: [],
-                    description:''
+                    description:'',
+                    imagePublicId: undefined
                 }),
                 formPage:useForm({}),
                 nameInput:null,
@@ -47,6 +50,7 @@ import { nextTick, ref } from 'vue';
                 currentPage: 1,
                 number_pages:undefined,
                 saving: false,
+                showImageDelete:false,
             }
         },
         props:{
@@ -59,6 +63,15 @@ import { nextTick, ref } from 'vue';
             this.number_pages = Math.ceil(this.products.length / this.perPage);
         },
         methods:{
+            formatPrice(price) {
+                let num = Number(price);
+                return !isNaN(num) ? num.toFixed(2) : '0.00';
+            },
+            removeImage(image_public_id, index) {
+                this.form.images.splice(index, 1);
+                this.showImageDelete=true
+                this.form.imagePublicId=image_public_id
+            },
             prevPage(){
                 if(this.currentPage>1){
                     this.currentPage--;
@@ -84,13 +97,18 @@ import { nextTick, ref } from 'vue';
                 const files = event.target.files;
                 this.form.images = files;
             },
+            handleImageUpload2(event) {
+                const files = event.target.files;
+                this.form.images = files;
+                console.log(this.form.images);
+            },
             pageClick(){
                 this.form.get(route("products.destroy", id))
             },
-            openModal(op, name, description, class_category, price, quantity, product_id){
-                console.log(class_category)
+            openModal(op, name, description, class_category, price, quantity, product_id, list_image){
                 this.modal=true;
                 // this.nextTick(()=> this.nameInput.value.focus());
+                console.log(list_image)
                 this.operation=op;
                 this.product_id=product_id;
                 if(op == 1){
@@ -100,10 +118,12 @@ import { nextTick, ref } from 'vue';
                     this.form.name=name
                     this.form.description=description
                     this.form.class_category_id=class_category
-
+                    this.form.images = list_image.map(image => ({ ...image, deleted: false }));
                     this.form.price=price
                     this.form.quantity=quantity
+                    this.showImageDelete=false
                 }
+                console.log(this.form.images);
             },
             closeModal(){
                 this.modal=false
@@ -122,7 +142,9 @@ import { nextTick, ref } from 'vue';
                     formData.append('price', this.form.price);
                     formData.append('description', this.form.description);
                     formData.append('class_category_id', this.form.class_category_id);
-
+                    if (this.form.imagePublicId) {
+                        formData.append('imagePublicId', this.form.imagePublicId);
+                    }
                     for (let i = 0; i < this.form.images.length; i++) {
                         formData.append('images[]', this.form.images[i]);
                     }
@@ -139,9 +161,11 @@ import { nextTick, ref } from 'vue';
                     }else{
                         try {
                             this.form.put(route('products.update', this.product_id), {
+                                method: 'put',
+                                body: formData,
                                 onSuccess: (request) => {
                                     console.log(request);
-                                    this.ok("Producto actualizado")
+                                    this.ok("Producto actualizado");
                                 }
                             });
                         }catch (error) {
@@ -264,11 +288,11 @@ import { nextTick, ref } from 'vue';
 
                             <td class="border border-gray-400 px-2 py-2" style="font-size: 0.875rem;">{{ prod.name }}</td>
                             <!-- <td class="border img-box border-gray-400 px-2 py-2"><img :src="prod.image" /></td> -->
-                            <td class="border border-gray-400 px-2 py-2">{{ prod.price.toFixed(2) }}</td>
+                            <td class="border border-gray-400 px-2 py-2">{{ formatPrice(prod.price) }}</td>
                             <td class="border border-gray-400 px-2 py-2">{{ prod.quantity }}</td>
                             <td class="border border-gray-400 px-2 py-2" style="font-size: 0.875rem;">{{ prod.class_category }}</td>
                             <td class="border border-gray-400 px-2 py-2">
-                                <WarningButton @click="openModal(2, prod.name, prod.description, prod.class_categories_id, prod.price, prod.quantity, prod.id)">
+                                <WarningButton @click="openModal(2, prod.name, prod.description, prod.class_categories_id, prod.price, prod.quantity, prod.id, prod.images)">
                                     <i class="fa-solid fa-edit text-white"></i>
                                 </WarningButton>
                             </td>
@@ -389,6 +413,12 @@ import { nextTick, ref } from 'vue';
         }
         .btn-add:hover{
             background: #324885;
+        }
+        .box-img{
+            display: flex;
+            .btn-image{
+                display: flex;
+            }
         }
     }
     .py-12{

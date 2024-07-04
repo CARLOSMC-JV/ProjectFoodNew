@@ -33,6 +33,7 @@
         @inertiaHead
         @cloudinaryJS
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://unpkg.com/vue-star-rating@next/dist/VueStarRating.umd.min.js"></script>
 
     </head>
     <body class="font-sans antialiased">

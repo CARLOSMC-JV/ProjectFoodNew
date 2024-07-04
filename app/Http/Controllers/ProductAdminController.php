@@ -109,9 +109,16 @@ class ProductAdminController extends Controller
             'price'=>'required',
             'class_category_id'=>'required|numeric',
         ]);
-        $data = $request->only(['name', 'price', 'quantity', 'description', 'class_category_id']);
-        
-        $product->update($data);
+        try {
+            $data = $request->only(['name', 'price', 'quantity', 'description', 'class_category_id']);
+
+            $product->update($data);
+
+        } catch (Exception $e) {
+            dd($e);
+
+        }
+
         return redirect('admin/products');
     }
 

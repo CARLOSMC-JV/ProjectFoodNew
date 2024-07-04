@@ -14,10 +14,12 @@
     import  {useToast}  from 'vue-toastification';
     import { useStore } from '../../store';
     import { onMounted, computed } from 'vue';
+    import StarRating from 'vue-star-rating'
 
     export default {
         data() {
             return {
+                rating:'',
                 currentPage: 1,
                 totalProductsForCategory: 0,
                 perPage: 15,
@@ -35,6 +37,7 @@
             }
         },
         components:{
+            StarRating,
             MainNavCustom,
             BaseSelectGeneric,
             Head,
@@ -93,6 +96,14 @@
             },
         },
         methods: {
+            handleRatingSelected(productId, rating) {
+                console.log(`Product ID: ${productId}, Rating: ${rating}`);
+                this.submitRating(productId, rating);
+            },
+            submitRating(productId, rating) {
+                console.log(`Submitting Rating - Product ID: ${productId}, Rating: ${rating}`);
+                this.$inertia.post(`/products/${productId}/rate`, { rating });
+            },
             formatPrice(price) {
                 let num = Number(price);
                 return !isNaN(num) ? num.toFixed(2) : '0.00';
@@ -203,6 +214,13 @@
                                 <div class="data-product">   
                                     <div class="box-data-general">
                                         <h2 class="title-item" @click="redirectToProductDetails(productByCategoryItem.class_categories_id, productByCategoryItem)">{{productByCategoryItem.name}}</h2>
+                                        <star-rating  
+                                            :rating="productByCategoryItem.rating"
+                                            @update:rating ="handleRatingSelected(productByCategoryItem.id, rating = $event)"
+                                            :show-rating="false" active-color="#961921" :star-size="50" 
+                                            :rounded-corners="true" 
+                                            :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]">
+                                        </star-rating>                                        
                                         <h2 class="title-desription">{{productByCategoryItem.description}}</h2> 
                                         <div class="box-price-mobile">
                                             <h2 class="title-price">S/. {{formatPrice(productByCategoryItem.price)}}</h2>

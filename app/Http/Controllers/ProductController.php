@@ -7,6 +7,7 @@ use App\Models\ClassCategory;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Subcategory;
+use App\Models\Rating;
 
 class ProductController extends Controller
 {
@@ -189,6 +190,36 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json(['products' => $products]);
 
+    }
+
+    public function rate(Request $request, Product $productId)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+        $product = Product::find($productId->id);
+        // dd($productId->id);
+
+
+        $existingRating = $product;
+        if ($existingRating) {
+
+            $existingRating->update([
+                'rating' => $request->rating,
+            ]);
+            $existingRating->save();
+
+        } else {
+
+            $product->ratings()->create([
+                'rating' => $request->rating,
+            ]);
+        }
+        
+
+        $product->save();
+
+        return redirect()->back();
     }
 
 }
