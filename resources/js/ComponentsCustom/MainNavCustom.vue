@@ -6,7 +6,7 @@
             <div class="box-data-contact">
                 <div class="icon-text">
                     <img class="icon-contact" @click="emailLink()" :src="iconsEmail" alt="">
-                    <span class="text-contact">atencionalcliente@lacasadelosravioles.com.pe</span>
+                    <span class="text-contact">atencionalcliente@lacasadelosravioles.com</span>
                 </div>
                 <div class="icon-text">
                     <img class="icon-contact" @click="openWhatsapp2()" :src="iconsWhatsapp" alt="">
@@ -32,6 +32,39 @@
                 </div> -->
             </div>
         </div>
+        <Modal @close="toggleModal" :modalActive="modalActive">
+            <div class="modal-content-receta">
+                <h1 class="title-receta">Lasaña / Canelloni</h1>
+                <div class="box-receta-1">
+                    <div class="text-receta">
+                        <p><img :src="iconFideo">Descongelar la lasaña / cannelloni antes de hornear.</p>
+                        <p><img :src="iconFideo">Precalentar el horno por 10 minutos a 250 °C.</p>
+                        <p><img :src="iconFideo">Hornear la lasaña/cannelloni por 25 minutos a 250°C ó 360°F.</p>
+                        <p><img :src="iconFideo">Retirar del horno y dejar reposar 5 minutos aprox, luego servir.</p>                    
+                    </div>
+                </div>
+
+                <h1 class="title-receta-2">Ravioles & Cappelletti</h1>
+
+                <div class="box-receta-2">
+                    <div class="text-receta-2">
+                        <p><img :src="iconFideo">Hervir abundante agua y sal al gusto.</p>
+                        <p><img :src="iconFideo">Una vez hirviendo agregar los ravioles o los cappelletti sin descongelar,
+                            bajar el fuego al mínimo y cocer revolviendo suavemente.
+                        </p>
+                        <div class="box-time">
+                            <p class="text-bold">Tiempos de cocción:</p>
+                            <p>Ravioles:              12 a 15 minutos</p>
+                            <p>Cappelletti:           15 a 20 min aprox.</p>
+                        </div>
+                        <p><img :src="iconFideo">Antes de retirar los ravioles o los cappelleti, pruébelos para comprobar
+                            la cocción.</p>                    
+                        <p><img :src="iconFideo">Colar y mezclar rápidamente con la salsa de su preferencia.</p>   
+                        <p><img :src="iconFideo">Sírvase caliente.</p>   
+                    </div>
+                </div>
+            </div>
+        </Modal>
         <transition name="slide-fade">
             <div class="cartmini__area tp-all-font-roboto" :class="{ 'cartmini-opened': showCartShop }" v-show="showCartShop"
                 v-click-outside="closeCartOnClickOutside">
@@ -392,6 +425,10 @@
                                     </nav>
                                 </div>
                             </div>
+
+                            <div class="box-recetas" @click="toggleModal">
+                                RECETARIO
+                            </div>
                             
                         </div>
                     </div>
@@ -412,6 +449,9 @@ import HeroSlider2 from "@/ComponentsCustom/HeroSlider2.vue";
 import ListProductsMain from "@/ComponentsCustom/ListProductsMain.vue";
 import PopularCategories from "@/ComponentsCustom/PopularCategories.vue";
 import FooterVue from "@/ComponentsCustom/Footer.vue";
+import Modal from "@/ComponentsCustom/Modal.vue";
+import {ref} from 'vue';
+import iconFideo from '../../img/icons/fideito.webp';
 
 import NavLink from '@/Components/NavLink.vue';
 
@@ -453,7 +493,7 @@ import { onMounted, computed } from 'vue';
 
 export default {
     name: "Header",
-    components: { CarouselSplide, NavLink, HeroSlider2, ListProductsMain, PopularCategories, FooterVue, CarouselSplideHeader },
+    components: { CarouselSplide, NavLink, HeroSlider2, ListProductsMain, PopularCategories, FooterVue, CarouselSplideHeader, Modal },
     props: {
         latestProducts: {
             type: Array,
@@ -466,6 +506,7 @@ export default {
     },
     data() {
         return {
+            iconFideo,
             iconlogoPage,
             iconlogoPageCasa,
             iconSearch,
@@ -512,6 +553,12 @@ export default {
     setup(props) {
         const store = useStore();
         const toast = useToast();
+        const modalActive = ref(false);
+
+        const toggleModal = () => {
+            console.log(modalActive.value)
+            modalActive.value = !modalActive.value;
+        }
 
         store.setLatestProducts(props.latestProducts);
         const cart = computed(() => Object.values(store.cart));
@@ -522,7 +569,9 @@ export default {
             cart,
             allProducts,
             toast,
-            setCarts: store.initializeCart
+            setCarts: store.initializeCart,
+            modalActive,
+            toggleModal 
         };
     },
     head() {
@@ -741,7 +790,18 @@ export default {
 @import "resources/styles/breakpoints";
 @import "resources/styles/mixins";
 @import "resources/styles/animations";
-
+$font-path: '../../fonts/';
+@font-face {
+  font-family: 'FrankfurterMediumPlain';
+  src: url(#{$font-path}FrankfurterMediumPlain.eot); 
+  src: url(#{$font-path}FrankfurterMediumPlain.eot?#iefix) format('embedded-opentype'), 
+       url(#{$font-path}FrankfurterMediumPlain.woff2) format('woff2'), 
+       url(#{$font-path}FrankfurterMediumPlain.woff) format('woff'), 
+       url(#{$font-path}FrankfurterMediumPlain.ttf) format('truetype'), 
+       url(#{$font-path}FrankfurterMediumPlain.svg#FrankfurterMediumPlain) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 * {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -762,10 +822,91 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-
+    
+    .modal-receta{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, .7);
+        
+        .modal-inner-receta{
+            .btn-close{
+                
+            }
+            .modal-content-receta{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                img{
+                    width: 20px;
+                }
+                .title-receta{
+                    color: #1A3D6E;
+                    font-weight: 500;
+                    font-family: 'FrankfurterMediumPlain', 'Arial', sans-serif;
+                }
+                .title-receta-2{
+                    margin-top: 1rem;
+                    color: #961921;
+                    font-weight: 500;
+                    font-family: 'FrankfurterMediumPlain', 'Arial', sans-serif;
+                }
+                .box-receta-1{
+                    background-color: #961921;
+                    padding: 1.5rem;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    
+                    p{
+                        color: #ffffff;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+                }
+                .box-receta-2{
+                    background-color: #144220;
+                    padding: 1.5rem;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    p{
+                        color: #ffffff;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+                    .text-receta-2{
+                        width: 90%;
+                        .text-bold{
+                            font-weight: 700;
+                        }
+                        .box-time{
+                            margin-left: 25px;
+                        }
+                    }
+                }
+                h1,p{
+                    margin-bottom: 16px;
+                }
+                h1{
+                    font-size: 2.5rem;
+                }
+            }
+        }
+    }
     .slide-fade-enter-active, .slide-fade-leave-active {
-  transition: transform 0.5s ease;
-}
+        transition: transform 0.5s ease;
+    }
 
 .slide-fade-enter-from, .slide-fade-leave-to /* .slide-fade-leave-active in <2.1.8 */ {
   transform: translateX(100%);
@@ -930,6 +1071,7 @@ body {
 
     .tp-header-bottom {
         .container {
+            padding: 0px 12px;
             margin: 0rem;
             max-width: none;
 
@@ -988,7 +1130,7 @@ body {
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
-                width: 16%;
+                // width: 16%;
 
                 .tp-header-category {
                     border-right: 3px solid #979a9c;
@@ -996,7 +1138,7 @@ body {
             }
 
             .menu-box-top {
-                margin-left: 1.5rem;
+                // margin-left: 1.5rem;
             }
 
             .tp-mega-menu-wrapper {
@@ -1013,6 +1155,10 @@ body {
                 }
 
                 .row-custom {
+                    display: grid;
+                    grid-template-columns: minmax(150px, 15%) minmax(200px, 73%) minmax(100px, 12%);
+                    gap: 1.5rem;
+
                     height: 40px;
                     width: 100%;
                     margin-left: initial;
@@ -1077,7 +1223,7 @@ body {
 
                 .tp-header-category {
                     .tp-category-menu-btn {
-                        padding: 1rem;
+                        padding: 0.5rem;
                         height: 40px;
                         display: flex;
                         align-items: center;

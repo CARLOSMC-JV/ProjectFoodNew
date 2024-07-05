@@ -11,7 +11,6 @@
             <div class="subtitle">
               <span class="text-sub">La casa de los ravioles</span>
               <span class="text-sub">Lima - Perú</span>
-              <span class="text-sub">pedidos@lacasadelosravioles.pe</span>
               <span class="text-phone">(01) 435 4036</span>
               <div class="box-icons-network">
                 <img class="img-icon" @click="openPageFb()" :src="iconFB" alt="">
@@ -52,7 +51,6 @@
               <div class="subtitle">
                 <span class="text-sub">La casa de los ravioles</span>
                 <span class="text-sub">Lima - Perú</span>
-                <span class="text-sub">pedidos@lacasadelosravioles.pe</span>
                 <span class="text-phone">(01) 435 4036</span>
                 <div class="box-icons-network">
                   <img class="img-icon" @click="openPageFb()" :src="iconFB" alt="">

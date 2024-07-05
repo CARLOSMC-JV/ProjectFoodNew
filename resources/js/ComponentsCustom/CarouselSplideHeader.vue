@@ -38,15 +38,15 @@ export default {
                 img06,
             ],
             splideOptions: {
-                perPage: 9,
+                perPage: 6,
                 autoWidth: true,
                 arrows: true,
                 breakpoints: {
                     1200: {
-                        perPage: 7,
+                        perPage: 5,
                     },
                     992: {
-                        perPage: 7,
+                        perPage: 5,
                     },
                 },
             },
@@ -122,12 +122,22 @@ export default {
     .row{
         position: relative;
         .menu-box-top{
-            width: 80%;
+            width:100%;
             left: 15%;
             .main-menu{
                 .tp-main-menu-content{
                     width: 100%;
                 }
+            }
+        }
+        .box-recetas{
+            display: flex;
+            justify-content: center;
+            color: #515253;
+            font-weight: 600;
+            cursor: pointer;
+            &:hover{
+                color: #961921;
             }
         }
     }
@@ -177,7 +187,8 @@ export default {
         }
         .splide__arrow--next{
             width: 20px;
-            transform: translate(160%, -50%);
+            // transform: translate(160%, -50%);
+            right: -30px;
             svg{
                 fill: #961921;
                 width: 1rem;

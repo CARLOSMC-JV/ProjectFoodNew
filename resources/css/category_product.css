@@ -772,6 +772,7 @@ body {
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-button-general {
     bottom: 25%;
     right: 8px;
+    top: initial;
   }
   #category_product .list-documents .box-documents .document-item .box-data-document .data-product .box-data-general {
     align-items: center;

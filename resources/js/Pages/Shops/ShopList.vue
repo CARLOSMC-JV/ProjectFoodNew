@@ -16,15 +16,25 @@
                 camionIcon,
                 relojIcon,
                 telephoneIcon,
+                daysOfWeek: [
+                    { name: 'Lunes:', range: 'range_hour1' },
+                    { name: 'Martes:', range: 'range_hour1' },
+                    { name: 'Miércoles:', range: 'range_hour1' },
+                    { name: 'Jueves:', range: 'range_hour1' },
+                    { name: 'Viernes:', range: 'range_hour1' },
+                    { name: 'Sábado:', range: 'range_hour1' },
+                    { name: 'Domingos:', range: 'range_hour2' },
+                    { name: 'Feriados:', range: 'range_hour2' }
+                ],
                 arrayAddress:[
-                    {range_hour1: '8am - 6pm', range_hour2: '8:30am - 1:30pm', title: "La casa de los Ravioles - Monterrico", address:"Centro Comercial Monterrico Pasaje la Pascana 186 Monterrico - Santiago de Surco", telephones:[{tele:['01 435 4036', '01 750 6118'], phone:['992 855 313', '998 199 411']}] },
-                    {range_hour1: '8am - 6pm', range_hour2: '9am - 1:30pm', title: "La casa de los ravioles - Chacarilla", address:"Pasaje monteverdi 108 Santiago de Surco", telephones:[{tele:['01 492 2779', '01 750 6118'], phone:['919 297 561', '947 378 352']}]},
-                    {range_hour1: '9:30am - 6pm', range_hour2: '9:30am - 1:30pm', title: "La casa de los ravioles - Camacho", address:"Centro Comercial Plaza Camacho - Tda 21 B Av. Javier Prado Este 5193 Camacho - La Molina", telephones:[{tele:['01 437 3001'], phone:['947 378 352']}]},
-                    {range_hour1: '9:30am - 6pm', range_hour2: '9:30am - 1:30pm', title: "La casa de los ravioles - La Molina", address:"Centro Comercial Arena Mol - Tda 17 Segundo piso, frente al colegio Newton", telephones:[{tele:['01 479 2990'], phone:['983 530 501']}] },
+                    {range_hour1: '8am - 6pm', range_hour2: '8:30am - 1:30pm', title: "La casa de los Ravioles - Monterrico", address:"Centro Comercial Monterrico Pasaje la Pascana 186 Monterrico - Santiago de Surco", telephones:[{tele:['01 435 4036', '01 750 6118'], phone:['992 855 313', '998 199 411']}], showOpenHours: false },
+                    {range_hour1: '8am - 6pm', range_hour2: '9am - 1:30pm', title: "La casa de los ravioles - Chacarilla", address:"Pasaje monteverdi 108 Santiago de Surco", telephones:[{tele:['01 492 2779', '01 750 6118'], phone:['919 297 561', '947 378 352']}], showOpenHours: false},
+                    {range_hour1: '9:30am - 6pm', range_hour2: '9:30am - 1:30pm', title: "La casa de los ravioles - Camacho", address:"Centro Comercial Plaza Camacho - Tda 21 B Av. Javier Prado Este 5193 Camacho - La Molina", telephones:[{tele:['01 437 3001'], phone:['947 378 352']}], showOpenHours: false},
+                    {range_hour1: '9:30am - 6pm', range_hour2: '9:30am - 1:30pm', title: "La casa de los ravioles - La Molina", address:"Centro Comercial Arena Mol - Tda 17 Segundo piso, frente al colegio Newton", telephones:[{tele:['01 479 2990'], phone:['983 530 501']}], showOpenHours: false },
                     {range_hour1: '', range_hour2: '', title: "RAPPI", address:"", telephones:[] },
                     {range_hour1: '', range_hour2: '', title: "PEDIDOS YA", address:"", telephones:[] }
                 ],
-                activeIndex: null 
+                activeIndex: null,
             }
         },
         components:{
@@ -36,6 +46,13 @@
             class_category: {type: String}
         },
         methods:{
+            openHours(index){
+                this.arrayAddress[index].showOpenHours = !this.arrayAddress[index].showOpenHours;
+                this.activeIndex = index;
+            },
+            closeModal(active_index) {
+                this.arrayAddress[active_index].showOpenHours=false
+            },
             handleClick(index) {
                 this.activeIndex = index;
                 const methodName = `linkAddress${index + 1}`;
@@ -72,7 +89,7 @@
             isActive() {
                 return index => this.activeIndex === index;
             }
-        }
+        },
     }
 </script>
 
@@ -88,12 +105,6 @@
         <div class="data-maps">
             <section class="section-date-time">
                 <div class="box-general-date" v-for="(address_item, address_item__index) in arrayAddress" :key="address_item__index">
-                    <div class="info-date">
-                        <span class="data-red" v-if="address_item__index !== 4 || address_item__index !== 5">Lunes a Sábado</span>
-                        <span class="data-green">{{address_item.range_hour1}}</span>
-                        <span class="data-red" v-if="address_item__index !== 4 || address_item__index !== 5">Domingos y feriados</span>
-                        <span class="data-green">{{address_item.range_hour2}}</span>
-                    </div>
                     <div class="box-address" @click="handleClick(address_item__index)" :class="{ 'active': isActive(address_item__index) }">
                         <h2>{{address_item.title}}</h2>
                         <span>{{address_item.address}}</span>
@@ -101,7 +112,15 @@
                             <div class="box-hour-home">
                                 <div class="box-reloj">
                                     <img :src="relojIcon">
-                                    <span  class="show-hour-text" v-if="address_item__index !== 4 || address_item__index !== 5">Ver horarios</span>
+                                    <span  class="show-hour-text" v-if="address_item__index !== 4 || address_item__index !== 5" @click="openHours(address_item__index)">Ver horarios</span>
+                                </div>
+                                <div v-show="address_item.showOpenHours" class="box-modal-hours">
+                                    <div class="info-date">
+                                        <div v-for="(day, dayIndex) in daysOfWeek" :key="dayIndex" class="box-hours">
+                                            <span class="data-red" v-if="address_item__index !== 4 && address_item__index !== 5">{{ day.name }}</span>
+                                            <span class="data-green">{{ address_item[day.range] }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="box-camion">
                                     <img :src="camionIcon">
@@ -181,22 +200,15 @@
                     display: flex;
                     flex-direction: column;
                     gap: 1rem;
-                    .info-date{
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        width: 100%;
-                        align-items: center;
-                        .data-red{
-                            color:#961921;
-                        }
-                        .data-green{
-                            color: #144220;
-                        }
+                    &:nth-child(odd) .box-address {
+                        background: #EDEDED;
+                    }
+
+                    &:nth-child(even) .box-address {
+                        background: #fff;
                     }
                     .box-address{
                         padding: 1.5rem;
-                        background: #e1e1e1;
                         width: 100%;
                         cursor: pointer;
                         h2{
@@ -207,10 +219,12 @@
                             color: #383838;
                         }
                         &:hover{
-                            border: 1px solid #961921;
+                            h2{
+                                color: #961921;
+                                font-weight: 600;
+                            }
                         }
                         &.active{
-                            border: 1px solid #961921;
                             h2{
                                 color: #961921;
                                 font-weight: 600;
@@ -246,6 +260,29 @@
                                 display: flex;
                                 flex-direction: column;
                                 gap: 0.5rem;
+                                position: relative;
+                                .box-modal-hours{
+                                    position: absolute;
+                                    z-index: 200;
+                                    margin: 0px;
+                                    top: 25%;
+                                    background-color: rgb(255, 255, 255);
+                                    border-radius: 3px;
+                                    box-shadow: rgba(0, 0, 0, 0.14) 0px 8px 10px, rgba(0, 0, 0, 0.12) 0px 3px 14px, rgba(0, 0, 0, 0.2) 0px 4px 5px;
+                                    padding: 0.5rem;                                    
+                                    pointer-events: all;
+                                    width: 220px;
+                                    max-width: 220px;
+                                    .info-date{
+                                        display: flex;
+                                        flex-direction: column;
+                                        .box-hours{
+                                            display: flex;
+                                            justify-content: space-between;
+                                            font-size: 0.875rem;
+                                        }
+                                    }
+                                }
                                 .box-reloj{
                                     display: flex;
                                     align-items: center;
@@ -310,10 +347,6 @@
                                 flex-direction: row;
                                 align-items: initial;
                             }
-                        }
-                        .info-date{
-                            width: 30%;
-                            align-items: initial;
                         }
                     }
                 }
