@@ -32,33 +32,47 @@
                 </div> -->
             </div>
         </div>
-        <Modal @close="toggleModal" :modalActive="modalActive">
+
+        <Modal @close="toggleModal" @on-close="closeModalWrapper()"
+        :closeOnBackground='true' :modalActive="modalActive">
             <div class="modal-content-receta">
-                <h1 class="title-receta">Lasaña / Canelloni</h1>
+                <h1 class="title-receta">Lasagna / Cannelloni</h1>
                 <div class="box-receta-1">
                     <div class="text-receta">
-                        <p><img :src="iconFideo">Descongelar la lasaña / cannelloni antes de hornear.</p>
                         <p><img :src="iconFideo">Precalentar el horno por 10 minutos a 250 °C.</p>
-                        <p><img :src="iconFideo">Hornear la lasaña/cannelloni por 25 minutos a 250°C ó 360°F.</p>
+                        <p><img :src="iconFideo">Hornear la lasagna/cannelloni por 25 minutos a 250°C ó 400°F.</p>
                         <p><img :src="iconFideo">Retirar del horno y dejar reposar 5 minutos aprox, luego servir.</p>                    
+                        <p class="text-bold"><img :src="iconFideo">Nota: Si usted tiene una lasagna / cannelloni congelado debe descongelarlo previamente.</p>                    
                     </div>
                 </div>
 
-                <h1 class="title-receta-2">Ravioles & Cappelletti</h1>
+                <h1 class="title-receta-2">Ravioli & Cappelletti</h1>
 
                 <div class="box-receta-2">
                     <div class="text-receta-2">
-                        <p><img :src="iconFideo">Hervir abundante agua y sal al gusto.</p>
-                        <p><img :src="iconFideo">Una vez hirviendo agregar los ravioles o los cappelletti sin descongelar,
-                            bajar el fuego al mínimo y cocer revolviendo suavemente.
+                        <p><img :src="iconFideo">Hervir abundante agua con sal al gusto.</p>
+                        <p><img :src="iconFideo">Una vez hirviendo agregar la pasta SIN DESCONGELAR,
+                            bajar a fuego medio y cocer revolviendo suavemente.
                         </p>
                         <div class="box-time">
                             <p class="text-bold">Tiempos de cocción:</p>
-                            <p>Ravioles:              12 a 15 minutos</p>
-                            <p>Cappelletti:           15 a 20 min aprox.</p>
+                            <div class="section-text-receta">
+                                <div>
+                                    <p>Ravioli</p>
+                                    <p>Cappelletti</p>
+                                    <p>Gnocchi y Malfatti</p>
+                                    <p>Tortelloni, Agnolotti, Panzotti</p>
+                                </div>
+    
+                                <div>
+                                    <p>: 15 a 20 minutos</p>
+                                    <p>: 15 a 20 min aprox</p>
+                                    <p>: 10 minutos</p>
+                                    <p>: 12 a 15 minutos</p>
+                                </div>
+                            </div>
                         </div>
-                        <p><img :src="iconFideo">Antes de retirar los ravioles o los cappelleti, pruébelos para comprobar
-                            la cocción.</p>                    
+                        <p><img :src="iconFideo">Antes de retirar la pasta, pruébela para comprobar la cocción.</p>                    
                         <p><img :src="iconFideo">Colar y mezclar rápidamente con la salsa de su preferencia.</p>   
                         <p><img :src="iconFideo">Sírvase caliente.</p>   
                     </div>
@@ -157,7 +171,7 @@
                                             <span>Carrito</span>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="box-order-general" style="display: none;">
                                         <div class="contain-icon" @click="toggleShopCart()">
                                             <button type="button" class="box-order">
@@ -169,9 +183,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="box-receta-mobile">
+                                    <img :src="noteBlack" class="img-note">
+                                    <span style="color: rgb(39, 39, 42);" @click="toggleModal">Recetario</span>
+                                </div>
+                                <hr class="line-vertical">
                                 <div class="box-tiendas">
                                     <svg viewBox="0 0 24 24" fill="#27272A" width="24" height="24" class="sc-e283704c-0 iMxoOo"><path d="M21.96 15.328l-2.032-7.03a.998.998 0 00-1.232-.7l-15.96 4.598a1 1 0 00-.7 1.232l2.033 7.03a1 1 0 001.233.7l15.992-4.598a1 1 0 00.667-1.232zM8.933 4.733l5.631 2.698 1.933-.566L8.4 3l-4.364 7.43L5.9 9.897l3.032-5.164z"></path></svg>
                                     <span style="color: rgb(39, 39, 42);" @click="redirectToShop()">Tiendas</span>
+                                </div>
+                                <div class="box-about">
+                                    <img :src="aboutIcon" style="width: 20px;">
+                                    <span style="color: rgb(39, 39, 42);" @click="redirectToAbout()">Quienes Somos</span>
                                 </div>
                                 <div class="offcanvas__category pb-40">
                                     <button class="tp-offcanvas-category-toggle" @click="toggleSubMenu()">
@@ -307,13 +330,13 @@
                         <img :src="iconlogoPageCasa" alt="" />
                     </div>
                     <div class="search">
-                        <img :src="iconSearch" class="icon-search" @click="openSearchMobile()">
+                        <img :src="iconSearchWhite" class="icon-search" @click="openSearchMobile()">
                     </div>
     
                 </div>
                 <div v-else class="box-input-mobile">
                     <div class="control has-icons-left">
-                        <input autocomplete="off" class="input" type="text" placeholder="Buscar producto"
+                        <input ref="searchInput" autocomplete="off" class="input" type="text" placeholder="Buscar producto"
                             style="height: 40px" @input="searchProducts">
                         <img :src="iconCloseBlack" class="icon-search" @click="closeSearchMobile()">
                     </div>
@@ -364,6 +387,9 @@
                     <div class="box-shop">
                         <span @click="redirectToShop()">Tiendas</span>
                     </div>
+                    <div class="box-shop">
+                        <span @click="redirectToAbout()">Quienes Somos</span>
+                    </div>
                     <div class="box-cart">
                         <div class="contain-icon" style="display: none;">
                             <img :src="iconOrder">
@@ -401,12 +427,13 @@
                                         </button>
                                         <nav class="tp-category-menu-content" v-show="show_options_mega">
                                             <ul class="menu-by-category">
-                                                <li v-for="(cate_item, cate_item__index) in categorias"
-                                                    :key="cate_item__index">
-                                                    <a href="shop.html" class="sub-item-category">
-                                                        {{ cate_item.name }}</a>
+                                                <li class="item-submenu"
+                                                    v-for="(category_item, category_item__index) in categorias"
+                                                    :key="category_item__index">
+                                                    
+                                                    <a class="sub-item-category" :class="{ 'category-active': categoryActive === category_item.name }"
+                                                    @click="navigateToCategory(category_item.id)">{{ category_item.name }}</a>
                                                 </li>
-
                                             </ul>
                                         </nav>
                                     </div>
@@ -452,6 +479,8 @@ import FooterVue from "@/ComponentsCustom/Footer.vue";
 import Modal from "@/ComponentsCustom/Modal.vue";
 import {ref} from 'vue';
 import iconFideo from '../../img/icons/fideito.webp';
+import noteBlack from '../../img/icons/note-black.png';
+import aboutIcon from '../../img/about/about-icon.svg';
 
 import NavLink from '@/Components/NavLink.vue';
 
@@ -480,6 +509,7 @@ import iconsEmail from '../../img/icons-email.png';
 import iconsPhone from '../../img/phone.png';
 import iconsWhatsapp from '../../img/whatsapp-icon.png';
 import iconSearch from '../../img/search-new.png';
+import iconSearchWhite from '../../img/icons/search-icon-white.svg';
 import iconFB from '../../img/fb_icon.png';
 import iconCart from '../../img/cart-icon.png';
 import iconOrder from '../../img/order-icon.png';
@@ -507,9 +537,12 @@ export default {
     data() {
         return {
             iconFideo,
+            aboutIcon,
+            noteBlack,
             iconlogoPage,
             iconlogoPageCasa,
             iconSearch,
+            iconSearchWhite,
             iconFB,
             iconCart,
             iconOrder,
@@ -595,6 +628,9 @@ export default {
         ClickOutside: VueClickOutside.directive,
     },
     methods: {
+        closeModalWrapper(){
+            this.modalActive=false
+        },
         calculateTotalCart() {
             if (this.cart && this.cart.length > 0) {
                 const total = this.cart.reduce((accumulator, currentItem) => {
@@ -610,6 +646,9 @@ export default {
         },
         openSearchMobile(){
             this.showOpenSearchMobile = true
+            this.$nextTick(() => {
+                this.$refs.searchInput.focus();
+            });
         },
         closeSearchMobile(){
             this.showOpenSearchMobile = false
@@ -628,6 +667,11 @@ export default {
         redirectToShop(){
             if (this.$page.url !== '/shop') {
                 this.$inertia.visit('/shop');
+            }
+        },
+        redirectToAbout(){
+            if (this.$page.url !== '/about') {
+                this.$inertia.visit('/about');
             }
         },
         redirectToProductDetails(category, product) {
@@ -864,7 +908,11 @@ body {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    
+                    .text-receta{
+                        .text-bold{
+                            font-weight: 700;
+                        }
+                    }
                     p{
                         color: #ffffff;
                         display: flex;
@@ -892,6 +940,10 @@ body {
                         }
                         .box-time{
                             margin-left: 25px;
+                            .section-text-receta{
+                                display: flex;
+                                gap: 2.5rem;
+                            }
                         }
                     }
                 }
@@ -1290,7 +1342,7 @@ body {
                                     font-weight: 500;
                                     position: relative;
                                     display: flex;
-
+                                    cursor: pointer;
 
                                     &:hover {
                                         color: #961921;
@@ -1485,9 +1537,29 @@ header.header {
             .box-tiendas{
                 display: flex;
                 gap: 0.5rem;
-                padding: 10px 0;
-                border-top: 1px solid rgba(1, 15, 28, 0.1);
+                padding: 0px 0px 10px 0;
                 border-bottom: 1px solid rgba(1, 15, 28, 0.1);
+                .img-note{
+                    width: 18px;
+                }
+            }
+            .box-about{
+                display: flex;
+                gap: 0.5rem;
+                padding: 0px 0px 10px 0;
+                align-items: center;
+                .img-note{
+                    width: 18px;
+                }
+            }
+            .box-receta-mobile{
+                display: flex;
+                gap: 0.5rem;
+                padding: 10px 0px 0px 0;
+                border-top: 1px solid rgba(1, 15, 28, 0.1);
+                .img-note{
+                    width: 18px;
+                }
             }
             .offcanvas__category {
 
@@ -1951,10 +2023,9 @@ header.header {
 
             .header-tabs {
                 display: grid;
-                grid-template-columns: 80% 10% 10%;
+                grid-template-columns: 70% 8% 12% 10%;
                 width: 100%;
                 align-items: center;
-                gap: 1rem;
 
                 .box-shop {
                     display: flex;
@@ -1971,7 +2042,7 @@ header.header {
                 .box-cart {
                     display: flex;
                     gap: 0.5rem;
-
+                    justify-content: center;
                     .contain-icon {
                         cursor: pointer;
                         background: rgba(255, 255, 255, 0.2);

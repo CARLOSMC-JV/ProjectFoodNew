@@ -26,11 +26,20 @@
                     { name: 'Domingos:', range: 'range_hour2' },
                     { name: 'Feriados:', range: 'range_hour2' }
                 ],
+                daysOfWeekNotMonday: [
+                    { name: 'Martes:', range: 'range_hour1' },
+                    { name: 'Miércoles:', range: 'range_hour1' },
+                    { name: 'Jueves:', range: 'range_hour1' },
+                    { name: 'Viernes:', range: 'range_hour1' },
+                    { name: 'Sábado:', range: 'range_hour1' },
+                    { name: 'Domingos:', range: 'range_hour2' },
+                    { name: 'Feriados:', range: 'range_hour2' }
+                ],
                 arrayAddress:[
                     {range_hour1: '8am - 6pm', range_hour2: '8:30am - 1:30pm', title: "La casa de los Ravioles - Monterrico", address:"Centro Comercial Monterrico Pasaje la Pascana 186 Monterrico - Santiago de Surco", telephones:[{tele:['01 435 4036', '01 750 6118'], phone:['992 855 313', '998 199 411']}], showOpenHours: false },
-                    {range_hour1: '8am - 6pm', range_hour2: '9am - 1:30pm', title: "La casa de los ravioles - Chacarilla", address:"Pasaje monteverdi 108 Santiago de Surco", telephones:[{tele:['01 492 2779', '01 750 6118'], phone:['919 297 561', '947 378 352']}], showOpenHours: false},
+                    {range_hour1: '9am - 6pm', range_hour2: '9am - 1:30pm', title: "La casa de los ravioles - Chacarilla", address:"Pasaje monteverdi 108 Santiago de Surco", telephones:[{tele:['01 492 2779', '01 750 6118'], phone:['919 297 561', '947 378 352']}], showOpenHours: false},
                     {range_hour1: '9:30am - 6pm', range_hour2: '9:30am - 1:30pm', title: "La casa de los ravioles - Camacho", address:"Centro Comercial Plaza Camacho - Tda 21 B Av. Javier Prado Este 5193 Camacho - La Molina", telephones:[{tele:['01 437 3001'], phone:['947 378 352']}], showOpenHours: false},
-                    {range_hour1: '9:30am - 6pm', range_hour2: '9:30am - 1:30pm', title: "La casa de los ravioles - La Molina", address:"Centro Comercial Arena Mol - Tda 17 Segundo piso, frente al colegio Newton", telephones:[{tele:['01 479 2990'], phone:['983 530 501']}], showOpenHours: false },
+                    {range_hour1: '9am - 6pm', range_hour2: '9am - 1:30pm', title: "La casa de los ravioles - La Molina", address:"Centro Comercial Arena Mol - Tda 17 Segundo piso, frente al colegio Newton", telephones:[{tele:['01 479 2990'], phone:['983 530 501']}], showOpenHours: false },
                     {range_hour1: '', range_hour2: '', title: "RAPPI", address:"", telephones:[] },
                     {range_hour1: '', range_hour2: '', title: "PEDIDOS YA", address:"", telephones:[] }
                 ],
@@ -115,8 +124,14 @@
                                     <span  class="show-hour-text" v-if="address_item__index !== 4 || address_item__index !== 5" @click="openHours(address_item__index)">Ver horarios</span>
                                 </div>
                                 <div v-show="address_item.showOpenHours" class="box-modal-hours">
-                                    <div class="info-date">
+                                    <div class="info-date" v-if="address_item__index!==2">
                                         <div v-for="(day, dayIndex) in daysOfWeek" :key="dayIndex" class="box-hours">
+                                            <span class="data-red" v-if="address_item__index !== 4 && address_item__index !== 5">{{ day.name }}</span>
+                                            <span class="data-green">{{ address_item[day.range] }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="info-date" v-else>
+                                        <div v-for="(day, dayIndex) in daysOfWeekNotMonday" :key="dayIndex" class="box-hours">
                                             <span class="data-red" v-if="address_item__index !== 4 && address_item__index !== 5">{{ day.name }}</span>
                                             <span class="data-green">{{ address_item[day.range] }}</span>
                                         </div>
@@ -325,7 +340,7 @@
 
     @media (min-width: 768px) {
         .box-shop{
-            padding: 2rem 5rem;
+            // padding: 2rem 5rem;
             .box-title{
                 
                 .title-shop{
@@ -341,6 +356,7 @@
                     width: 50%;
                     .box-general-date{
                         flex-direction: row;
+                        justify-content: center;
                         .box-address{
                             width: 70%;
                             .send-hour{

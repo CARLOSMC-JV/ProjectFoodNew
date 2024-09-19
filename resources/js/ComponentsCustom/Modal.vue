@@ -1,6 +1,9 @@
 <template>
+    
     <transition name="modal-animation">
+        
         <div v-show="modalActive" class="modal-receta">
+            <div class="base-modal-background" @click="closeByBackground()"></div>
             <transition name="modal-animation-inner">
                 <div v-show="modalActive" class="modal-inner-receta">
                     <button @click="close" type="button" class="btn-close"><img :src="iconCloseRed"></button>
@@ -24,6 +27,24 @@
             modalActive: {
                 type: Boolean,
                 required: false,
+            },
+            closable: {
+                type: Boolean,
+                default: false,
+            },
+            closeOnBackground: {
+                type: Boolean,
+                default: false,
+            },
+        },
+        methods:{
+            closeModal() {
+                this.$emit("on-close");
+            },
+            closeByBackground() {
+                if (this.closeOnBackground) {
+                    this.$emit("on-close");
+                }
             },
         },
         setup(props, {emit}){
@@ -62,15 +83,31 @@
  }
 
  .modal-receta{
+    .base-modal-background{
+        background-color: rgba(10, 10, 10, 0.86);
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
     .modal-inner-receta{
         position: relative;
         max-width: 840px;
-        width: 100%;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        width: 90%;
         background-color: #fff;
-        padding: 1.5rem 0rem;
+        padding: 0.5rem;
         height: 90%;
         overflow-y: scroll;
+
+        .modal-content-receta{
+            .title-receta{
+                text-align: center;
+            }
+            .title-receta-2{
+                text-align: center;
+            }
+        }
 
         .btn-close{
             position: absolute;
@@ -112,6 +149,23 @@
     .modal-inner-receta::-webkit-scrollbar-track {
         background-color: rgba(128, 128, 128, 0.2);
         border-radius: 10px;  
+    }
+ }
+
+ @media (min-width: 768px) {
+    .modal-receta{
+        .modal-inner-receta{
+            width: 100%;
+            padding: 1.5rem 0rem;
+            .modal-content-receta{
+                .title-receta{
+                    text-align: initial;
+                }
+                .title-receta-2{
+                    text-align: initial;
+                }
+            }
+        }
     }
  }
 

@@ -28,15 +28,11 @@
   >
     <swiper-slide class="slider-desktop" v-for="(slide_item, slide_item__index)  in slides" :key="slide_item__index"  :class="{ 'previous-slide': slide_item__index === previousSlide, 'active-slide': activeSlide === slide_item__index }">
         <img :src="slide_item">
-        <div class="slide-text" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgLogo"></div>
-        <div class="slide-text-discount" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgDiscount"></div>
       
     </swiper-slide>
 
     <swiper-slide class="slider-mobile" v-for="(slide_item, slide_item__index)  in slidesMobile" :key="slide_item__index"  :class="{ 'previous-slide': slide_item__index === previousSlide, 'active-slide': activeSlide === slide_item__index }">
         <img :src="slide_item">
-        <div class="slide-text" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgLogo"></div>
-        <div class="slide-text-discount" :class="{ 'active': activeSlide === slide_item__index, 'next': nextSlide === slide_item__index }"><img class="img-logo" :src="imgDiscount"></div>
       
     </swiper-slide>
 
@@ -46,10 +42,12 @@
 <script>
   // Import Swiper Vue.js components
   import { Swiper, SwiperSlide } from 'swiper/vue';
-  import { Navigation, Pagination} from 'swiper/modules';
+  import { Autoplay, Navigation, Pagination} from 'swiper/modules';
   import { EffectCreative } from 'swiper/modules';
   import img7Slider from '../../img/slider/banner_food_desktop.webp'
+  import img8Slider from '../../img/slider/banner-2.png'
   import imgMobile from '../../img/slider/banner_food.png'
+  import imgMobile2 from '../../img/slider/banner_dos_movil.png'
   import imgLogo from '../../img/logo/logo_food.png'
   import imgDiscount from '../../img/slider/discount.png'
 
@@ -72,10 +70,12 @@
     data(){
         return{
             slides: [
-                img7Slider
+                img7Slider,
+                img8Slider
             ],
             slidesMobile:[
-                imgMobile
+                imgMobile,
+                imgMobile2
             ],
             imgLogo,
             imgDiscount,
@@ -102,7 +102,7 @@
     },
     setup() {
       return {
-        modules: [Navigation, Pagination, EffectCreative],
+        modules: [Autoplay, Pagination, EffectCreative],
       };
     },
   };
@@ -116,6 +116,7 @@
 .slider-desktop{
   display:none;
 }
+
 .swiper-creative{
     .swiper-wrapper{
         .swiper-slide{
@@ -234,6 +235,9 @@
     .swiper-wrapper{
         .swiper-slide{
             img{
+            }
+            .slide-text-discount{
+              
             }
           }
     }

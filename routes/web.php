@@ -61,6 +61,11 @@ Route::get('/cart/view', [CartController::class, 'getCartItems'])->name('cart.vi
 Route::get('/shop', function () {
     return Inertia::render('Shops/ShopList'); 
 });
+
+Route::get('/about', function () {
+    return Inertia::render('About/About'); 
+});
+
 Route::get('/{class_category}/show-category', [ClassCategoryController::class, 'showCategoryInClassCategory'])->name('class_category.index');
 
 Route::get('/{categoria}/{subcategoria}', [ProductController::class, 'index'])->name('subcategorias.index');

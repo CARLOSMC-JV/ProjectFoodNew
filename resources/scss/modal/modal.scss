@@ -8,6 +8,20 @@
     }
 }
 
+.swiper-creative{
+    .swiper-button-next{
+        display: none;      
+    }
+    .swiper-button-prev{
+        display: none;      
+    }
+    .swiper-pagination{
+        .swiper-pagination-bullet-active{
+            background: #961921;            
+        }
+    }
+}
+
 .contain-product{
     .img-box{
         img{

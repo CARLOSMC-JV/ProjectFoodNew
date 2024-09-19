@@ -6,6 +6,16 @@
   opacity: 0.4;
 }
 
+.swiper-creative .swiper-button-next {
+  display: none;
+}
+.swiper-creative .swiper-button-prev {
+  display: none;
+}
+.swiper-creative .swiper-pagination .swiper-pagination-bullet-active {
+  background: #961921;
+}
+
 .contain-product .img-box img {
   width: 50px;
 }
